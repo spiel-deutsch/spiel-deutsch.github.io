@@ -1,0 +1,225 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Präpositionen Übersicht — Spiel Deutsch</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=DM+Sans:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --bg:#F7F4EF;--surface:#fff;--text:#1C1917;--muted:#78716C;--hint:#A8A29E;
+  --akk:#185FA5;--akk-l:#E6F1FB;--akk-t:#0C447C;--akk-b:#B5D4F4;
+  --dat:#1D9E75;--dat-l:#E1F5EE;--dat-t:#0F6E56;--dat-b:#9FE1CB;
+  --gen:#7C3AED;--gen-l:#EDE9FE;--gen-t:#5B21B6;--gen-b:#C4B5FD;
+  --wex:#B45309;--wex-l:#FEF3C7;--wex-t:#92400E;--wex-b:#FDE68A;
+  --border:rgba(28,25,23,0.1);--bm:rgba(28,25,23,0.15);
+  --r:16px;--rs:12px;--sh:0 2px 12px rgba(28,25,23,0.07);--shc:0 8px 32px rgba(28,25,23,0.11)
+}
+html,body{min-height:100%;background:var(--bg);font-family:'DM Sans',sans-serif;color:var(--text);-webkit-font-smoothing:antialiased}
+body{display:flex;flex-direction:column;align-items:center;padding-bottom:48px}
+.hero{width:100%;max-width:640px;padding:clamp(32px,8vw,60px) 24px 0;text-align:center}
+.hero-tag{display:inline-block;font-size:11px;font-weight:600;letter-spacing:2px;text-transform:uppercase;color:var(--gen-t);background:var(--gen-l);border:1px solid var(--gen-b);border-radius:20px;padding:4px 14px;margin-bottom:16px}
+.hero-title{font-family:'DM Serif Display',serif;font-size:clamp(28px,7vw,44px);letter-spacing:-.5px;line-height:1.1}
+.hero-sub{font-size:14px;color:var(--muted);margin-top:10px;line-height:1.6;max-width:380px;margin-left:auto;margin-right:auto}
+/* Quick nav */
+.nav{width:100%;max-width:640px;padding:20px 24px 0;display:flex;gap:8px;flex-wrap:wrap}
+.nav-btn{padding:6px 14px;border-radius:20px;border:1px solid var(--bm);font-family:'DM Sans',sans-serif;font-size:12px;font-weight:600;cursor:pointer;background:var(--surface);color:var(--muted);transition:all .15s;box-shadow:var(--sh);text-decoration:none}
+.nav-btn.akk:hover{background:var(--akk-l);color:var(--akk-t);border-color:var(--akk)}
+.nav-btn.dat:hover{background:var(--dat-l);color:var(--dat-t);border-color:var(--dat)}
+.nav-btn.gen:hover{background:var(--gen-l);color:var(--gen-t);border-color:var(--gen)}
+.nav-btn.wex:hover{background:var(--wex-l);color:var(--wex-t);border-color:var(--wex)}
+/* Sections */
+.section{width:100%;max-width:640px;padding:clamp(24px,6vw,40px) 24px 0}
+.sec-hdr{display:flex;align-items:center;gap:12px;margin-bottom:16px}
+.sec-dot{width:12px;height:12px;border-radius:50%;flex-shrink:0}
+.sec-title{font-family:'DM Serif Display',serif;font-size:clamp(20px,5vw,28px)}
+.sec-rule{background:var(--surface);border:1px solid var(--border);border-radius:var(--r);padding:16px 20px;box-shadow:var(--sh);margin-bottom:14px;line-height:1.7;font-size:14px;color:var(--muted)}
+.sec-rule strong{color:var(--text);font-weight:600}
+.sec-rule code{font-family:monospace;font-size:13px;padding:1px 5px;border-radius:4px}
+.akk .sec-rule code{background:var(--akk-l);color:var(--akk-t)}
+.dat .sec-rule code{background:var(--dat-l);color:var(--dat-t)}
+.gen .sec-rule code{background:var(--gen-l);color:var(--gen-t)}
+.wex .sec-rule code{background:var(--wex-l);color:var(--wex-t)}
+/* Chip grid */
+.chips{display:flex;flex-wrap:wrap;gap:8px;margin-bottom:8px}
+.chip{padding:6px 14px;border-radius:20px;font-size:13px;font-weight:600}
+.chip.akk{background:var(--akk-l);color:var(--akk-t);border:1px solid var(--akk-b)}
+.chip.dat{background:var(--dat-l);color:var(--dat-t);border:1px solid var(--dat-b)}
+.chip.gen{background:var(--gen-l);color:var(--gen-t);border:1px solid var(--gen-b)}
+.chip.wex{background:var(--wex-l);color:var(--wex-t);border:1px solid var(--wex-b)}
+/* Example table */
+.ex-table{width:100%;border-collapse:collapse;font-size:13px;margin-top:4px}
+.ex-table th{text-align:left;padding:6px 10px;font-weight:600;font-size:11px;letter-spacing:.5px;text-transform:uppercase;color:var(--hint);border-bottom:1px solid var(--border)}
+.ex-table td{padding:7px 10px;border-bottom:1px solid var(--border);vertical-align:top;color:var(--muted)}
+.ex-table td:first-child{font-weight:600;color:var(--text);white-space:nowrap}
+.ex-table tr:last-child td{border-bottom:none}
+.ex-wrap{background:var(--surface);border:1px solid var(--border);border-radius:var(--r);overflow:hidden;box-shadow:var(--sh);margin-top:12px}
+/* Mnemonic box */
+.memo{border-radius:var(--rs);padding:14px 16px;font-size:13px;line-height:1.6;margin-bottom:14px}
+.memo.akk{background:var(--akk-l);border:1px solid var(--akk-b);color:var(--akk-t)}
+.memo.dat{background:var(--dat-l);border:1px solid var(--dat-b);color:var(--dat-t)}
+.memo.gen{background:var(--gen-l);border:1px solid var(--gen-b);color:var(--gen-t)}
+.memo.wex{background:var(--wex-l);border:1px solid var(--wex-b);color:var(--wex-t)}
+.memo strong{font-weight:600}
+/* Divider */
+.divider{width:100%;max-width:640px;height:1px;background:var(--border);margin:clamp(24px,6vw,40px) 0 0}
+/* Footer */
+.footer{width:100%;max-width:640px;padding:32px 24px 0;display:flex;flex-direction:column;align-items:center;gap:6px;text-align:center}
+.footer-brand{font-family:'DM Serif Display',serif;font-size:16px}
+.footer-credit{font-size:11px;font-weight:600;letter-spacing:2px;text-transform:uppercase;color:var(--hint);margin-top:2px}
+</style>
+</head>
+<body>
+
+<div class="hero">
+  <div class="hero-tag">Grammatik Übersicht</div>
+  <h1 class="hero-title">Präpositionen<br>Akkusativ · Dativ · Genitiv</h1>
+  <p class="hero-sub">Alle deutschen Präpositionen nach Kasus sortiert — mit Regeln, Eselsbrücken und Beispielen.</p>
+</div>
+
+<div class="nav">
+  <a class="nav-btn akk" href="#akkusativ">Akkusativ</a>
+  <a class="nav-btn dat" href="#dativ">Dativ</a>
+  <a class="nav-btn gen" href="#genitiv">Genitiv</a>
+  <a class="nav-btn wex" href="#wechsel">Wechselpräpositionen</a>
+</div>
+
+<!-- ══ AKKUSATIV ══ -->
+<div class="section akk" id="akkusativ">
+  <div class="sec-hdr">
+    <div class="sec-dot" style="background:var(--akk)"></div>
+    <div class="sec-title">Akkusativ</div>
+  </div>
+  <div class="memo akk"><strong>Eselsbrücke:</strong> <em>durch – für – gegen – ohne – um – bis – entlang</em><br>Merke: <strong>d–f–g–o–u–b–e</strong> — diese 7 Präpositionen verlangen immer den Akkusativ.</div>
+  <div class="sec-rule">Diese Präpositionen stehen <strong>immer mit dem Akkusativ</strong>. Das Nomen, das folgt, wird mit <code>den / einen / keinen</code> (maskulin) dekliniert.</div>
+  <div class="chips">
+    <span class="chip akk">durch</span><span class="chip akk">für</span><span class="chip akk">gegen</span>
+    <span class="chip akk">ohne</span><span class="chip akk">um</span><span class="chip akk">bis</span><span class="chip akk">entlang</span>
+  </div>
+  <div class="ex-wrap">
+    <table class="ex-table">
+      <thead><tr><th>Präposition</th><th>Bedeutung</th><th>Beispiel</th></tr></thead>
+      <tbody>
+        <tr><td>durch</td><td>through / by</td><td>Er geht <em>durch den Park</em>.</td></tr>
+        <tr><td>für</td><td>for</td><td>Das ist <em>für dich</em>.</td></tr>
+        <tr><td>gegen</td><td>against</td><td>Er ist <em>gegen die Idee</em>.</td></tr>
+        <tr><td>ohne</td><td>without</td><td>Ohne <em>dich</em> bin ich nichts.</td></tr>
+        <tr><td>um</td><td>around / at</td><td>Wir sitzen <em>um den Tisch</em>.</td></tr>
+        <tr><td>bis</td><td>until / to</td><td>Bis <em>nächsten Montag</em>.</td></tr>
+        <tr><td>entlang</td><td>along</td><td><em>Den Fluss entlang</em> gehen. (folgt dem Nomen)</td></tr>
+      </tbody>
+    </table>
+  </div>
+</div>
+
+<!-- ══ DATIV ══ -->
+<div class="section dat" id="dativ">
+  <div class="sec-hdr">
+    <div class="sec-dot" style="background:var(--dat)"></div>
+    <div class="sec-title">Dativ</div>
+  </div>
+  <div class="memo dat"><strong>Eselsbrücke:</strong> <em>aus – außer – bei – mit – nach – seit – von – zu – gegenüber</em><br>Merke: <strong>a–a–b–m–n–s–v–z–g</strong> — 9 Präpositionen, immer Dativ.</div>
+  <div class="sec-rule">Diese Präpositionen stehen <strong>immer mit dem Dativ</strong>. Das Nomen folgt mit <code>dem / einem / keinem</code> (maskulin/neutrum) oder <code>der / einer</code> (feminin).</div>
+  <div class="chips">
+    <span class="chip dat">aus</span><span class="chip dat">außer</span><span class="chip dat">bei</span>
+    <span class="chip dat">mit</span><span class="chip dat">nach</span><span class="chip dat">seit</span>
+    <span class="chip dat">von</span><span class="chip dat">zu</span><span class="chip dat">gegenüber</span>
+  </div>
+  <div class="ex-wrap">
+    <table class="ex-table">
+      <thead><tr><th>Präposition</th><th>Bedeutung</th><th>Beispiel</th></tr></thead>
+      <tbody>
+        <tr><td>aus</td><td>from / out of</td><td>Er kommt <em>aus der Schweiz</em>.</td></tr>
+        <tr><td>außer</td><td>except</td><td><em>Außer mir</em> war niemand da.</td></tr>
+        <tr><td>bei</td><td>at / near / with</td><td>Ich wohne <em>bei meinen Eltern</em>.</td></tr>
+        <tr><td>mit</td><td>with</td><td>Ich fahre <em>mit dem Bus</em>.</td></tr>
+        <tr><td>nach</td><td>after / to (cities)</td><td>Ich fahre <em>nach Berlin</em>.</td></tr>
+        <tr><td>seit</td><td>since / for</td><td><em>Seit einem Jahr</em> lerne ich Deutsch.</td></tr>
+        <tr><td>von</td><td>from / by / of</td><td>Das Buch ist <em>von meiner Mutter</em>.</td></tr>
+        <tr><td>zu</td><td>to (people/places)</td><td>Ich gehe <em>zu meiner Oma</em>.</td></tr>
+        <tr><td>gegenüber</td><td>opposite</td><td>Die Schule liegt <em>gegenüber dem Bahnhof</em>.</td></tr>
+      </tbody>
+    </table>
+  </div>
+</div>
+
+<!-- ══ GENITIV ══ -->
+<div class="section gen" id="genitiv">
+  <div class="sec-hdr">
+    <div class="sec-dot" style="background:var(--gen)"></div>
+    <div class="sec-title">Genitiv</div>
+  </div>
+  <div class="memo gen"><strong>Hinweis:</strong> Im Alltag werden Genitivpräpositionen manchmal mit dem Dativ benutzt (besonders <em>wegen, trotz, während</em>). In der Schriftsprache und im Examen jedoch immer <strong>Genitiv</strong>.</div>
+  <div class="sec-rule">Diese Präpositionen stehen <strong>immer mit dem Genitiv</strong>. Das Nomen folgt mit <code>des / eines</code> (mask./neutr.) oder <code>der / einer</code> (feminin). Maskulin/Neutrum-Nomen bekommen meist die Endung <code>-s</code> oder <code>-es</code>.</div>
+  <div class="chips">
+    <span class="chip gen">wegen</span><span class="chip gen">trotz</span><span class="chip gen">während</span>
+    <span class="chip gen">statt</span><span class="chip gen">innerhalb</span><span class="chip gen">außerhalb</span>
+    <span class="chip gen">oberhalb</span><span class="chip gen">unterhalb</span>
+    <span class="chip gen">diesseits</span><span class="chip gen">jenseits</span>
+  </div>
+  <div class="ex-wrap">
+    <table class="ex-table">
+      <thead><tr><th>Präposition</th><th>Bedeutung</th><th>Beispiel</th></tr></thead>
+      <tbody>
+        <tr><td>wegen</td><td>because of</td><td><em>Wegen des Regens</em> blieben wir zuhause.</td></tr>
+        <tr><td>trotz</td><td>despite</td><td><em>Trotz des Regens</em> gingen wir raus.</td></tr>
+        <tr><td>während</td><td>during</td><td><em>Während des Unterrichts</em> schlafen.</td></tr>
+        <tr><td>statt</td><td>instead of</td><td><em>Statt des Autos</em> nehme ich das Rad.</td></tr>
+        <tr><td>innerhalb</td><td>inside / within</td><td><em>Innerhalb der Stadt</em> fahren.</td></tr>
+        <tr><td>außerhalb</td><td>outside</td><td><em>Außerhalb der Stadt</em> wohnen.</td></tr>
+        <tr><td>oberhalb</td><td>above</td><td><em>Oberhalb der Wolken</em> scheint die Sonne.</td></tr>
+        <tr><td>unterhalb</td><td>below</td><td><em>Unterhalb des Berges</em> liegt das Dorf.</td></tr>
+        <tr><td>diesseits</td><td>on this side of</td><td><em>Diesseits der Grenze</em>.</td></tr>
+        <tr><td>jenseits</td><td>beyond</td><td><em>Jenseits des Flusses</em>.</td></tr>
+      </tbody>
+    </table>
+  </div>
+</div>
+
+<!-- ══ WECHSEL ══ -->
+<div class="section wex" id="wechsel">
+  <div class="sec-hdr">
+    <div class="sec-dot" style="background:var(--wex)"></div>
+    <div class="sec-title">Wechselpräpositionen</div>
+  </div>
+  <div class="memo wex">
+    <strong>Die goldene Regel:</strong><br>
+    <strong>Wo?</strong> (Ort/Lage) → <strong>Dativ</strong> &nbsp;|&nbsp; <strong>Wohin?</strong> (Richtung/Bewegung) → <strong>Akkusativ</strong><br><br>
+    <em>Das Buch liegt auf <strong>dem</strong> Tisch.</em> (Wo? → Dativ)<br>
+    <em>Ich lege das Buch auf <strong>den</strong> Tisch.</em> (Wohin? → Akkusativ)
+  </div>
+  <div class="sec-rule">Diese 9 Präpositionen können mit <strong>Dativ oder Akkusativ</strong> stehen — abhängig davon, ob eine <strong>Lage</strong> (Wo?) oder eine <strong>Bewegung</strong> (Wohin?) ausgedrückt wird.</div>
+  <div class="chips">
+    <span class="chip wex">an</span><span class="chip wex">auf</span><span class="chip wex">hinter</span>
+    <span class="chip wex">in</span><span class="chip wex">neben</span><span class="chip wex">über</span>
+    <span class="chip wex">unter</span><span class="chip wex">vor</span><span class="chip wex">zwischen</span>
+  </div>
+  <div class="ex-wrap">
+    <table class="ex-table">
+      <thead><tr><th>Präposition</th><th>Wohin? (Akk)</th><th>Wo? (Dat)</th></tr></thead>
+      <tbody>
+        <tr><td>an</td><td>Ich hänge es <em>an die Wand</em>.</td><td>Es hängt <em>an der Wand</em>.</td></tr>
+        <tr><td>auf</td><td>Ich lege es <em>auf den Tisch</em>.</td><td>Es liegt <em>auf dem Tisch</em>.</td></tr>
+        <tr><td>hinter</td><td>Er geht <em>hinter das Haus</em>.</td><td>Er steht <em>hinter dem Haus</em>.</td></tr>
+        <tr><td>in</td><td>Ich gehe <em>in die Schule</em>.</td><td>Ich bin <em>in der Schule</em>.</td></tr>
+        <tr><td>neben</td><td>Er setzt sich <em>neben mich</em>.</td><td>Er sitzt <em>neben mir</em>.</td></tr>
+        <tr><td>über</td><td>Das Flugzeug fliegt <em>über die Stadt</em>.</td><td>Die Lampe hängt <em>über dem Tisch</em>.</td></tr>
+        <tr><td>unter</td><td>Die Katze läuft <em>unter den Tisch</em>.</td><td>Die Katze sitzt <em>unter dem Tisch</em>.</td></tr>
+        <tr><td>vor</td><td>Er stellt es <em>vor das Haus</em>.</td><td>Es steht <em>vor dem Haus</em>.</td></tr>
+        <tr><td>zwischen</td><td>Er stellt sich <em>zwischen die Stühle</em>.</td><td>Er steht <em>zwischen den Stühlen</em>.</td></tr>
+      </tbody>
+    </table>
+  </div>
+</div>
+
+<div class="divider"></div>
+
+<div class="footer">
+  <div class="footer-brand">Spiel Deutsch</div>
+  <div class="footer-credit">by Mostafa Toumi</div>
+</div>
+
+</body>
+</html>

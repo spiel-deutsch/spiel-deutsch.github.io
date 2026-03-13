@@ -1,0 +1,228 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<title>Präpositionen Lernkarten — Spiel Deutsch</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=DM+Sans:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --bg:#F7F4EF;--surface:#fff;--text:#1C1917;--muted:#78716C;--hint:#A8A29E;
+  --akk:#185FA5;--akk-l:#E6F1FB;--akk-t:#0C447C;
+  --dat:#1D9E75;--dat-l:#E1F5EE;--dat-t:#0F6E56;
+  --gen:#7C3AED;--gen-l:#EDE9FE;--gen-t:#5B21B6;
+  --wex:#B45309;--wex-l:#FEF3C7;--wex-t:#92400E;
+  --border:rgba(28,25,23,0.1);--border-mid:rgba(28,25,23,0.15);
+  --r:16px;--rs:12px;--sh:0 2px 12px rgba(28,25,23,0.07);--shc:0 8px 32px rgba(28,25,23,0.12)
+}
+html,body{min-height:100%;background:var(--bg);font-family:'DM Sans',sans-serif;color:var(--text);-webkit-font-smoothing:antialiased}
+body{display:flex;flex-direction:column;align-items:center;padding-bottom:32px}
+.hdr{width:100%;max-width:540px;padding:20px 20px 0;display:flex;justify-content:space-between;align-items:flex-start}
+.title{font-family:'DM Serif Display',serif;font-size:clamp(18px,5vw,24px);color:var(--text)}
+.subtitle{font-size:12px;color:var(--muted);margin-top:3px}
+.counter{font-size:13px;color:var(--muted);margin-top:4px}
+.prog-wrap{width:100%;max-width:540px;padding:14px 20px 0}
+.prog-meta{display:flex;justify-content:space-between;font-size:12px;color:var(--muted);margin-bottom:6px}
+.prog-bar{height:4px;background:var(--border);border-radius:4px;overflow:hidden}
+.prog-fill{height:100%;background:var(--dat);border-radius:4px;transition:width .4s cubic-bezier(.4,0,.2,1)}
+.filters{width:100%;max-width:540px;padding:12px 20px 0;overflow-x:auto;scrollbar-width:none}
+.filters::-webkit-scrollbar{display:none}
+.filter-row{display:flex;gap:7px;width:max-content}
+.fb{padding:5px 13px;border-radius:20px;border:1px solid var(--border-mid);font-family:'DM Sans',sans-serif;font-size:12px;font-weight:500;cursor:pointer;background:var(--surface);color:var(--muted);transition:all .15s;-webkit-tap-highlight-color:transparent}
+.fb.akk.active{background:var(--akk-l);color:var(--akk-t);border-color:var(--akk)}
+.fb.dat.active{background:var(--dat-l);color:var(--dat-t);border-color:var(--dat)}
+.fb.gen.active{background:var(--gen-l);color:var(--gen-t);border-color:var(--gen)}
+.fb.wex.active{background:var(--wex-l);color:var(--wex-t);border-color:var(--wex)}
+.fb.all.active{background:#1C1917;color:var(--bg);border-color:#1C1917}
+.card-area{width:100%;max-width:540px;padding:14px 20px 0;display:flex;flex-direction:column}
+.card-wrap{perspective:1000px;height:clamp(190px,42vw,250px);cursor:pointer;-webkit-tap-highlight-color:transparent;user-select:none}
+.card{width:100%;height:100%;position:relative;transform-style:preserve-3d;transition:transform .5s cubic-bezier(.4,0,.2,1)}
+.card.flipped{transform:rotateY(180deg)}
+.face{position:absolute;inset:0;backface-visibility:hidden;-webkit-backface-visibility:hidden;border-radius:var(--r);background:var(--surface);box-shadow:var(--shc);display:flex;flex-direction:column;align-items:center;justify-content:center;padding:24px;gap:8px;border:1px solid var(--border)}
+.back{transform:rotateY(180deg)}
+.f-label{font-size:11px;font-weight:600;letter-spacing:1.2px;text-transform:uppercase;color:var(--hint)}
+.f-prep{font-family:'DM Serif Display',serif;font-size:clamp(32px,9vw,48px);color:var(--text);line-height:1.1}
+.f-hint{font-size:11px;color:var(--hint);margin-top:4px}
+.case-badge{padding:6px 20px;border-radius:20px;font-size:clamp(14px,4vw,17px);font-weight:600}
+.akk-badge{background:var(--akk-l);color:var(--akk-t)}
+.dat-badge{background:var(--dat-l);color:var(--dat-t)}
+.gen-badge{background:var(--gen-l);color:var(--gen-t)}
+.wex-badge{background:var(--wex-l);color:var(--wex-t)}
+.f-ex{font-size:12px;color:var(--muted);text-align:center;line-height:1.5;margin-top:4px;max-width:260px}
+.f-tip{font-size:12px;color:var(--hint);font-style:italic;margin-top:2px}
+.btns{display:flex;gap:10px;margin-top:12px}
+.btn{flex:1;padding:13px;border-radius:var(--rs);border:1px solid var(--border-mid);background:var(--surface);color:var(--text);font-family:'DM Sans',sans-serif;font-size:14px;font-weight:500;cursor:pointer;transition:all .15s;-webkit-tap-highlight-color:transparent;box-shadow:var(--sh)}
+.btn:active{transform:scale(.97)}
+.btn.wrong{border-color:#D85A30;color:#993C1D;background:#FAECE7}
+.btn.correct{border-color:var(--dat);color:var(--dat-t);background:var(--dat-l)}
+.btn.flip{background:var(--text);color:var(--bg);border-color:var(--text)}
+.stats{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin-top:12px}
+.stat{background:var(--surface);border:1px solid var(--border);border-radius:var(--rs);padding:12px 8px;text-align:center;box-shadow:var(--sh)}
+.stat-n{font-family:'DM Serif Display',serif;font-size:24px;line-height:1}
+.stat-l{font-size:10px;font-weight:600;letter-spacing:.5px;text-transform:uppercase;color:var(--hint);margin-top:3px}
+.done{text-align:center;padding:40px 20px;display:flex;flex-direction:column;align-items:center;gap:12px}
+.done h2{font-family:'DM Serif Display',serif;font-size:28px}
+.done p{font-size:14px;color:var(--muted)}
+.restart{padding:13px 32px;border-radius:var(--rs);background:var(--text);color:var(--bg);font-family:'DM Sans',sans-serif;font-size:15px;font-weight:500;border:none;cursor:pointer;margin-top:8px}
+.footer{padding:20px 0 8px;font-size:11px;font-weight:600;letter-spacing:2px;text-transform:uppercase;color:var(--hint);text-align:center;width:100%}
+</style>
+</head>
+<body>
+<div class="hdr">
+  <div>
+    <div class="title">Präpositionen Lernkarten</div>
+    <div class="subtitle">Welcher Kasus gehört dazu?</div>
+  </div>
+  <span class="counter" id="counter">1 / 35</span>
+</div>
+<div class="prog-wrap">
+  <div class="prog-meta"><span id="prog-lbl">0%</span><span id="prog-done">0 fertig</span></div>
+  <div class="prog-bar"><div class="prog-fill" id="prog" style="width:0%"></div></div>
+</div>
+<div class="filters">
+  <div class="filter-row">
+    <button class="fb all active" onclick="setFilter('all',this)">Alle</button>
+    <button class="fb akk" onclick="setFilter('Akkusativ',this)">Akkusativ</button>
+    <button class="fb dat" onclick="setFilter('Dativ',this)">Dativ</button>
+    <button class="fb gen" onclick="setFilter('Genitiv',this)">Genitiv</button>
+    <button class="fb wex" onclick="setFilter('Wechsel',this)">Wechsel</button>
+  </div>
+</div>
+<div class="card-area" id="card-area">
+  <div class="card-wrap" onclick="flipCard()">
+    <div class="card" id="card">
+      <div class="face front">
+        <div class="f-label">Präposition</div>
+        <div class="f-prep" id="f-prep">durch</div>
+        <div class="f-hint">Welcher Kasus?</div>
+      </div>
+      <div class="face back">
+        <div class="f-label">Kasus</div>
+        <div class="f-prep" id="b-prep">durch</div>
+        <div class="case-badge" id="b-case">Akkusativ</div>
+        <div class="f-ex" id="b-ex">Er geht durch den Park.</div>
+        <div class="f-tip" id="b-tip">durch = through/by</div>
+      </div>
+    </div>
+  </div>
+  <div class="btns" id="btns" style="display:none">
+    <button class="btn wrong" onclick="answer(false)">✗ nochmal</button>
+    <button class="btn correct" onclick="answer(true)">✓ gewusst</button>
+  </div>
+  <div class="btns" id="flipbtn">
+    <button class="btn flip" onclick="flipCard()">umdrehen</button>
+  </div>
+  <div class="stats">
+    <div class="stat"><div class="stat-n" id="s-c" style="color:var(--dat)">0</div><div class="stat-l">Gewusst</div></div>
+    <div class="stat"><div class="stat-n" id="s-w" style="color:#D85A30">0</div><div class="stat-l">Nochmal</div></div>
+    <div class="stat"><div class="stat-n" id="s-l">35</div><div class="stat-l">Verbleibend</div></div>
+  </div>
+</div>
+<div class="footer">by Mostafa Toumi</div>
+<script>
+const PRAEP=[
+  {p:"durch",c:"Akkusativ",ex:"Er geht durch den Park.",tip:"durch = through/by"},
+  {p:"für",c:"Akkusativ",ex:"Das ist für dich.",tip:"für = for"},
+  {p:"gegen",c:"Akkusativ",ex:"Er ist gegen die Idee.",tip:"gegen = against"},
+  {p:"ohne",c:"Akkusativ",ex:"Ohne dich bin ich nichts.",tip:"ohne = without"},
+  {p:"um",c:"Akkusativ",ex:"Wir sitzen um den Tisch.",tip:"um = around/at"},
+  {p:"bis",c:"Akkusativ",ex:"Bis nächsten Montag.",tip:"bis = until/to"},
+  {p:"entlang",c:"Akkusativ",ex:"Den Fluss entlang gehen.",tip:"entlang = along"},
+  {p:"aus",c:"Dativ",ex:"Er kommt aus der Schweiz.",tip:"aus = from/out of"},
+  {p:"außer",c:"Dativ",ex:"Außer mir war niemand da.",tip:"außer = except"},
+  {p:"bei",c:"Dativ",ex:"Ich wohne bei meinen Eltern.",tip:"bei = at/near/with"},
+  {p:"mit",c:"Dativ",ex:"Ich fahre mit dem Bus.",tip:"mit = with"},
+  {p:"nach",c:"Dativ",ex:"Nach der Schule gehe ich heim.",tip:"nach = after/to (cities)"},
+  {p:"seit",c:"Dativ",ex:"Seit einem Jahr lerne ich Deutsch.",tip:"seit = since/for"},
+  {p:"von",c:"Dativ",ex:"Das Buch ist von meiner Mutter.",tip:"von = from/by/of"},
+  {p:"zu",c:"Dativ",ex:"Ich gehe zu meiner Oma.",tip:"zu = to (people/places)"},
+  {p:"gegenüber",c:"Dativ",ex:"Die Schule liegt gegenüber dem Bahnhof.",tip:"gegenüber = opposite"},
+  {p:"wegen",c:"Genitiv",ex:"Wegen des Regens blieben wir zuhause.",tip:"wegen = because of"},
+  {p:"trotz",c:"Genitiv",ex:"Trotz des Regens gingen wir raus.",tip:"trotz = despite"},
+  {p:"während",c:"Genitiv",ex:"Während des Unterrichts schlafen.",tip:"während = during"},
+  {p:"statt",c:"Genitiv",ex:"Statt des Autos nehme ich das Rad.",tip:"statt = instead of"},
+  {p:"innerhalb",c:"Genitiv",ex:"Innerhalb der Stadt.",tip:"innerhalb = inside/within"},
+  {p:"außerhalb",c:"Genitiv",ex:"Außerhalb der Stadt wohnen.",tip:"außerhalb = outside"},
+  {p:"oberhalb",c:"Genitiv",ex:"Oberhalb der Wolken.",tip:"oberhalb = above"},
+  {p:"unterhalb",c:"Genitiv",ex:"Unterhalb des Berges.",tip:"unterhalb = below"},
+  {p:"diesseits",c:"Genitiv",ex:"Diesseits der Grenze.",tip:"diesseits = on this side of"},
+  {p:"jenseits",c:"Genitiv",ex:"Jenseits des Flusses.",tip:"jenseits = beyond"},
+  {p:"an",c:"Wechsel",ex:"An die Wand (Akk) / An der Wand (Dat)",tip:"Wohin? Akk | Wo? Dat"},
+  {p:"auf",c:"Wechsel",ex:"Auf den Tisch (Akk) / Auf dem Tisch (Dat)",tip:"Wohin? Akk | Wo? Dat"},
+  {p:"hinter",c:"Wechsel",ex:"Hinter die Tür (Akk) / Hinter der Tür (Dat)",tip:"Wohin? Akk | Wo? Dat"},
+  {p:"in",c:"Wechsel",ex:"In die Schule (Akk) / In der Schule (Dat)",tip:"Wohin? Akk | Wo? Dat"},
+  {p:"neben",c:"Wechsel",ex:"Neben mich (Akk) / Neben mir (Dat)",tip:"Wohin? Akk | Wo? Dat"},
+  {p:"über",c:"Wechsel",ex:"Über die Stadt (Akk) / Über der Stadt (Dat)",tip:"Wohin? Akk | Wo? Dat"},
+  {p:"unter",c:"Wechsel",ex:"Unter den Tisch (Akk) / Unter dem Tisch (Dat)",tip:"Wohin? Akk | Wo? Dat"},
+  {p:"vor",c:"Wechsel",ex:"Vor das Haus (Akk) / Vor dem Haus (Dat)",tip:"Wohin? Akk | Wo? Dat"},
+  {p:"zwischen",c:"Wechsel",ex:"Zwischen die Stühle (Akk) / Zwischen den Stühlen (Dat)",tip:"Wohin? Akk | Wo? Dat"},
+];
+
+const BADGE={Akkusativ:"case-badge akk-badge",Dativ:"case-badge dat-badge",Genitiv:"case-badge gen-badge",Wechsel:"case-badge wex-badge"};
+let deck=[],idx=0,correct=0,wrong=0,flipped=false,filter='all';
+
+function setFilter(f,btn){
+  filter=f;
+  document.querySelectorAll('.fb').forEach(b=>b.classList.remove('active'));
+  btn.classList.add('active');
+  resetDeck();
+}
+
+function resetDeck(){
+  deck=PRAEP.filter(x=>filter==='all'||x.c===filter);
+  deck=deck.sort(()=>Math.random()-.5);
+  idx=0;correct=0;wrong=0;flipped=false;
+  document.getElementById('card').classList.remove('flipped');
+  document.getElementById('btns').style.display='none';
+  document.getElementById('flipbtn').style.display='';
+  updateStats();showCard();
+}
+
+function showCard(){
+  if(idx>=deck.length){showDone();return;}
+  const c=deck[idx];
+  document.getElementById('f-prep').textContent=c.p;
+  document.getElementById('b-prep').textContent=c.p;
+  document.getElementById('b-case').textContent=c.c==='Wechsel'?'Dativ / Akkusativ':c.c;
+  document.getElementById('b-case').className=BADGE[c.c];
+  document.getElementById('b-ex').textContent=c.ex;
+  document.getElementById('b-tip').textContent=c.tip;
+  const total=deck.length;
+  document.getElementById('counter').textContent=(idx+1)+' / '+total;
+  document.getElementById('prog-lbl').textContent=Math.round(idx/total*100)+'%';
+  document.getElementById('prog-done').textContent=idx+' fertig';
+  document.getElementById('prog').style.width=(idx/total*100)+'%';
+  flipped=false;
+  document.getElementById('card').classList.remove('flipped');
+  document.getElementById('btns').style.display='none';
+  document.getElementById('flipbtn').style.display='';
+}
+
+function flipCard(){
+  if(flipped)return;flipped=true;
+  document.getElementById('card').classList.add('flipped');
+  setTimeout(()=>{document.getElementById('btns').style.display='';document.getElementById('flipbtn').style.display='none';},250);
+}
+
+function answer(ok){
+  if(ok)correct++;else{wrong++;deck.push(deck[idx]);}
+  idx++;updateStats();showCard();
+}
+
+function updateStats(){
+  document.getElementById('s-c').textContent=correct;
+  document.getElementById('s-w').textContent=wrong;
+  document.getElementById('s-l').textContent=Math.max(0,deck.length-idx);
+}
+
+function showDone(){
+  const pct=Math.round(correct/(correct+wrong)*100)||0;
+  document.getElementById('card-area').innerHTML=`<div class="done"><div style="font-size:48px">${pct>=80?'🎉':pct>=50?'💪':'📚'}</div><h2>Geschafft!</h2><p>${correct} gewusst · ${wrong} nochmal · ${pct}%</p><button class="restart" onclick="location.reload()">Nochmal ↺</button></div>`;
+}
+
+resetDeck();
+</script>
+</body>
+</html>
