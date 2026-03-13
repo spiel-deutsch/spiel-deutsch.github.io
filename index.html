@@ -8,231 +8,214 @@
 <link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=DM+Sans:wght@400;500;600&display=swap" rel="stylesheet">
 <style>
   *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
-
   :root {
-    --bg: #F7F4EF;
-    --surface: #FFFFFF;
-    --text: #1C1917;
-    --text-muted: #78716C;
-    --text-hint: #A8A29E;
-    --green: #1D9E75;
-    --green-light: #E1F5EE;
-    --green-text: #0F6E56;
-    --border: rgba(28,25,23,0.1);
-    --border-mid: rgba(28,25,23,0.15);
-    --radius: 16px;
-    --radius-sm: 12px;
-    --shadow: 0 2px 16px rgba(28,25,23,0.08);
-    --shadow-card: 0 8px 40px rgba(28,25,23,0.10);
+    --bg:#F7F4EF; --surface:#fff; --text:#1C1917; --muted:#78716C; --hint:#A8A29E;
+    --green:#1D9E75; --green-l:#E1F5EE; --green-t:#0F6E56;
+    --akk:#185FA5; --akk-l:#E6F1FB; --akk-t:#0C447C; --akk-b:#B5D4F4;
+    --gen:#7C3AED; --gen-l:#EDE9FE; --gen-t:#5B21B6; --gen-b:#C4B5FD;
+    --amber:#B45309; --amber-l:#FEF3C7; --amber-b:#F59E0B;
+    --border:rgba(28,25,23,0.10); --bm:rgba(28,25,23,0.15);
+    --r:16px; --rs:12px; --sh:0 2px 16px rgba(28,25,23,0.08); --shc:0 8px 40px rgba(28,25,23,0.10);
   }
+  html,body { min-height:100%; background:var(--bg); font-family:'DM Sans',sans-serif; color:var(--text); -webkit-font-smoothing:antialiased; }
+  body { display:flex; flex-direction:column; align-items:center; }
 
-  html, body {
-    min-height: 100%;
-    background: var(--bg);
-    font-family: 'DM Sans', sans-serif;
-    color: var(--text);
-    -webkit-font-smoothing: antialiased;
+  .hero { width:100%; max-width:640px; padding:clamp(40px,10vw,80px) 24px 0; text-align:center; }
+  .hero-tag { display:inline-block; font-size:11px; font-weight:600; letter-spacing:2px; text-transform:uppercase; color:var(--green-t); background:var(--green-l); border:1px solid var(--green); border-radius:20px; padding:4px 14px; margin-bottom:20px; }
+  .hero-title { font-family:'DM Serif Display',serif; font-size:clamp(36px,9vw,60px); line-height:1.1; letter-spacing:-1px; }
+  .hero-title em { font-style:italic; color:var(--green); }
+  .hero-sub { font-size:clamp(15px,3.5vw,17px); color:var(--muted); margin:16px auto 0; line-height:1.6; max-width:400px; }
+  .dots { display:flex; justify-content:center; gap:6px; margin-top:28px; }
+  .dot { width:6px; height:6px; border-radius:50%; background:var(--bm); }
+  .dot.active { background:var(--green); }
+
+  /* Stats */
+  .stats-strip { width:100%; max-width:640px; padding:clamp(28px,7vw,48px) 24px 0; display:grid; grid-template-columns:repeat(4,1fr); gap:10px; }
+  .stat-box { background:var(--surface); border:1px solid var(--border); border-radius:var(--rs); padding:14px 10px; text-align:center; box-shadow:var(--sh); }
+  .stat-box-n { font-family:'DM Serif Display',serif; font-size:28px; color:var(--text); line-height:1; }
+  .stat-box-l { font-size:10px; font-weight:600; letter-spacing:.5px; text-transform:uppercase; color:var(--hint); margin-top:4px; }
+
+  /* Section label */
+  .section-label { width:100%; max-width:640px; padding:clamp(28px,7vw,48px) 24px 0; display:flex; align-items:center; gap:12px; }
+  .section-label-text { font-size:11px; font-weight:600; letter-spacing:1.5px; text-transform:uppercase; color:var(--hint); white-space:nowrap; }
+  .section-label-line { flex:1; height:1px; background:var(--border); }
+
+  /* Reference card (full width) */
+  .ref-card { width:100%; max-width:640px; padding:10px 24px 0; }
+  .ref-link { display:flex; align-items:center; justify-content:space-between; background:var(--surface); border:1px solid var(--border); border-radius:var(--r); box-shadow:var(--shc); padding:20px 24px; text-decoration:none; color:inherit; transition:transform .2s, box-shadow .2s; position:relative; overflow:hidden; -webkit-tap-highlight-color:transparent; }
+  .ref-link::before { content:''; position:absolute; top:0; left:0; right:0; height:3px; transform:scaleX(0); transform-origin:left; transition:transform .25s cubic-bezier(.4,0,.2,1); }
+  .ref-link:hover { transform:translateY(-2px); box-shadow:0 16px 48px rgba(28,25,23,0.13); }
+  .ref-link:hover::before { transform:scaleX(1); }
+  .ref-link.gen-ref::before { background:var(--gen); }
+  .ref-link.green-ref::before { background:var(--green); }
+  .ref-left { display:flex; align-items:center; gap:16px; }
+  .ref-icon { font-size:28px; line-height:1; }
+  .ref-title { font-family:'DM Serif Display',serif; font-size:18px; line-height:1.2; }
+  .ref-desc { font-size:13px; color:var(--muted); margin-top:3px; line-height:1.4; }
+  .ref-tag { font-size:10px; font-weight:600; letter-spacing:.8px; text-transform:uppercase; padding:3px 9px; border-radius:20px; white-space:nowrap; }
+  .ref-tag.gen { background:var(--gen-l); color:var(--gen-t); border:1px solid var(--gen-b); }
+  .ref-tag.green { background:var(--green-l); color:var(--green-t); border:1px solid var(--green); }
+
+  /* Games grid */
+  .cards-grid { width:100%; max-width:640px; padding:12px 24px 0; display:grid; grid-template-columns:repeat(auto-fit,minmax(240px,1fr)); gap:12px; }
+
+  .game-card { background:var(--surface); border:1px solid var(--border); border-radius:var(--r); box-shadow:var(--shc); padding:22px; text-decoration:none; color:inherit; display:flex; flex-direction:column; gap:9px; transition:transform .2s, box-shadow .2s; -webkit-tap-highlight-color:transparent; position:relative; overflow:hidden; }
+  .game-card::before { content:''; position:absolute; top:0; left:0; right:0; height:3px; transform:scaleX(0); transform-origin:left; transition:transform .25s cubic-bezier(.4,0,.2,1); }
+  .game-card:hover { transform:translateY(-3px); box-shadow:0 16px 48px rgba(28,25,23,0.13); }
+  .game-card:hover::before { transform:scaleX(1); }
+  .game-card:active { transform:translateY(-1px); }
+
+  .game-card.green-card::before { background:var(--green); }
+  .game-card.akk-card::before { background:var(--akk); }
+  .game-card.gen-card::before { background:var(--gen); }
+  .game-card.amber-card::before { background:var(--amber); }
+
+  .card-icon { font-size:26px; line-height:1; }
+  .card-badge { position:absolute; top:14px; right:14px; font-size:10px; font-weight:600; letter-spacing:.8px; text-transform:uppercase; padding:3px 9px; border-radius:20px; }
+  .badge-popular { background:var(--green-l); color:var(--green-t); border:1px solid var(--green); }
+  .badge-new     { background:var(--amber-l); color:var(--amber); border:1px solid var(--amber-b); }
+  .badge-hot     { background:#FEE2E2; color:#991B1B; border:1px solid #F87171; }
+  .badge-gen     { background:var(--gen-l); color:var(--gen-t); border:1px solid var(--gen-b); }
+  .badge-akk     { background:var(--akk-l); color:var(--akk-t); border:1px solid var(--akk-b); }
+
+  .card-title { font-family:'DM Serif Display',serif; font-size:19px; color:var(--text); line-height:1.2; }
+  .card-desc  { font-size:13px; color:var(--muted); line-height:1.5; }
+  .card-meta  { display:flex; align-items:center; gap:7px; margin-top:3px; flex-wrap:wrap; }
+  .meta-pill  { font-size:11px; font-weight:600; color:var(--hint); background:var(--bg); border:1px solid var(--border); border-radius:20px; padding:3px 10px; }
+  .card-cta   { display:flex; align-items:center; gap:5px; font-size:13px; font-weight:600; margin-top:5px; }
+  .card-cta-arrow { transition:transform .2s; }
+  .game-card:hover .card-cta-arrow { transform:translateX(4px); }
+  .green-card .card-cta { color:var(--green-t); }
+  .akk-card   .card-cta { color:var(--akk-t); }
+  .gen-card   .card-cta { color:var(--gen-t); }
+  .amber-card .card-cta { color:var(--amber); }
+
+  /* Footer */
+  .footer { width:100%; max-width:640px; padding:clamp(40px,8vw,64px) 24px 32px; display:flex; flex-direction:column; align-items:center; gap:8px; text-align:center; border-top:1px solid var(--border); margin-top:clamp(40px,8vw,64px); }
+  .footer-brand  { font-family:'DM Serif Display',serif; font-size:18px; }
+  .footer-sub    { font-size:12px; color:var(--hint); }
+  .footer-credit { font-size:11px; font-weight:600; letter-spacing:2px; text-transform:uppercase; color:var(--hint); margin-top:4px; }
+
+  @media(max-width:420px) {
+    .cards-grid { grid-template-columns:1fr; }
+    .stats-strip { grid-template-columns:repeat(2,1fr); }
   }
-
-  body { display: flex; flex-direction: column; align-items: center; }
-
-  .hero {
-    width: 100%; max-width: 620px;
-    padding: clamp(40px, 10vw, 80px) 24px 0;
-    text-align: center;
-  }
-
-  .hero-tag {
-    display: inline-block;
-    font-size: 11px; font-weight: 600; letter-spacing: 2px; text-transform: uppercase;
-    color: var(--green-text); background: var(--green-light);
-    border: 1px solid var(--green); border-radius: 20px;
-    padding: 4px 14px; margin-bottom: 20px;
-  }
-
-  .hero-title {
-    font-family: 'DM Serif Display', serif;
-    font-size: clamp(36px, 9vw, 60px);
-    line-height: 1.1; letter-spacing: -1px; color: var(--text);
-  }
-
-  .hero-title em { font-style: italic; color: var(--green); }
-
-  .hero-sub {
-    font-size: clamp(15px, 3.5vw, 17px); color: var(--text-muted);
-    margin: 16px auto 0; line-height: 1.6; max-width: 400px;
-  }
-
-  .dots { display: flex; justify-content: center; gap: 6px; margin-top: 28px; }
-  .dot { width: 6px; height: 6px; border-radius: 50%; background: var(--border-mid); }
-  .dot.active { background: var(--green); }
-
-  .stats-strip {
-    width: 100%; max-width: 620px;
-    padding: clamp(32px, 7vw, 56px) 24px 0;
-    display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px;
-  }
-
-  .stat-box {
-    background: var(--surface); border: 1px solid var(--border);
-    border-radius: var(--radius-sm); padding: 16px 12px;
-    text-align: center; box-shadow: var(--shadow);
-  }
-
-  .stat-box-n { font-family: 'DM Serif Display', serif; font-size: 30px; color: var(--text); line-height: 1; }
-  .stat-box-l { font-size: 11px; font-weight: 600; letter-spacing: 0.5px; text-transform: uppercase; color: var(--text-hint); margin-top: 5px; }
-
-  .section-label {
-    width: 100%; max-width: 620px;
-    padding: clamp(32px, 7vw, 56px) 24px 0;
-    display: flex; align-items: center; gap: 12px;
-  }
-
-  .section-label-text { font-size: 11px; font-weight: 600; letter-spacing: 1.5px; text-transform: uppercase; color: var(--text-hint); white-space: nowrap; }
-  .section-label-line { flex: 1; height: 1px; background: var(--border); }
-
-  .cards-grid {
-    width: 100%; max-width: 620px;
-    padding: 16px 24px 0;
-    display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 14px;
-  }
-
-  .game-card {
-    background: var(--surface); border: 1px solid var(--border);
-    border-radius: var(--radius); box-shadow: var(--shadow-card);
-    padding: 24px; text-decoration: none; color: inherit;
-    display: flex; flex-direction: column; gap: 10px;
-    transition: transform 0.2s, box-shadow 0.2s;
-    -webkit-tap-highlight-color: transparent;
-    position: relative; overflow: hidden;
-  }
-
-  .game-card::before {
-    content: ''; position: absolute; top: 0; left: 0; right: 0; height: 3px;
-    background: var(--green); transform: scaleX(0); transform-origin: left;
-    transition: transform 0.25s cubic-bezier(.4,0,.2,1);
-  }
-
-  .game-card:hover { transform: translateY(-3px); box-shadow: 0 16px 48px rgba(28,25,23,0.13); }
-  .game-card:hover::before { transform: scaleX(1); }
-  .game-card:active { transform: translateY(-1px); }
-
-  .card-icon { font-size: 28px; line-height: 1; }
-
-  .card-badge {
-    position: absolute; top: 16px; right: 16px;
-    font-size: 10px; font-weight: 600; letter-spacing: 0.8px; text-transform: uppercase;
-    padding: 3px 9px; border-radius: 20px;
-  }
-
-  .badge-popular { background: var(--green-light); color: var(--green-text); border: 1px solid var(--green); }
-  .badge-new     { background: #FEF3C7; color: #B45309; border: 1px solid #F59E0B; }
-  .badge-hot     { background: #FEE2E2; color: #991B1B; border: 1px solid #F87171; }
-
-  .card-title { font-family: 'DM Serif Display', serif; font-size: 20px; color: var(--text); line-height: 1.2; }
-  .card-desc  { font-size: 13px; color: var(--text-muted); line-height: 1.5; }
-
-  .card-meta  { display: flex; align-items: center; gap: 8px; margin-top: 4px; flex-wrap: wrap; }
-
-  .meta-pill {
-    font-size: 11px; font-weight: 600; color: var(--text-hint);
-    background: var(--bg); border: 1px solid var(--border);
-    border-radius: 20px; padding: 3px 10px;
-  }
-
-  .card-cta { display: flex; align-items: center; gap: 6px; font-size: 13px; font-weight: 600; color: var(--green-text); margin-top: 6px; }
-  .card-cta-arrow { transition: transform 0.2s; }
-  .game-card:hover .card-cta-arrow { transform: translateX(4px); }
-
-  .footer {
-    width: 100%; max-width: 620px;
-    padding: clamp(40px, 8vw, 64px) 24px 32px;
-    display: flex; flex-direction: column; align-items: center; gap: 8px;
-    text-align: center; border-top: 1px solid var(--border);
-    margin-top: clamp(40px, 8vw, 64px);
-  }
-
-  .footer-brand  { font-family: 'DM Serif Display', serif; font-size: 18px; color: var(--text); }
-  .footer-sub    { font-size: 12px; color: var(--text-hint); }
-  .footer-credit { font-size: 11px; font-weight: 600; letter-spacing: 2px; text-transform: uppercase; color: var(--text-hint); margin-top: 4px; }
-
-  @media (max-width: 400px) { .cards-grid { grid-template-columns: 1fr; } }
 </style>
 </head>
 <body>
 
+<!-- Hero -->
 <div class="hero">
   <div class="hero-tag">Kostenlos &amp; Open Source</div>
   <h1 class="hero-title">Lern Deutsch<br><em>spielend.</em></h1>
   <p class="hero-sub">Interaktive Übungen und Spiele für Deutsch als Fremdsprache. Einfach, schnell, auf dem Handy.</p>
   <div class="dots">
-    <div class="dot active"></div>
-    <div class="dot"></div>
-    <div class="dot"></div>
+    <div class="dot active"></div><div class="dot"></div><div class="dot"></div>
   </div>
 </div>
 
+<!-- Stats -->
 <div class="stats-strip">
-  <div class="stat-box">
-    <div class="stat-box-n">48</div>
-    <div class="stat-box-l">Verben</div>
-  </div>
-  <div class="stat-box">
-    <div class="stat-box-n">3</div>
-    <div class="stat-box-l">Spiele</div>
-  </div>
-  <div class="stat-box">
-    <div class="stat-box-n">∞</div>
-    <div class="stat-box-l">Wiederholen</div>
-  </div>
+  <div class="stat-box"><div class="stat-box-n">48</div><div class="stat-box-l">Verben</div></div>
+  <div class="stat-box"><div class="stat-box-n">35</div><div class="stat-box-l">Präpositionen</div></div>
+  <div class="stat-box"><div class="stat-box-n">7</div><div class="stat-box-l">Spiele</div></div>
+  <div class="stat-box"><div class="stat-box-n">∞</div><div class="stat-box-l">Wiederholen</div></div>
 </div>
 
+<!-- ══ SECTION 1: Verben ══ -->
 <div class="section-label">
   <span class="section-label-text">Verben mit Präpositionen</span>
   <div class="section-label-line"></div>
 </div>
 
 <div class="cards-grid">
-
-  <a class="game-card" href="https://spiel-deutsch.github.io/verben_flashcards.html">
+  <a class="game-card green-card" href="https://spiel-deutsch.github.io/verben_flashcards.html">
     <span class="card-badge badge-popular">Beliebt</span>
     <div class="card-icon">🃏</div>
     <div class="card-title">Lernkarten</div>
     <div class="card-desc">Blättere durch alle 48 Verben. Filtere nach Präposition. Markiere was du schon kannst.</div>
-    <div class="card-meta">
-      <span class="meta-pill">48 Karten</span>
-      <span class="meta-pill">Selbsttest</span>
-    </div>
+    <div class="card-meta"><span class="meta-pill">48 Karten</span><span class="meta-pill">Selbsttest</span></div>
     <div class="card-cta">Jetzt lernen <span class="card-cta-arrow">→</span></div>
   </a>
 
-  <a class="game-card" href="https://spiel-deutsch.github.io/verben_quiz.html">
+  <a class="game-card green-card" href="https://spiel-deutsch.github.io/verben_quiz.html">
     <span class="card-badge badge-new">Neu</span>
     <div class="card-icon">🎯</div>
     <div class="card-title">Multiple Choice Quiz</div>
-    <div class="card-desc">Wähle die richtige Präposition aus 4 Antworten. Verfolge deinen Streak und teste dich.</div>
-    <div class="card-meta">
-      <span class="meta-pill">48 Fragen</span>
-      <span class="meta-pill">Streak</span>
-    </div>
+    <div class="card-desc">Wähle die richtige Präposition aus 4 Antworten. Verfolge deinen Streak.</div>
+    <div class="card-meta"><span class="meta-pill">48 Fragen</span><span class="meta-pill">Streak</span></div>
     <div class="card-cta">Quiz starten <span class="card-cta-arrow">→</span></div>
   </a>
 
-  <a class="game-card" href="https://spiel-deutsch.github.io/speed_round.html">
+  <a class="game-card green-card" href="https://spiel-deutsch.github.io/speed_round.html">
     <span class="card-badge badge-hot">🔥 Neu</span>
     <div class="card-icon">⏱️</div>
     <div class="card-title">Speed Round</div>
-    <div class="card-desc">Beantworte so viele Fragen wie möglich vor dem Timer. Wähle 30s bis 2 Minuten.</div>
-    <div class="card-meta">
-      <span class="meta-pill">Timer</span>
-      <span class="meta-pill">Streak Bonus</span>
-      <span class="meta-pill">Highscore</span>
+    <div class="card-desc">Beantworte so viele Fragen wie möglich vor dem Timer. 30s bis 2 Minuten.</div>
+    <div class="card-meta"><span class="meta-pill">Timer</span><span class="meta-pill">Streak Bonus</span><span class="meta-pill">Highscore</span></div>
+    <div class="card-cta">Starten <span class="card-cta-arrow">→</span></div>
+  </a>
+</div>
+
+<!-- ══ SECTION 2: Akkusativ/Dativ/Genitiv ══ -->
+<div class="section-label">
+  <span class="section-label-text">Präpositionen — Akkusativ · Dativ · Genitiv</span>
+  <div class="section-label-line"></div>
+</div>
+
+<!-- Reference page -->
+<div class="ref-card">
+  <a class="ref-link gen-ref" href="https://spiel-deutsch.github.io/praepositionen_uebersicht.html">
+    <div class="ref-left">
+      <div class="ref-icon">📖</div>
+      <div>
+        <div class="ref-title">Übersicht &amp; Regeln</div>
+        <div class="ref-desc">Alle Präpositionen nach Kasus — mit Regeln, Eselsbrücken und Beispielsätzen.</div>
+      </div>
     </div>
+    <span class="ref-tag gen">Lesen →</span>
+  </a>
+</div>
+
+<div class="cards-grid">
+  <a class="game-card gen-card" href="https://spiel-deutsch.github.io/praepositionen_karten.html">
+    <span class="card-badge badge-gen">Lernen</span>
+    <div class="card-icon">🃏</div>
+    <div class="card-title">Lernkarten</div>
+    <div class="card-desc">Welcher Kasus gehört zur Präposition? Filtere nach Akkusativ, Dativ, Genitiv oder Wechsel.</div>
+    <div class="card-meta"><span class="meta-pill">35 Karten</span><span class="meta-pill">4 Gruppen</span></div>
+    <div class="card-cta">Lernen <span class="card-cta-arrow">→</span></div>
+  </a>
+
+  <a class="game-card akk-card" href="https://spiel-deutsch.github.io/praepositionen_quiz.html">
+    <span class="card-badge badge-akk">Quiz</span>
+    <div class="card-icon">🎯</div>
+    <div class="card-title">Kasus Quiz</div>
+    <div class="card-desc">Akkusativ, Dativ oder Genitiv? Wähle den richtigen Kasus für jede Präposition.</div>
+    <div class="card-meta"><span class="meta-pill">35 Fragen</span><span class="meta-pill">Streak</span></div>
+    <div class="card-cta">Quiz starten <span class="card-cta-arrow">→</span></div>
+  </a>
+
+  <a class="game-card amber-card" href="https://spiel-deutsch.github.io/praepositionen_speed.html">
+    <span class="card-badge badge-hot">🔥 Neu</span>
+    <div class="card-icon">⏱️</div>
+    <div class="card-title">Speed Round</div>
+    <div class="card-desc">Erkenne so schnell wie möglich den richtigen Kasus. Timer läuft!</div>
+    <div class="card-meta"><span class="meta-pill">Timer</span><span class="meta-pill">Highscore</span></div>
     <div class="card-cta">Starten <span class="card-cta-arrow">→</span></div>
   </a>
 
+  <a class="game-card gen-card" href="https://spiel-deutsch.github.io/praepositionen_match.html">
+    <span class="card-badge badge-new">Neu</span>
+    <div class="card-icon">🧩</div>
+    <div class="card-title">Match &amp; Zuordnen</div>
+    <div class="card-desc">Ziehe jede Präposition in den richtigen Kasus. 5 Runden mit je 7 Begriffen.</div>
+    <div class="card-meta"><span class="meta-pill">Drag &amp; Drop</span><span class="meta-pill">5 Runden</span></div>
+    <div class="card-cta">Spielen <span class="card-cta-arrow">→</span></div>
+  </a>
 </div>
 
+<!-- Footer -->
 <div class="footer">
   <div class="footer-brand">Spiel Deutsch</div>
   <div class="footer-sub">Deutsch lernen — kostenlos, offen, spielerisch</div>
