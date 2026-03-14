@@ -1,0 +1,259 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<title>Präteritum Speed Round — Spiel Deutsch</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=DM+Sans:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --bg:#F7F4EF;--surface:#fff;--text:#1C1917;--muted:#78716C;--hint:#A8A29E;
+  --sw:#1D9E75;--sw-l:#E1F5EE;--sw-t:#0F6E56;
+  --st:#185FA5;--st-l:#E6F1FB;--st-t:#0C447C;
+  --tr:#B45309;--tr-l:#FEF3C7;--tr-t:#92400E;
+  --red:#D85A30;--red-l:#FAECE7;--red-t:#993C1D;
+  --border:rgba(28,25,23,0.1);--bm:rgba(28,25,23,0.15);
+  --r:16px;--rs:12px;--sh:0 2px 12px rgba(28,25,23,0.07);--shc:0 8px 32px rgba(28,25,23,0.12)
+}
+html,body{min-height:100%;background:var(--bg);font-family:'DM Sans',sans-serif;color:var(--text);-webkit-font-smoothing:antialiased}
+body{display:flex;flex-direction:column;align-items:center}
+.screen{display:none;width:100%;flex-direction:column;align-items:center}
+.screen.active{display:flex}
+#s-start{min-height:100dvh;justify-content:center;padding:32px 24px;text-align:center;gap:0}
+.si{font-size:56px;margin-bottom:16px;animation:pulse 2s ease-in-out infinite}
+@keyframes pulse{0%,100%{transform:scale(1)}50%{transform:scale(1.08)}}
+.s-title{font-family:'DM Serif Display',serif;font-size:clamp(28px,8vw,42px);letter-spacing:-.5px;line-height:1.1}
+.s-sub{font-size:14px;color:var(--muted);margin-top:10px;line-height:1.6;max-width:300px}
+.time-row{display:flex;gap:10px;margin-top:24px;justify-content:center;flex-wrap:wrap}
+.tb{padding:9px 18px;border-radius:20px;border:1.5px solid var(--bm);background:var(--surface);font-family:'DM Sans',sans-serif;font-size:14px;font-weight:600;color:var(--muted);cursor:pointer;transition:all .15s;box-shadow:var(--sh);-webkit-tap-highlight-color:transparent}
+.tb.sel{background:var(--text);color:var(--bg);border-color:var(--text)}
+.go-btn{margin-top:24px;padding:15px 44px;border-radius:var(--rs);background:var(--st);color:#fff;font-family:'DM Sans',sans-serif;font-size:16px;font-weight:600;border:none;cursor:pointer;box-shadow:0 4px 20px rgba(24,95,165,.3);-webkit-tap-highlight-color:transparent;transition:transform .15s}
+.go-btn:active{transform:scale(.97)}
+.rules{margin-top:20px;display:flex;flex-direction:column;gap:8px;max-width:300px;text-align:left}
+.rule{display:flex;align-items:center;gap:10px;font-size:13px;color:var(--muted)}
+.rd{width:6px;height:6px;border-radius:50%;background:var(--st);flex-shrink:0}
+#s-cd{min-height:100dvh;justify-content:center;align-items:center}
+.cd-n{font-family:'DM Serif Display',serif;font-size:120px;color:var(--text);animation:cpop .6s cubic-bezier(.34,1.56,.64,1);line-height:1}
+@keyframes cpop{0%{transform:scale(.5);opacity:0}100%{transform:scale(1);opacity:1}}
+#s-game{padding-bottom:24px}
+.twrap{width:100%;max-width:540px;padding:16px 20px 0}
+.ttop{display:flex;justify-content:space-between;align-items:center;margin-bottom:8px}
+.tnum{font-family:'DM Serif Display',serif;font-size:30px;line-height:1;transition:color .3s}
+.tnum.urg{color:var(--red)}
+.sc-row{display:flex;gap:16px}
+.tsc{display:flex;flex-direction:column;align-items:center}
+.tsc-n{font-family:'DM Serif Display',serif;font-size:22px;line-height:1}
+.tsc-l{font-size:10px;font-weight:600;text-transform:uppercase;letter-spacing:.5px;color:var(--hint)}
+.t-track{height:6px;background:var(--border);border-radius:6px;overflow:hidden}
+.t-fill{height:100%;border-radius:6px;background:var(--st);transition:width .25s linear,background .3s}
+.t-fill.urg{background:var(--red)}
+.srow{width:100%;max-width:540px;padding:8px 20px 0;min-height:30px;display:flex;align-items:center}
+.sbadge{display:inline-flex;align-items:center;gap:4px;font-size:12px;font-weight:600;color:var(--tr-t);background:var(--tr-l);border:1px solid var(--tr);border-radius:20px;padding:3px 11px;opacity:0;transition:opacity .3s}
+.sbadge.show{opacity:1}
+.gqwrap{width:100%;max-width:540px;padding:10px 20px 0}
+.gq{background:var(--surface);border:1px solid var(--border);border-radius:var(--r);box-shadow:var(--shc);padding:clamp(18px,5vw,26px) 24px;text-align:center;display:flex;flex-direction:column;align-items:center;gap:6px;min-height:120px;justify-content:center;position:relative;overflow:hidden}
+.gq::after{content:'';position:absolute;inset:0;border-radius:var(--r);opacity:0;pointer-events:none}
+.gq.fok::after{background:var(--sw-l);animation:fl .3s ease forwards}
+.gq.fno::after{background:var(--red-l);animation:fl .3s ease forwards}
+@keyframes fl{0%{opacity:.7}100%{opacity:0}}
+.gl{font-size:10px;font-weight:600;letter-spacing:1.2px;text-transform:uppercase;color:var(--hint)}
+.gp{font-family:'DM Serif Display',serif;font-size:clamp(28px,8vw,40px);color:var(--text);line-height:1.15}
+.gar{font-size:13px;color:var(--muted);direction:rtl}
+.gopts{width:100%;max-width:540px;padding:12px 20px 0;display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.gopt{background:var(--surface);border:1.5px solid var(--bm);border-radius:var(--rs);padding:clamp(12px,3.5vw,16px) 10px;font-family:'DM Sans',sans-serif;font-size:clamp(12px,3vw,14px);font-weight:600;color:var(--text);cursor:pointer;text-align:center;transition:all .12s;box-shadow:var(--sh);-webkit-tap-highlight-color:transparent}
+.gopt:active:not([disabled]){transform:scale(.96)}
+.gopt.ok{background:var(--sw-l);border-color:var(--sw);color:var(--sw-t)}
+.gopt.no{background:var(--red-l);border-color:var(--red);color:var(--red-t)}
+.gopt.dim{opacity:.3}
+.gopt[disabled]{cursor:default}
+#s-res{min-height:100dvh;padding:40px 24px;justify-content:center;align-items:center;text-align:center;gap:0}
+.rem{font-size:52px;margin-bottom:12px}
+.rtitle{font-family:'DM Serif Display',serif;font-size:clamp(24px,7vw,36px)}
+.rbig{font-family:'DM Serif Display',serif;font-size:clamp(58px,16vw,86px);color:var(--text);line-height:1;margin-top:8px}
+.rlbl{font-size:13px;color:var(--muted);font-weight:500;margin-top:-4px}
+.rgrid{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;width:100%;max-width:400px;margin-top:20px}
+.rg{background:var(--surface);border:1px solid var(--border);border-radius:var(--rs);padding:14px 8px;box-shadow:var(--sh)}
+.rg-n{font-family:'DM Serif Display',serif;font-size:26px;line-height:1}
+.rg-l{font-size:10px;font-weight:600;text-transform:uppercase;letter-spacing:.5px;color:var(--hint);margin-top:4px}
+.awrap{width:100%;max-width:400px;margin-top:16px;background:var(--surface);border:1px solid var(--border);border-radius:var(--rs);padding:14px;box-shadow:var(--sh)}
+.albl{display:flex;justify-content:space-between;font-size:12px;font-weight:600;color:var(--muted);margin-bottom:8px}
+.atrack{height:7px;background:var(--border);border-radius:7px;overflow:hidden}
+.afill{height:100%;border-radius:7px;background:var(--st);transition:width 1s cubic-bezier(.4,0,.2,1)}
+.hsbadge{display:inline-flex;align-items:center;gap:6px;font-size:13px;font-weight:600;color:var(--tr-t);background:var(--tr-l);border:1px solid var(--tr);border-radius:20px;padding:6px 16px;margin-top:14px}
+.hsbadge.hidden{display:none}
+.rbtns{display:flex;gap:10px;margin-top:18px;width:100%;max-width:400px}
+.rb{flex:1;padding:13px;border-radius:var(--rs);font-family:'DM Sans',sans-serif;font-size:14px;font-weight:600;cursor:pointer;border:1.5px solid var(--bm);background:var(--surface);color:var(--text);box-shadow:var(--sh);-webkit-tap-highlight-color:transparent;transition:all .15s}
+.rb:active{transform:scale(.97)}
+.rb.pri{background:var(--text);color:var(--bg);border-color:var(--text)}
+.footer{padding:20px 0 8px;font-size:11px;font-weight:600;letter-spacing:2px;text-transform:uppercase;color:var(--hint);text-align:center;width:100%}
+</style>
+</head>
+<body>
+<div id="s-start" class="screen active">
+  <div class="si">⏱️</div>
+  <div class="s-title">Präteritum<br>Speed Round</div>
+  <p class="s-sub">Erkenne das Präteritum so schnell wie möglich!</p>
+  <div class="time-row">
+    <button class="tb" onclick="selTime(30,this)">30 sek</button>
+    <button class="tb sel" onclick="selTime(60,this)">60 sek</button>
+    <button class="tb" onclick="selTime(90,this)">90 sek</button>
+    <button class="tb" onclick="selTime(120,this)">2 min</button>
+  </div>
+  <button class="go-btn" onclick="startCD()">Los geht's →</button>
+  <div class="rules">
+    <div class="rule"><div class="rd"></div><span>Richtig = +1 Punkt, Falsch = −1 Punkt</span></div>
+    <div class="rule"><div class="rd"></div><span>3er Streak = +1 Bonuspunkt 🔥</span></div>
+    <div class="rule"><div class="rd"></div><span>41 Verben: schwach, stark & trennbar</span></div>
+  </div>
+  <div class="footer">by Mostafa Toumi</div>
+</div>
+<div id="s-cd" class="screen"><div class="cd-n" id="cd-n">3</div></div>
+<div id="s-game" class="screen">
+  <div class="twrap">
+    <div class="ttop">
+      <div class="tnum" id="tnum">60</div>
+      <div class="sc-row">
+        <div class="tsc"><div class="tsc-n" id="g-c" style="color:var(--sw)">0</div><div class="tsc-l">Richtig</div></div>
+        <div class="tsc"><div class="tsc-n" id="g-w" style="color:var(--red)">0</div><div class="tsc-l">Falsch</div></div>
+        <div class="tsc"><div class="tsc-n" id="g-s">0</div><div class="tsc-l">Punkte</div></div>
+      </div>
+    </div>
+    <div class="t-track"><div class="t-fill" id="tfill" style="width:100%"></div></div>
+  </div>
+  <div class="srow"><div class="sbadge" id="sbadge">🔥 <span id="snum">3</span>er Streak!</div></div>
+  <div class="gqwrap">
+    <div class="gq" id="gq">
+      <div class="gl">Infinitiv</div>
+      <div class="gp" id="gp">machen</div>
+      <div class="gar" id="gar">يفعل / يصنع</div>
+    </div>
+  </div>
+  <div class="gopts" id="gopts"></div>
+</div>
+<div id="s-res" class="screen">
+  <div class="rem" id="rem">🏆</div>
+  <div class="rtitle">Zeit abgelaufen!</div>
+  <div class="rbig" id="rsc">0</div>
+  <div class="rlbl">Punkte</div>
+  <div class="rgrid">
+    <div class="rg"><div class="rg-n" id="r-c" style="color:var(--sw)">0</div><div class="rg-l">Richtig</div></div>
+    <div class="rg"><div class="rg-n" id="r-w" style="color:var(--red)">0</div><div class="rg-l">Falsch</div></div>
+    <div class="rg"><div class="rg-n" id="r-bs" style="color:var(--tr-t)">0</div><div class="rg-l">Best Streak</div></div>
+  </div>
+  <div class="awrap">
+    <div class="albl"><span>Genauigkeit</span><span id="rpct">0%</span></div>
+    <div class="atrack"><div class="afill" id="raf" style="width:0%"></div></div>
+  </div>
+  <div class="hsbadge hidden" id="hsbadge">🏆 Neuer Highscore!</div>
+  <div class="rbtns">
+    <button class="rb" onclick="goStart()">← Menü</button>
+    <button class="rb pri" onclick="startCD()">Nochmal ↺</button>
+  </div>
+</div>
+<script>
+const ALL=[
+  {inf:"machen",prt:"machte",ar:"يفعل / يصنع"},{inf:"wohnen",prt:"wohnte",ar:"يسكن"},
+  {inf:"lernen",prt:"lernte",ar:"يتعلم"},{inf:"kochen",prt:"kochte",ar:"يطبخ"},
+  {inf:"buchen",prt:"buchte",ar:"يحجز"},{inf:"kaufen",prt:"kaufte",ar:"يشتري"},
+  {inf:"leben",prt:"lebte",ar:"يعيش"},{inf:"spielen",prt:"spielte",ar:"يلعب"},
+  {inf:"hören",prt:"hörte",ar:"يسمع"},{inf:"suchen",prt:"suchte",ar:"يبحث"},
+  {inf:"arbeiten",prt:"arbeitete",ar:"يعمل"},{inf:"warten",prt:"wartete",ar:"ينتظر"},
+  {inf:"kosten",prt:"kostete",ar:"يكلف / ثمنه"},{inf:"antworten",prt:"antwortete",ar:"يجيب"},
+  {inf:"studieren",prt:"studierte",ar:"يدرس في الجامعة"},{inf:"interessieren",prt:"interessierte",ar:"يهتم"},
+  {inf:"diskutieren",prt:"diskutierte",ar:"يناقش"},{inf:"telefonieren",prt:"telefonierte",ar:"يتصل هاتفياً"},
+  {inf:"trinken",prt:"trank",ar:"يشرب"},{inf:"finden",prt:"fand",ar:"يجد"},
+  {inf:"singen",prt:"sang",ar:"يغني"},{inf:"schreiben",prt:"schrieb",ar:"يكتب"},
+  {inf:"bleiben",prt:"blieb",ar:"يبقى"},{inf:"leihen",prt:"lieh",ar:"يعير / يقرض"},
+  {inf:"geben",prt:"gab",ar:"يعطي"},{inf:"essen",prt:"aß",ar:"يأكل"},
+  {inf:"nehmen",prt:"nahm",ar:"يأخذ"},{inf:"sprechen",prt:"sprach",ar:"يتكلم"},
+  {inf:"lesen",prt:"las",ar:"يقرأ"},{inf:"verlieren",prt:"verlor",ar:"يخسر / يضيع"},
+  {inf:"fliegen",prt:"flog",ar:"يطير / يسافر"},{inf:"kommen",prt:"kam",ar:"يأتي"},
+  {inf:"laufen",prt:"lief",ar:"يجري / يمشي بسرعة"},{inf:"schlafen",prt:"schlief",ar:"ينام"},
+  {inf:"gehen",prt:"ging",ar:"يذهب"},
+  {inf:"anrufen",prt:"rief an",ar:"يتصل"},{inf:"einladen",prt:"lud ein",ar:"يدعو"},
+  {inf:"aufstehen",prt:"stand auf",ar:"يستيقظ / ينهض"},{inf:"einsteigen",prt:"stieg ein",ar:"يصعد"},
+  {inf:"aussteigen",prt:"stieg aus",ar:"ينزل"},{inf:"umziehen",prt:"zog um",ar:"ينتقل للسكن"},
+];
+const ALL_PRTS=ALL.map(x=>x.prt);
+function shuffle(a){return[...a].sort(()=>Math.random()-.5)}
+function getWrong(c,n){return shuffle(ALL_PRTS.filter(p=>p!==c)).slice(0,n)}
+let selT=60,tLeft,tIv,correct,wrong,score,streak,bestStreak,answered,pool,pi,hs=0;
+function sh(a){document.querySelectorAll('.screen').forEach(s=>s.classList.remove('active'));document.getElementById(a).classList.add('active')}
+function selTime(t,btn){selT=t;document.querySelectorAll('.tb').forEach(b=>b.classList.remove('sel'));btn.classList.add('sel')}
+function goStart(){sh('s-start')}
+function startCD(){
+  sh('s-cd');let n=3;const el=document.getElementById('cd-n');el.textContent=n;
+  const iv=setInterval(()=>{n--;
+    if(n<=0){clearInterval(iv);el.textContent='Los!';setTimeout(startGame,600);}
+    else{el.style.animation='none';el.offsetHeight;el.style.animation='cpop .6s cubic-bezier(.34,1.56,.64,1)';el.textContent=n;}
+  },800);
+}
+function startGame(){
+  correct=0;wrong=0;score=0;streak=0;bestStreak=0;answered=false;
+  tLeft=selT;pool=shuffle(ALL);pi=0;
+  document.getElementById('g-c').textContent=0;document.getElementById('g-w').textContent=0;document.getElementById('g-s').textContent=0;
+  document.getElementById('sbadge').classList.remove('show');
+  sh('s-game');showGQ();tIv=setInterval(tick,100);
+}
+function tick(){
+  tLeft-=.1;const pct=Math.max(0,tLeft/selT*100);
+  document.getElementById('tnum').textContent=Math.ceil(tLeft);
+  document.getElementById('tfill').style.width=pct+'%';
+  const urg=tLeft<=10;
+  document.getElementById('tnum').classList.toggle('urg',urg);
+  document.getElementById('tfill').classList.toggle('urg',urg);
+  if(tLeft<=0){clearInterval(tIv);endGame();}
+}
+function showGQ(){
+  if(pi>=pool.length){pool=shuffle(ALL);pi=0;}
+  const q=pool[pi];answered=false;
+  document.getElementById('gp').textContent=q.inf;
+  document.getElementById('gar').textContent=q.ar;
+  const go=document.getElementById('gopts');go.innerHTML='';
+  shuffle([q.prt,...getWrong(q.prt,3)]).forEach(ch=>{
+    const b=document.createElement('button');b.className='gopt';b.textContent=ch;
+    b.onclick=()=>handleGA(b,ch,q.prt);go.appendChild(b);
+  });
+}
+function handleGA(btn,chosen,cp){
+  if(answered)return;answered=true;
+  const ok=chosen===cp;
+  document.querySelectorAll('.gopt').forEach(b=>{
+    b.disabled=true;
+    if(b.textContent===cp)b.classList.add('ok');
+    else if(b===btn&&!ok)b.classList.add('no');
+    else b.classList.add('dim');
+  });
+  const gq=document.getElementById('gq');
+  if(ok){
+    correct++;streak++;if(streak>bestStreak)bestStreak=streak;
+    score+=1+(streak>=3?1:0);
+    gq.classList.add('fok');setTimeout(()=>gq.classList.remove('fok'),300);
+    if(streak>=3){document.getElementById('snum').textContent=streak;document.getElementById('sbadge').classList.add('show');}
+  } else {
+    wrong++;streak=0;score=Math.max(0,score-1);
+    gq.classList.add('fno');setTimeout(()=>gq.classList.remove('fno'),300);
+    document.getElementById('sbadge').classList.remove('show');
+  }
+  document.getElementById('g-c').textContent=correct;
+  document.getElementById('g-w').textContent=wrong;
+  document.getElementById('g-s').textContent=score;
+  pi++;setTimeout(showGQ,280);
+}
+function endGame(){
+  const total=correct+wrong,pct=Math.round(correct/total*100)||0;
+  document.getElementById('rsc').textContent=score;
+  document.getElementById('r-c').textContent=correct;
+  document.getElementById('r-w').textContent=wrong;
+  document.getElementById('r-bs').textContent=bestStreak;
+  document.getElementById('rpct').textContent=pct+'%';
+  document.getElementById('rem').textContent=score>=20?'🏆':score>=12?'🎉':score>=6?'💪':'📚';
+  const isHS=score>hs&&score>0;if(isHS)hs=score;
+  document.getElementById('hsbadge').classList.toggle('hidden',!isHS);
+  sh('s-res');setTimeout(()=>{document.getElementById('raf').style.width=pct+'%';},100);
+}
+</script>
+</body>
+</html>

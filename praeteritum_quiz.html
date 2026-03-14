@@ -1,0 +1,210 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<title>Präteritum Quiz — Spiel Deutsch</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=DM+Sans:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --bg:#F7F4EF;--surface:#fff;--text:#1C1917;--muted:#78716C;--hint:#A8A29E;
+  --sw:#1D9E75;--sw-l:#E1F5EE;--sw-t:#0F6E56;
+  --st:#185FA5;--st-l:#E6F1FB;--st-t:#0C447C;
+  --tr:#B45309;--tr-l:#FEF3C7;--tr-t:#92400E;
+  --red:#D85A30;--red-l:#FAECE7;--red-t:#993C1D;
+  --border:rgba(28,25,23,0.1);--bm:rgba(28,25,23,0.15);
+  --r:16px;--rs:12px;--sh:0 2px 12px rgba(28,25,23,0.07);--shc:0 8px 32px rgba(28,25,23,0.12)
+}
+html,body{min-height:100%;background:var(--bg);font-family:'DM Sans',sans-serif;color:var(--text);-webkit-font-smoothing:antialiased}
+body{display:flex;flex-direction:column;align-items:center;padding-bottom:32px}
+.hdr{width:100%;max-width:540px;padding:20px 20px 0}
+.title{font-family:'DM Serif Display',serif;font-size:clamp(18px,5vw,24px)}
+.subtitle{font-size:12px;color:var(--muted);margin-top:3px}
+.prog-wrap{width:100%;max-width:540px;padding:12px 20px 0}
+.prog-meta{display:flex;justify-content:space-between;font-size:12px;color:var(--muted);margin-bottom:6px}
+.prog-bar{height:4px;background:var(--border);border-radius:4px;overflow:hidden}
+.prog-fill{height:100%;background:var(--st);border-radius:4px;transition:width .4s}
+.scores{width:100%;max-width:540px;padding:10px 20px 0;display:flex;gap:10px}
+.sc{flex:1;background:var(--surface);border:1px solid var(--border);border-radius:var(--rs);padding:10px 8px;text-align:center;box-shadow:var(--sh)}
+.sc-n{font-family:'DM Serif Display',serif;font-size:22px;line-height:1}
+.sc-l{font-size:10px;font-weight:600;letter-spacing:.5px;text-transform:uppercase;color:var(--hint);margin-top:3px}
+.qcard{width:100%;max-width:540px;padding:12px 20px 0}
+.qc{background:var(--surface);border:1px solid var(--border);border-radius:var(--r);box-shadow:var(--shc);padding:clamp(20px,5vw,28px) 24px;text-align:center;display:flex;flex-direction:column;align-items:center;gap:6px;min-height:130px;justify-content:center;position:relative;overflow:hidden}
+.qc::after{content:'';position:absolute;inset:0;border-radius:var(--r);opacity:0;pointer-events:none}
+.qc.fok::after{background:var(--sw-l);animation:fl .35s ease forwards}
+.qc.fno::after{background:var(--red-l);animation:fl .35s ease forwards}
+@keyframes fl{0%{opacity:.7}100%{opacity:0}}
+.qc.shake{animation:sk .4s cubic-bezier(.36,.07,.19,.97)}
+@keyframes sk{10%,90%{transform:translateX(-3px)}20%,80%{transform:translateX(4px)}30%,50%,70%{transform:translateX(-5px)}40%,60%{transform:translateX(5px)}}
+.ql{font-size:10px;font-weight:600;letter-spacing:1.2px;text-transform:uppercase;color:var(--hint)}
+.qi{font-family:'DM Serif Display',serif;font-size:clamp(30px,9vw,44px);color:var(--text);line-height:1.15}
+.qar{font-size:13px;color:var(--muted);direction:rtl}
+.opts{width:100%;max-width:540px;padding:12px 20px 0;display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.opt{background:var(--surface);border:1.5px solid var(--bm);border-radius:var(--rs);padding:clamp(13px,4vw,17px) 10px;font-family:'DM Sans',sans-serif;font-size:clamp(13px,3.5vw,14px);font-weight:600;color:var(--text);cursor:pointer;text-align:center;transition:all .12s;box-shadow:var(--sh);-webkit-tap-highlight-color:transparent}
+.opt:active:not([disabled]){transform:scale(.96)}
+.opt.ok{background:var(--sw-l);border-color:var(--sw);color:var(--sw-t)}
+.opt.no{background:var(--red-l);border-color:var(--red);color:var(--red-t)}
+.opt.dim{opacity:.3}
+.opt[disabled]{cursor:default}
+.fbrow{width:100%;max-width:540px;padding:10px 20px 0;display:flex;align-items:center;justify-content:space-between;gap:12px;min-height:48px}
+.fbmsg{font-size:14px;font-weight:500;color:var(--muted);flex:1}
+.fbmsg.ok{color:var(--sw-t)}
+.fbmsg.no{color:var(--red-t)}
+.nxt{padding:10px 22px;border-radius:var(--rs);background:var(--text);color:var(--bg);border:none;font-family:'DM Sans',sans-serif;font-size:14px;font-weight:500;cursor:pointer;white-space:nowrap;-webkit-tap-highlight-color:transparent}
+.done-scr{width:100%;max-width:540px;padding:40px 20px;display:flex;flex-direction:column;align-items:center;text-align:center;gap:12px}
+.done-scr h2{font-family:'DM Serif Display',serif;font-size:30px}
+.dgrid{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;width:100%;margin-top:8px}
+.dg{background:var(--surface);border:1px solid var(--border);border-radius:var(--rs);padding:14px 8px;text-align:center;box-shadow:var(--sh)}
+.dg-n{font-family:'DM Serif Display',serif;font-size:26px;line-height:1}
+.dg-l{font-size:10px;font-weight:600;text-transform:uppercase;letter-spacing:.5px;color:var(--hint);margin-top:4px}
+.restart{padding:13px 32px;border-radius:var(--rs);background:var(--text);color:var(--bg);font-family:'DM Sans',sans-serif;font-size:15px;font-weight:500;border:none;cursor:pointer;margin-top:4px}
+.footer{padding:20px 0 8px;font-size:11px;font-weight:600;letter-spacing:2px;text-transform:uppercase;color:var(--hint);text-align:center;width:100%}
+</style>
+</head>
+<body>
+<div class="hdr"><div class="title">Präteritum Quiz</div><div class="subtitle">Welche Form ist das Präteritum?</div></div>
+<div class="prog-wrap">
+  <div class="prog-meta"><span id="counter">Frage 1 / 41</span><span id="pct">0%</span></div>
+  <div class="prog-bar"><div class="prog-fill" id="prog" style="width:0%"></div></div>
+</div>
+<div class="scores">
+  <div class="sc"><div class="sc-n" id="sc-c" style="color:var(--sw)">0</div><div class="sc-l">Richtig</div></div>
+  <div class="sc"><div class="sc-n" id="sc-w" style="color:var(--red)">0</div><div class="sc-l">Falsch</div></div>
+  <div class="sc"><div class="sc-n" id="sc-s" style="color:var(--tr)">0</div><div class="sc-l">Streak</div></div>
+</div>
+<div class="qcard">
+  <div class="qc" id="qc">
+    <div class="ql">Infinitiv</div>
+    <div class="qi" id="qi">machen</div>
+    <div class="qar" id="qar">يفعل / يصنع</div>
+  </div>
+</div>
+<div class="opts" id="opts"></div>
+<div class="fbrow" id="fbrow"><div class="fbmsg" id="fbmsg"></div></div>
+<div class="footer">by Mostafa Toumi</div>
+<script>
+const RAW=[
+  {inf:"machen",prt:"machte",ar:"يفعل / يصنع",type:"schwach"},
+  {inf:"wohnen",prt:"wohnte",ar:"يسكن",type:"schwach"},
+  {inf:"lernen",prt:"lernte",ar:"يتعلم",type:"schwach"},
+  {inf:"kochen",prt:"kochte",ar:"يطبخ",type:"schwach"},
+  {inf:"buchen",prt:"buchte",ar:"يحجز",type:"schwach"},
+  {inf:"kaufen",prt:"kaufte",ar:"يشتري",type:"schwach"},
+  {inf:"leben",prt:"lebte",ar:"يعيش",type:"schwach"},
+  {inf:"spielen",prt:"spielte",ar:"يلعب",type:"schwach"},
+  {inf:"hören",prt:"hörte",ar:"يسمع",type:"schwach"},
+  {inf:"suchen",prt:"suchte",ar:"يبحث",type:"schwach"},
+  {inf:"arbeiten",prt:"arbeitete",ar:"يعمل",type:"schwach"},
+  {inf:"warten",prt:"wartete",ar:"ينتظر",type:"schwach"},
+  {inf:"kosten",prt:"kostete",ar:"يكلف / ثمنه",type:"schwach"},
+  {inf:"antworten",prt:"antwortete",ar:"يجيب",type:"schwach"},
+  {inf:"studieren",prt:"studierte",ar:"يدرس في الجامعة",type:"schwach"},
+  {inf:"interessieren",prt:"interessierte",ar:"يهتم",type:"schwach"},
+  {inf:"diskutieren",prt:"diskutierte",ar:"يناقش",type:"schwach"},
+  {inf:"telefonieren",prt:"telefonierte",ar:"يتصل هاتفياً",type:"schwach"},
+  {inf:"trinken",prt:"trank",ar:"يشرب",type:"stark"},
+  {inf:"finden",prt:"fand",ar:"يجد",type:"stark"},
+  {inf:"singen",prt:"sang",ar:"يغني",type:"stark"},
+  {inf:"schreiben",prt:"schrieb",ar:"يكتب",type:"stark"},
+  {inf:"bleiben",prt:"blieb",ar:"يبقى",type:"stark"},
+  {inf:"leihen",prt:"lieh",ar:"يعير / يقرض",type:"stark"},
+  {inf:"geben",prt:"gab",ar:"يعطي",type:"stark"},
+  {inf:"essen",prt:"aß",ar:"يأكل",type:"stark"},
+  {inf:"nehmen",prt:"nahm",ar:"يأخذ",type:"stark"},
+  {inf:"sprechen",prt:"sprach",ar:"يتكلم",type:"stark"},
+  {inf:"lesen",prt:"las",ar:"يقرأ",type:"stark"},
+  {inf:"verlieren",prt:"verlor",ar:"يخسر / يضيع",type:"stark"},
+  {inf:"fliegen",prt:"flog",ar:"يطير / يسافر",type:"stark"},
+  {inf:"kommen",prt:"kam",ar:"يأتي",type:"stark"},
+  {inf:"laufen",prt:"lief",ar:"يجري / يمشي بسرعة",type:"stark"},
+  {inf:"schlafen",prt:"schlief",ar:"ينام",type:"stark"},
+  {inf:"gehen",prt:"ging",ar:"يذهب",type:"stark"},
+  {inf:"anrufen",prt:"rief an",ar:"يتصل",type:"trennbar"},
+  {inf:"einladen",prt:"lud ein",ar:"يدعو",type:"trennbar"},
+  {inf:"aufstehen",prt:"stand auf",ar:"يستيقظ / ينهض",type:"trennbar"},
+  {inf:"einsteigen",prt:"stieg ein",ar:"يصعد",type:"trennbar"},
+  {inf:"aussteigen",prt:"stieg aus",ar:"ينزل",type:"trennbar"},
+  {inf:"umziehen",prt:"zog um",ar:"ينتقل للسكن",type:"trennbar"},
+];
+const ALL_PRTS=RAW.map(x=>x.prt);
+
+function shuffle(a){return[...a].sort(()=>Math.random()-.5)}
+function getWrong(correct,n){
+  const pool=ALL_PRTS.filter(p=>p!==correct);
+  return shuffle(pool).slice(0,n);
+}
+
+let qs=[],qi=0,correct=0,wrong=0,streak=0,answered=false;
+function init(){qs=shuffle(RAW);qi=0;correct=0;wrong=0;streak=0;answered=false;showQ();}
+function showQ(){
+  if(qi>=qs.length){showDone();return;}
+  answered=false;
+  const q=qs[qi];
+  document.getElementById('qi').textContent=q.inf;
+  document.getElementById('qar').textContent=q.ar;
+  document.getElementById('counter').textContent='Frage '+(qi+1)+' / '+qs.length;
+  document.getElementById('pct').textContent=Math.round(qi/qs.length*100)+'%';
+  document.getElementById('prog').style.width=(qi/qs.length*100)+'%';
+  document.getElementById('fbmsg').textContent='';
+  document.getElementById('fbmsg').className='fbmsg';
+  const oldnxt=document.getElementById('nxt-btn');if(oldnxt)oldnxt.remove();
+  const opts=document.getElementById('opts');opts.innerHTML='';
+  const choices=shuffle([q.prt,...getWrong(q.prt,3)]);
+  choices.forEach(ch=>{
+    const b=document.createElement('button');b.className='opt';b.textContent=ch;
+    b.onclick=()=>handleAns(b,ch,q.prt);opts.appendChild(b);
+  });
+}
+function handleAns(btn,chosen,correct_p){
+  if(answered)return;answered=true;
+  const ok=chosen===correct_p;
+  document.querySelectorAll('.opt').forEach(b=>{
+    b.disabled=true;
+    if(b.textContent===correct_p)b.classList.add('ok');
+    else if(b===btn&&!ok)b.classList.add('no');
+    else b.classList.add('dim');
+  });
+  const qc=document.getElementById('qc');
+  const fb=document.getElementById('fbmsg');
+  if(ok){
+    correct++;streak++;
+    fb.textContent='✓ Richtig!'+(streak>=3?' 🔥 '+streak+'er Streak!':'');
+    fb.className='fbmsg ok';
+    qc.classList.add('fok');setTimeout(()=>qc.classList.remove('fok'),350);
+  } else {
+    wrong++;streak=0;
+    fb.textContent='✗ Falsch — richtig: '+correct_p;
+    fb.className='fbmsg no';
+    qc.classList.add('fno','shake');setTimeout(()=>qc.classList.remove('fno','shake'),400);
+  }
+  document.getElementById('sc-c').textContent=correct;
+  document.getElementById('sc-w').textContent=wrong;
+  document.getElementById('sc-s').textContent=streak;
+  const nb=document.createElement('button');nb.className='nxt';nb.id='nxt-btn';
+  nb.textContent=qi+1<qs.length?'Weiter →':'Ergebnis →';
+  nb.onclick=()=>{qi++;showQ();};
+  document.getElementById('fbrow').appendChild(nb);
+}
+function showDone(){
+  const total=correct+wrong,pct=Math.round(correct/total*100)||0;
+  document.querySelector('.qcard').style.display='none';
+  document.getElementById('opts').style.display='none';
+  document.getElementById('fbrow').style.display='none';
+  const d=document.createElement('div');d.className='done-scr';
+  d.innerHTML=`<div style="font-size:52px">${pct>=90?'🏆':pct>=70?'🎉':pct>=50?'💪':'📚'}</div>
+  <h2>Quiz beendet!</h2>
+  <div style="font-family:'DM Serif Display',serif;font-size:60px;line-height:1">${pct}%</div>
+  <div class="dgrid">
+    <div class="dg"><div class="dg-n" style="color:var(--sw)">${correct}</div><div class="dg-l">Richtig</div></div>
+    <div class="dg"><div class="dg-n" style="color:var(--red)">${wrong}</div><div class="dg-l">Falsch</div></div>
+    <div class="dg"><div class="dg-n">${total}</div><div class="dg-l">Gesamt</div></div>
+  </div>
+  <button class="restart" onclick="location.reload()">Nochmal ↺</button>`;
+  document.querySelector('.footer').before(d);
+}
+init();
+</script>
+</body>
+</html>

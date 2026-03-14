@@ -1,0 +1,196 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<title>Präteritum Match — Spiel Deutsch</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=DM+Sans:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --bg:#F7F4EF;--surface:#fff;--text:#1C1917;--muted:#78716C;--hint:#A8A29E;
+  --sw:#1D9E75;--sw-l:#E1F5EE;--sw-t:#0F6E56;--sw-b:#9FE1CB;
+  --st:#185FA5;--st-l:#E6F1FB;--st-t:#0C447C;--st-b:#B5D4F4;
+  --tr:#B45309;--tr-l:#FEF3C7;--tr-t:#92400E;--tr-b:#FDE68A;
+  --red:#D85A30;--red-l:#FAECE7;
+  --border:rgba(28,25,23,0.1);--bm:rgba(28,25,23,0.15);
+  --r:16px;--rs:12px;--sh:0 2px 12px rgba(28,25,23,0.07);--shc:0 4px 20px rgba(28,25,23,0.10)
+}
+html,body{min-height:100%;background:var(--bg);font-family:'DM Sans',sans-serif;color:var(--text);-webkit-font-smoothing:antialiased}
+body{display:flex;flex-direction:column;align-items:center;padding-bottom:32px}
+.hdr{width:100%;max-width:600px;padding:20px 20px 0;display:flex;justify-content:space-between;align-items:flex-start}
+.title{font-family:'DM Serif Display',serif;font-size:clamp(18px,5vw,24px)}
+.subtitle{font-size:12px;color:var(--muted);margin-top:3px}
+.meta{text-align:right;font-size:12px;color:var(--muted)}
+.prog-wrap{width:100%;max-width:600px;padding:10px 20px 0}
+.prog-bar{height:4px;background:var(--border);border-radius:4px;overflow:hidden}
+.prog-fill{height:100%;background:var(--st);border-radius:4px;transition:width .4s}
+.srow{width:100%;max-width:600px;padding:10px 20px 0;display:flex;gap:10px}
+.sp{flex:1;background:var(--surface);border:1px solid var(--border);border-radius:var(--rs);padding:10px 8px;text-align:center;box-shadow:var(--sh)}
+.sp-n{font-family:'DM Serif Display',serif;font-size:20px;line-height:1}
+.sp-l{font-size:10px;font-weight:600;letter-spacing:.5px;text-transform:uppercase;color:var(--hint);margin-top:3px}
+.round-lbl{width:100%;max-width:600px;padding:12px 20px 0;font-size:12px;color:var(--muted);font-weight:500}
+.buckets{width:100%;max-width:600px;padding:10px 20px 0;display:grid;grid-template-columns:repeat(3,1fr);gap:10px}
+.bucket{border-radius:var(--rs);border:2px dashed;padding:10px 8px;min-height:70px;display:flex;flex-direction:column;align-items:center;gap:6px;transition:all .2s;cursor:default}
+.bucket.sw{border-color:var(--sw-b);background:var(--sw-l)}
+.bucket.st{border-color:var(--st-b);background:var(--st-l)}
+.bucket.tr{border-color:var(--tr-b);background:var(--tr-l)}
+.bucket.dragover{transform:scale(1.04);box-shadow:var(--shc)}
+.bt{font-size:11px;font-weight:600;letter-spacing:.8px;text-transform:uppercase}
+.bucket.sw .bt{color:var(--sw-t)}
+.bucket.st .bt{color:var(--st-t)}
+.bucket.tr .bt{color:var(--tr-t)}
+.bc{display:flex;flex-wrap:wrap;gap:4px;justify-content:center;width:100%}
+.pchip{font-size:11px;font-weight:600;padding:3px 8px;border-radius:20px;white-space:nowrap}
+.pchip.ok{background:rgba(255,255,255,.8)}
+.pchip.fail{text-decoration:line-through;opacity:.5}
+.pool-lbl{width:100%;max-width:600px;padding:14px 20px 4px;font-size:11px;font-weight:600;letter-spacing:1px;text-transform:uppercase;color:var(--hint)}
+.pool{width:100%;max-width:600px;padding:0 20px 0;display:flex;flex-wrap:wrap;gap:8px;justify-content:center;min-height:44px}
+.chip{background:var(--surface);border:1.5px solid var(--bm);border-radius:20px;padding:7px 14px;font-family:'DM Sans',sans-serif;font-size:13px;font-weight:600;color:var(--text);cursor:grab;user-select:none;box-shadow:var(--sh);transition:transform .15s,box-shadow .15s;-webkit-tap-highlight-color:transparent}
+.chip:active{cursor:grabbing;transform:scale(1.05);box-shadow:var(--shc)}
+.chip.dragging{opacity:.4}
+.chip.selected{background:var(--text);color:var(--bg);border-color:var(--text);transform:scale(1.05)}
+.toast{position:fixed;bottom:80px;left:50%;transform:translateX(-50%) translateY(20px);padding:10px 20px;border-radius:20px;font-size:14px;font-weight:600;opacity:0;transition:opacity .2s,transform .2s;pointer-events:none;z-index:100}
+.toast.show{opacity:1;transform:translateX(-50%) translateY(0)}
+.toast.ok{background:var(--sw-l);color:var(--sw-t);border:1px solid var(--sw)}
+.toast.fail{background:var(--red-l);color:var(--red);border:1px solid var(--red)}
+.done{width:100%;max-width:600px;padding:40px 20px;display:flex;flex-direction:column;align-items:center;text-align:center;gap:12px}
+.done h2{font-family:'DM Serif Display',serif;font-size:28px}
+.dgrid{display:grid;grid-template-columns:repeat(2,1fr);gap:10px;width:100%;max-width:360px;margin-top:8px}
+.dg{background:var(--surface);border:1px solid var(--border);border-radius:var(--rs);padding:14px 8px;text-align:center;box-shadow:var(--sh)}
+.dg-n{font-family:'DM Serif Display',serif;font-size:26px;line-height:1}
+.dg-l{font-size:10px;font-weight:600;text-transform:uppercase;letter-spacing:.5px;color:var(--hint);margin-top:4px}
+.restart{padding:13px 32px;border-radius:var(--rs);background:var(--text);color:var(--bg);font-family:'DM Sans',sans-serif;font-size:15px;font-weight:500;border:none;cursor:pointer;margin-top:4px}
+.footer{padding:20px 0 8px;font-size:11px;font-weight:600;letter-spacing:2px;text-transform:uppercase;color:var(--hint);text-align:center;width:100%}
+</style>
+</head>
+<body>
+<div class="hdr">
+  <div><div class="title">Präteritum Match</div><div class="subtitle">Ordne nach: Schwach · Stark · Trennbar</div></div>
+  <div class="meta" id="meta">Runde 1</div>
+</div>
+<div class="prog-wrap"><div class="prog-bar"><div class="prog-fill" id="prog" style="width:0%"></div></div></div>
+<div class="srow">
+  <div class="sp"><div class="sp-n" id="sc-ok" style="color:var(--sw)">0</div><div class="sp-l">Richtig</div></div>
+  <div class="sp"><div class="sp-n" id="sc-no" style="color:var(--red)">0</div><div class="sp-l">Falsch</div></div>
+  <div class="sp"><div class="sp-n" id="sc-pt" style="color:var(--st-t)">0</div><div class="sp-l">Punkte</div></div>
+</div>
+<div class="round-lbl" id="rlbl">Ziehe jedes Verb in den richtigen Typ:</div>
+<div class="buckets">
+  <div class="bucket sw" id="b-schwach" ondragover="dov(event)" ondrop="drop(event,'schwach')" onclick="tapBucket('schwach')">
+    <div class="bt">Schwach</div><div class="bc" id="bc-schwach"></div>
+  </div>
+  <div class="bucket st" id="b-stark" ondragover="dov(event)" ondrop="drop(event,'stark')" onclick="tapBucket('stark')">
+    <div class="bt">Stark</div><div class="bc" id="bc-stark"></div>
+  </div>
+  <div class="bucket tr" id="b-trennbar" ondragover="dov(event)" ondrop="drop(event,'trennbar')" onclick="tapBucket('trennbar')">
+    <div class="bt">Trennbar</div><div class="bc" id="bc-trennbar"></div>
+  </div>
+</div>
+<div class="pool-lbl">Verben zum Zuordnen:</div>
+<div class="pool" id="pool"></div>
+<div class="toast" id="toast"></div>
+<div class="footer">by Mostafa Toumi</div>
+<script>
+const ALL=[
+  {inf:"machen",type:"schwach"},{inf:"wohnen",type:"schwach"},{inf:"lernen",type:"schwach"},
+  {inf:"kochen",type:"schwach"},{inf:"buchen",type:"schwach"},{inf:"kaufen",type:"schwach"},
+  {inf:"leben",type:"schwach"},{inf:"spielen",type:"schwach"},{inf:"hören",type:"schwach"},
+  {inf:"suchen",type:"schwach"},{inf:"arbeiten",type:"schwach"},{inf:"warten",type:"schwach"},
+  {inf:"kosten",type:"schwach"},{inf:"antworten",type:"schwach"},
+  {inf:"studieren",type:"schwach"},{inf:"telefonieren",type:"schwach"},
+  {inf:"trinken",type:"stark"},{inf:"finden",type:"stark"},{inf:"singen",type:"stark"},
+  {inf:"schreiben",type:"stark"},{inf:"bleiben",type:"stark"},{inf:"geben",type:"stark"},
+  {inf:"essen",type:"stark"},{inf:"nehmen",type:"stark"},{inf:"sprechen",type:"stark"},
+  {inf:"lesen",type:"stark"},{inf:"verlieren",type:"stark"},{inf:"fliegen",type:"stark"},
+  {inf:"kommen",type:"stark"},{inf:"laufen",type:"stark"},{inf:"schlafen",type:"stark"},
+  {inf:"gehen",type:"stark"},
+  {inf:"anrufen",type:"trennbar"},{inf:"einladen",type:"trennbar"},{inf:"aufstehen",type:"trennbar"},
+  {inf:"einsteigen",type:"trennbar"},{inf:"aussteigen",type:"trennbar"},{inf:"umziehen",type:"trennbar"},
+];
+const PER=8,ROUNDS=Math.ceil(ALL.length/PER);
+let rounds=[],rIdx=0,correct=0,wrong=0,points=0;
+let dragItem=null,selectedChip=null;
+function shuffle(a){return[...a].sort(()=>Math.random()-.5)}
+function init(){
+  const sh=shuffle(ALL);rounds=[];
+  for(let i=0;i<sh.length;i+=PER)rounds.push(sh.slice(i,i+PER));
+  rIdx=0;correct=0;wrong=0;points=0;loadRound();
+}
+function loadRound(){
+  if(rIdx>=rounds.length){showDone();return;}
+  selectedChip=null;
+  document.getElementById('meta').textContent='Runde '+(rIdx+1)+' / '+rounds.length;
+  document.getElementById('prog').style.width=(rIdx/rounds.length*100)+'%';
+  ['schwach','stark','trennbar'].forEach(k=>{document.getElementById('bc-'+k).innerHTML='';});
+  const pool=document.getElementById('pool');pool.innerHTML='';
+  shuffle(rounds[rIdx]).forEach(item=>{
+    const chip=document.createElement('div');
+    chip.className='chip';chip.textContent=item.inf;chip.dataset.inf=item.inf;chip.dataset.type=item.type;
+    chip.draggable=true;
+    chip.addEventListener('dragstart',e=>{dragItem=chip;chip.classList.add('dragging');e.dataTransfer.effectAllowed='move';});
+    chip.addEventListener('dragend',()=>{chip.classList.remove('dragging');dragItem=null;});
+    chip.addEventListener('click',()=>selectChip(chip));
+    pool.appendChild(chip);
+  });
+}
+function selectChip(chip){
+  if(selectedChip===chip){chip.classList.remove('selected');selectedChip=null;return;}
+  if(selectedChip)selectedChip.classList.remove('selected');
+  chip.classList.add('selected');selectedChip=chip;
+}
+function tapBucket(type){if(!selectedChip)return;placeChip(selectedChip,type);selectedChip=null;}
+function dov(e){e.preventDefault();e.currentTarget.classList.add('dragover');}
+function drop(e,type){e.preventDefault();e.currentTarget.classList.remove('dragover');if(!dragItem)return;placeChip(dragItem,type);}
+document.querySelectorAll('.bucket').forEach(b=>b.addEventListener('dragleave',()=>b.classList.remove('dragover')));
+function placeChip(chip,type){
+  const ct=chip.dataset.type,inf=chip.dataset.inf;
+  const ok=type===ct;
+  if(ok){correct++;points+=2;}else{wrong++;points=Math.max(0,points-1);}
+  document.getElementById('sc-ok').textContent=correct;
+  document.getElementById('sc-no').textContent=wrong;
+  document.getElementById('sc-pt').textContent=points;
+  const placed=document.createElement('span');
+  placed.className='pchip '+(ok?'ok':'fail');
+  placed.textContent=inf+(ok?'':' ✗');
+  document.getElementById('bc-'+type).appendChild(placed);
+  if(!ok){
+    showToast('✗ '+inf+' → '+ct,'fail');
+    const cb=document.getElementById('bc-'+ct);
+    const hint=document.createElement('span');hint.className='pchip ok';hint.textContent=inf+' ✓';hint.style.opacity='.4';cb.appendChild(hint);
+  } else {
+    showToast('✓ Richtig!','ok');
+  }
+  chip.remove();
+  if(document.getElementById('pool').children.length===0){setTimeout(()=>{rIdx++;loadRound();},700);}
+}
+let toastTimer;
+function showToast(msg,type){
+  const t=document.getElementById('toast');clearTimeout(toastTimer);
+  t.textContent=msg;t.className='toast show '+type;
+  toastTimer=setTimeout(()=>t.classList.remove('show'),1400);
+}
+function showDone(){
+  const total=correct+wrong,pct=Math.round(correct/total*100)||0;
+  document.querySelector('.buckets').style.display='none';
+  document.querySelector('.pool-lbl').style.display='none';
+  document.getElementById('pool').style.display='none';
+  document.getElementById('rlbl').style.display='none';
+  const d=document.createElement('div');d.className='done';
+  d.innerHTML=`<div style="font-size:48px">${pct>=90?'🏆':pct>=70?'🎉':pct>=50?'💪':'📚'}</div>
+  <h2>Fertig!</h2>
+  <div style="font-family:'DM Serif Display',serif;font-size:56px;line-height:1">${pct}%</div>
+  <div class="dgrid">
+    <div class="dg"><div class="dg-n" style="color:var(--sw)">${correct}</div><div class="dg-l">Richtig</div></div>
+    <div class="dg"><div class="dg-n" style="color:var(--red)">${wrong}</div><div class="dg-l">Falsch</div></div>
+    <div class="dg"><div class="dg-n" style="color:var(--st-t)">${points}</div><div class="dg-l">Punkte</div></div>
+    <div class="dg"><div class="dg-n">${total}</div><div class="dg-l">Gesamt</div></div>
+  </div>
+  <button class="restart" onclick="init();['buckets','pool-lbl','pool','rlbl'].forEach(id=>{const el=document.querySelector('.'+id)||document.getElementById(id);if(el)el.style.display=''});this.parentElement.remove()">Nochmal ↺</button>`;
+  document.querySelector('.footer').before(d);
+}
+init();
+</script>
+</body>
+</html>

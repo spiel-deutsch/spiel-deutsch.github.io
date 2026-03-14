@@ -1,0 +1,250 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Das Präteritum — Übersicht — Spiel Deutsch</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=DM+Sans:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --bg:#F7F4EF;--surface:#fff;--text:#1C1917;--muted:#78716C;--hint:#A8A29E;
+  --sw:#1D9E75;--sw-l:#E1F5EE;--sw-t:#0F6E56;--sw-b:#9FE1CB;
+  --st:#185FA5;--st-l:#E6F1FB;--st-t:#0C447C;--st-b:#B5D4F4;
+  --gm:#7C3AED;--gm-l:#EDE9FE;--gm-t:#5B21B6;--gm-b:#C4B5FD;
+  --tr:#B45309;--tr-l:#FEF3C7;--tr-t:#92400E;--tr-b:#FDE68A;
+  --border:rgba(28,25,23,0.1);--bm:rgba(28,25,23,0.15);
+  --r:16px;--rs:12px;--sh:0 2px 12px rgba(28,25,23,0.07);--shc:0 8px 32px rgba(28,25,23,0.11)
+}
+html,body{min-height:100%;background:var(--bg);font-family:'DM Sans',sans-serif;color:var(--text);-webkit-font-smoothing:antialiased}
+body{display:flex;flex-direction:column;align-items:center;padding-bottom:48px}
+.hero{width:100%;max-width:680px;padding:clamp(32px,8vw,60px) 24px 0;text-align:center}
+.hero-tag{display:inline-block;font-size:11px;font-weight:600;letter-spacing:2px;text-transform:uppercase;color:var(--st-t);background:var(--st-l);border:1px solid var(--st-b);border-radius:20px;padding:4px 14px;margin-bottom:16px}
+.hero-title{font-family:'DM Serif Display',serif;font-size:clamp(28px,7vw,46px);letter-spacing:-.5px;line-height:1.1}
+.hero-title em{font-style:italic;color:var(--st)}
+.hero-sub{font-size:14px;color:var(--muted);margin:10px auto 0;line-height:1.6;max-width:420px}
+/* Nav */
+.nav{width:100%;max-width:680px;padding:18px 24px 0;display:flex;gap:8px;flex-wrap:wrap}
+.nb{padding:5px 13px;border-radius:20px;border:1px solid var(--bm);font-family:'DM Sans',sans-serif;font-size:12px;font-weight:600;cursor:pointer;background:var(--surface);color:var(--muted);transition:all .15s;box-shadow:var(--sh);text-decoration:none}
+.nb:hover{background:var(--text);color:var(--bg);border-color:var(--text)}
+/* Rule cards */
+.rules-grid{width:100%;max-width:680px;padding:clamp(24px,6vw,40px) 24px 0;display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:14px}
+.rule-card{border-radius:var(--r);padding:20px 22px;border:1px solid}
+.rule-card.sw{background:var(--sw-l);border-color:var(--sw-b)}
+.rule-card.st{background:var(--st-l);border-color:var(--st-b)}
+.rule-card.tr{background:var(--tr-l);border-color:var(--tr-b)}
+.rc-top{display:flex;align-items:center;gap:10px;margin-bottom:10px}
+.rc-dot{width:10px;height:10px;border-radius:50%;flex-shrink:0}
+.rc-title{font-family:'DM Serif Display',serif;font-size:18px}
+.rule-card.sw .rc-title{color:var(--sw-t)}
+.rule-card.st .rc-title{color:var(--st-t)}
+.rule-card.tr .rc-title{color:var(--tr-t)}
+.rc-rule{font-family:monospace;font-size:16px;font-weight:600;padding:6px 14px;border-radius:var(--rs);margin-bottom:10px;display:inline-block}
+.rule-card.sw .rc-rule{background:rgba(29,158,117,.15);color:var(--sw-t)}
+.rule-card.st .rc-rule{background:rgba(24,95,165,.15);color:var(--st-t)}
+.rule-card.tr .rc-rule{background:rgba(180,83,9,.15);color:var(--tr-t)}
+.rc-desc{font-size:13px;line-height:1.6;color:var(--muted)}
+.rc-ex{font-size:13px;margin-top:8px;font-style:italic;color:var(--muted)}
+/* Section headers */
+.sec-hdr{width:100%;max-width:680px;padding:clamp(28px,6vw,44px) 24px 0;display:flex;align-items:center;gap:12px}
+.sec-dot{width:10px;height:10px;border-radius:50%;flex-shrink:0}
+.sec-title{font-family:'DM Serif Display',serif;font-size:clamp(20px,5vw,28px)}
+.sec-line{flex:1;height:1px;background:var(--border)}
+/* Tables */
+.tbl-wrap{width:100%;max-width:680px;padding:12px 24px 0}
+.tbl-box{background:var(--surface);border:1px solid var(--border);border-radius:var(--r);overflow:hidden;box-shadow:var(--sh)}
+.tbl{width:100%;border-collapse:collapse;font-size:13px}
+.tbl th{padding:8px 12px;text-align:left;font-size:11px;font-weight:600;letter-spacing:.5px;text-transform:uppercase;color:var(--hint);border-bottom:1px solid var(--border)}
+.tbl td{padding:8px 12px;border-bottom:1px solid var(--border);vertical-align:middle;color:var(--muted)}
+.tbl tr:last-child td{border-bottom:none}
+.tbl td:first-child{font-weight:600;color:var(--text)}
+.tbl td:nth-child(2){font-weight:600}
+.prt-sw{color:var(--sw-t)}
+.prt-st{color:var(--st-t)}
+.prt-tr{color:var(--tr-t)}
+.chip-sm{display:inline-block;padding:2px 8px;border-radius:20px;font-size:11px;font-weight:600}
+.chip-sw{background:var(--sw-l);color:var(--sw-t)}
+.chip-st{background:var(--st-l);color:var(--st-t)}
+.chip-tr{background:var(--tr-l);color:var(--tr-t)}
+.ar-cell{direction:rtl;text-align:right;font-size:12px;color:var(--hint)}
+/* Memo box */
+.memo{width:100%;max-width:680px;padding:12px 24px 0}
+.memo-box{border-radius:var(--rs);padding:16px 18px;font-size:13px;line-height:1.7;border:1px solid}
+.memo-box.st{background:var(--st-l);border-color:var(--st-b);color:var(--st-t)}
+.memo-box.sw{background:var(--sw-l);border-color:var(--sw-b);color:var(--sw-t)}
+.memo-box strong{font-weight:600}
+.mono{font-family:monospace;background:rgba(0,0,0,.06);padding:1px 5px;border-radius:4px;font-size:12px}
+/* Footer */
+.footer{width:100%;max-width:680px;padding:clamp(36px,8vw,56px) 24px 32px;display:flex;flex-direction:column;align-items:center;gap:6px;text-align:center;border-top:1px solid var(--border);margin-top:clamp(36px,8vw,56px)}
+.footer-brand{font-family:'DM Serif Display',serif;font-size:16px}
+.footer-credit{font-size:11px;font-weight:600;letter-spacing:2px;text-transform:uppercase;color:var(--hint);margin-top:2px}
+@media(max-width:440px){.tbl td:last-child{display:none}.tbl th:last-child{display:none}}
+</style>
+</head>
+<body>
+
+<div class="hero">
+  <div class="hero-tag">Grammatik Übersicht</div>
+  <h1 class="hero-title">Das <em>Präteritum</em></h1>
+  <p class="hero-sub">Die Vergangenheitsform — Regeln, Typen und alle 41 Verben mit arabischen Bedeutungen.</p>
+</div>
+
+<div class="nav">
+  <a class="nb" href="#regeln">Regeln</a>
+  <a class="nb" href="#schwach">Schwache Verben</a>
+  <a class="nb" href="#stark">Starke Verben</a>
+  <a class="nb" href="#trennbar">Trennbare Verben</a>
+</div>
+
+<!-- RULES -->
+<div class="sec-hdr" id="regeln">
+  <div class="sec-dot" style="background:var(--text)"></div>
+  <div class="sec-title">Die drei Typen</div>
+  <div class="sec-line"></div>
+</div>
+
+<div class="rules-grid">
+  <div class="rule-card sw">
+    <div class="rc-top"><div class="rc-dot" style="background:var(--sw)"></div><div class="rc-title">Schwache Verben</div></div>
+    <div class="rc-rule">Stamm + te</div>
+    <div class="rc-desc">Regelmäßige Verben. Der Stamm bleibt gleich, es wird einfach <strong>-te</strong> angehängt.<br><br>
+    Endet der Stamm auf <strong>-t</strong> oder <strong>-d</strong> → <strong>-ete</strong> (z.B. <em>arbeiten → arbeitete</em>).<br>
+    Verben auf <strong>-ieren</strong> → <strong>-ierte</strong> (z.B. <em>studieren → studierte</em>).
+    </div>
+    <div class="rc-ex">machen → mach<strong>te</strong> &nbsp;|&nbsp; hören → hör<strong>te</strong></div>
+  </div>
+  <div class="rule-card st">
+    <div class="rc-top"><div class="rc-dot" style="background:var(--st)"></div><div class="rc-title">Starke Verben</div></div>
+    <div class="rc-rule">Vokalwechsel</div>
+    <div class="rc-desc">Unregelmäßige Verben. Der Stammvokal ändert sich — diese Formen müssen auswendig gelernt werden.<br><br>
+    Häufige Muster: <strong>i → a</strong> · <strong>ei → ie</strong> · <strong>e → a</strong> · <strong>ie → o</strong> · <strong>a → u</strong>
+    </div>
+    <div class="rc-ex">trinken → <strong>trank</strong> &nbsp;|&nbsp; schreiben → <strong>schrieb</strong></div>
+  </div>
+  <div class="rule-card tr">
+    <div class="rc-top"><div class="rc-dot" style="background:var(--tr)"></div><div class="rc-title">Trennbare Verben</div></div>
+    <div class="rc-rule">Präfix ans Ende</div>
+    <div class="rc-desc">Das Präfix (Vorsilbe) wandert ans Satzende. Der Verbstamm folgt den Regeln der starken/schwachen Verben.<br><br>
+    <strong>Wichtig:</strong> Im Präteritum bleibt das Präfix am Verb — es trennt sich nicht im Hauptsatz.
+    </div>
+    <div class="rc-ex">anrufen → <strong>rief an</strong> &nbsp;|&nbsp; aufstehen → <strong>stand auf</strong></div>
+  </div>
+</div>
+
+<div class="memo">
+  <div class="memo-box st">
+    <strong>Eselsbrücke für starke Verben — häufige Vokalwechsel:</strong><br>
+    <span class="mono">i → a</span> &nbsp; trinken→trank, finden→fand, singen→sang<br>
+    <span class="mono">ei → ie</span> &nbsp; schreiben→schrieb, bleiben→blieb, leihen→lieh<br>
+    <span class="mono">e → a</span> &nbsp; sprechen→sprach, geben→gab, lesen→las, essen→aß<br>
+    <span class="mono">ie → o</span> &nbsp; fliegen→flog, verlieren→verlor, umziehen→zog<br>
+    <span class="mono">a → ie</span> &nbsp; schlafen→schlief, laufen→lief, fahren→fuhr
+  </div>
+</div>
+
+<!-- SCHWACHE VERBEN -->
+<div class="sec-hdr" id="schwach">
+  <div class="sec-dot" style="background:var(--sw)"></div>
+  <div class="sec-title">Schwache Verben</div>
+  <div class="sec-line"></div>
+</div>
+
+<div class="tbl-wrap">
+  <div class="tbl-box">
+    <table class="tbl">
+      <thead><tr><th>#</th><th>Infinitiv</th><th>Präteritum</th><th>Regel</th><th>Arabisch</th></tr></thead>
+      <tbody>
+        <tr><td>1</td><td>machen</td><td class="prt-sw">machte</td><td><span class="chip-sm chip-sw">+te</span></td><td class="ar-cell">يفعل / يصنع</td></tr>
+        <tr><td>2</td><td>wohnen</td><td class="prt-sw">wohnte</td><td><span class="chip-sm chip-sw">+te</span></td><td class="ar-cell">يسكن</td></tr>
+        <tr><td>3</td><td>lernen</td><td class="prt-sw">lernte</td><td><span class="chip-sm chip-sw">+te</span></td><td class="ar-cell">يتعلم</td></tr>
+        <tr><td>4</td><td>kochen</td><td class="prt-sw">kochte</td><td><span class="chip-sm chip-sw">+te</span></td><td class="ar-cell">يطبخ</td></tr>
+        <tr><td>5</td><td>buchen</td><td class="prt-sw">buchte</td><td><span class="chip-sm chip-sw">+te</span></td><td class="ar-cell">يحجز</td></tr>
+        <tr><td>6</td><td>kaufen</td><td class="prt-sw">kaufte</td><td><span class="chip-sm chip-sw">+te</span></td><td class="ar-cell">يشتري</td></tr>
+        <tr><td>7</td><td>leben</td><td class="prt-sw">lebte</td><td><span class="chip-sm chip-sw">+te</span></td><td class="ar-cell">يعيش</td></tr>
+        <tr><td>8</td><td>spielen</td><td class="prt-sw">spielte</td><td><span class="chip-sm chip-sw">+te</span></td><td class="ar-cell">يلعب</td></tr>
+        <tr><td>9</td><td>hören</td><td class="prt-sw">hörte</td><td><span class="chip-sm chip-sw">+te</span></td><td class="ar-cell">يسمع</td></tr>
+        <tr><td>10</td><td>suchen</td><td class="prt-sw">suchte</td><td><span class="chip-sm chip-sw">+te</span></td><td class="ar-cell">يبحث</td></tr>
+        <tr><td>11</td><td>arbeiten</td><td class="prt-sw">arbeitete</td><td><span class="chip-sm chip-sw">+ete</span></td><td class="ar-cell">يعمل</td></tr>
+        <tr><td>12</td><td>warten</td><td class="prt-sw">wartete</td><td><span class="chip-sm chip-sw">+ete</span></td><td class="ar-cell">ينتظر</td></tr>
+        <tr><td>13</td><td>kosten</td><td class="prt-sw">kostete</td><td><span class="chip-sm chip-sw">+ete</span></td><td class="ar-cell">يكلف / ثمنه</td></tr>
+        <tr><td>14</td><td>antworten</td><td class="prt-sw">antwortete</td><td><span class="chip-sm chip-sw">+ete</span></td><td class="ar-cell">يجيب</td></tr>
+        <tr><td>15</td><td>studieren</td><td class="prt-sw">studierte</td><td><span class="chip-sm chip-sw">-ieren</span></td><td class="ar-cell">يدرس في الجامعة</td></tr>
+        <tr><td>16</td><td>interessieren</td><td class="prt-sw">interessierte</td><td><span class="chip-sm chip-sw">-ieren</span></td><td class="ar-cell">يهتم</td></tr>
+        <tr><td>17</td><td>diskutieren</td><td class="prt-sw">diskutierte</td><td><span class="chip-sm chip-sw">-ieren</span></td><td class="ar-cell">يناقش</td></tr>
+        <tr><td>18</td><td>telefonieren</td><td class="prt-sw">telefonierte</td><td><span class="chip-sm chip-sw">-ieren</span></td><td class="ar-cell">يتصل هاتفياً</td></tr>
+      </tbody>
+    </table>
+  </div>
+</div>
+
+<!-- STARKE VERBEN -->
+<div class="sec-hdr" id="stark">
+  <div class="sec-dot" style="background:var(--st)"></div>
+  <div class="sec-title">Starke Verben</div>
+  <div class="sec-line"></div>
+</div>
+
+<div class="tbl-wrap">
+  <div class="tbl-box">
+    <table class="tbl">
+      <thead><tr><th>#</th><th>Infinitiv</th><th>Präteritum</th><th>Vokalwechsel</th><th>Arabisch</th></tr></thead>
+      <tbody>
+        <tr><td>1</td><td>trinken</td><td class="prt-st">trank</td><td><span class="chip-sm chip-st">i→a</span></td><td class="ar-cell">يشرب</td></tr>
+        <tr><td>2</td><td>finden</td><td class="prt-st">fand</td><td><span class="chip-sm chip-st">i→a</span></td><td class="ar-cell">يجد</td></tr>
+        <tr><td>3</td><td>singen</td><td class="prt-st">sang</td><td><span class="chip-sm chip-st">i→a</span></td><td class="ar-cell">يغني</td></tr>
+        <tr><td>4</td><td>schreiben</td><td class="prt-st">schrieb</td><td><span class="chip-sm chip-st">ei→ie</span></td><td class="ar-cell">يكتب</td></tr>
+        <tr><td>5</td><td>bleiben</td><td class="prt-st">blieb</td><td><span class="chip-sm chip-st">ei→ie</span></td><td class="ar-cell">يبقى</td></tr>
+        <tr><td>6</td><td>leihen</td><td class="prt-st">lieh</td><td><span class="chip-sm chip-st">ei→ie</span></td><td class="ar-cell">يعير / يقرض</td></tr>
+        <tr><td>7</td><td>geben</td><td class="prt-st">gab</td><td><span class="chip-sm chip-st">e→a</span></td><td class="ar-cell">يعطي</td></tr>
+        <tr><td>8</td><td>essen</td><td class="prt-st">aß</td><td><span class="chip-sm chip-st">e→a</span></td><td class="ar-cell">يأكل</td></tr>
+        <tr><td>9</td><td>nehmen</td><td class="prt-st">nahm</td><td><span class="chip-sm chip-st">e→a</span></td><td class="ar-cell">يأخذ</td></tr>
+        <tr><td>10</td><td>sprechen</td><td class="prt-st">sprach</td><td><span class="chip-sm chip-st">e→a</span></td><td class="ar-cell">يتكلم</td></tr>
+        <tr><td>11</td><td>lesen</td><td class="prt-st">las</td><td><span class="chip-sm chip-st">e→a</span></td><td class="ar-cell">يقرأ</td></tr>
+        <tr><td>12</td><td>verlieren</td><td class="prt-st">verlor</td><td><span class="chip-sm chip-st">ie→o</span></td><td class="ar-cell">يخسر / يضيع</td></tr>
+        <tr><td>13</td><td>fliegen</td><td class="prt-st">flog</td><td><span class="chip-sm chip-st">ie→o</span></td><td class="ar-cell">يطير / يسافر</td></tr>
+        <tr><td>14</td><td>kommen</td><td class="prt-st">kam</td><td><span class="chip-sm chip-st">o→a</span></td><td class="ar-cell">يأتي</td></tr>
+        <tr><td>15</td><td>laufen</td><td class="prt-st">lief</td><td><span class="chip-sm chip-st">au→ie</span></td><td class="ar-cell">يجري / يمشي</td></tr>
+        <tr><td>16</td><td>schlafen</td><td class="prt-st">schlief</td><td><span class="chip-sm chip-st">a→ie</span></td><td class="ar-cell">ينام</td></tr>
+        <tr><td>17</td><td>gehen</td><td class="prt-st">ging</td><td><span class="chip-sm chip-st">unreg.</span></td><td class="ar-cell">يذهب</td></tr>
+      </tbody>
+    </table>
+  </div>
+</div>
+
+<!-- TRENNBARE VERBEN -->
+<div class="sec-hdr" id="trennbar">
+  <div class="sec-dot" style="background:var(--tr)"></div>
+  <div class="sec-title">Trennbare Verben</div>
+  <div class="sec-line"></div>
+</div>
+
+<div class="memo">
+  <div class="memo-box sw" style="background:var(--tr-l);border-color:var(--tr-b);color:var(--tr-t)">
+    <strong>Regel:</strong> Im Präteritum bleibt das Präfix am Ende des konjugierten Verbs.<br>
+    <em>Er rief seine Mutter <strong>an</strong>.</em> &nbsp;|&nbsp; <em>Sie stieg in den Bus <strong>ein</strong>.</em>
+  </div>
+</div>
+
+<div class="tbl-wrap">
+  <div class="tbl-box">
+    <table class="tbl">
+      <thead><tr><th>#</th><th>Infinitiv</th><th>Präteritum</th><th>Typ</th><th>Arabisch</th></tr></thead>
+      <tbody>
+        <tr><td>1</td><td>anrufen</td><td class="prt-tr">rief an</td><td><span class="chip-sm chip-tr">ei→ie</span></td><td class="ar-cell">يتصل</td></tr>
+        <tr><td>2</td><td>einladen</td><td class="prt-tr">lud ein</td><td><span class="chip-sm chip-tr">a→u</span></td><td class="ar-cell">يدعو</td></tr>
+        <tr><td>3</td><td>aufstehen</td><td class="prt-tr">stand auf</td><td><span class="chip-sm chip-tr">unreg.</span></td><td class="ar-cell">يستيقظ / ينهض</td></tr>
+        <tr><td>4</td><td>einsteigen</td><td class="prt-tr">stieg ein</td><td><span class="chip-sm chip-tr">ei→ie</span></td><td class="ar-cell">يصعد</td></tr>
+        <tr><td>5</td><td>aussteigen</td><td class="prt-tr">stieg aus</td><td><span class="chip-sm chip-tr">ei→ie</span></td><td class="ar-cell">ينزل</td></tr>
+        <tr><td>6</td><td>umziehen</td><td class="prt-tr">zog um</td><td><span class="chip-sm chip-tr">ie→o</span></td><td class="ar-cell">ينتقل للسكن</td></tr>
+      </tbody>
+    </table>
+  </div>
+</div>
+
+<div class="footer">
+  <div class="footer-brand">Spiel Deutsch</div>
+  <div class="footer-credit">by Mostafa Toumi</div>
+</div>
+</body>
+</html>
