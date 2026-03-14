@@ -1,0 +1,174 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<title>Personalpronomen — Lernkarten</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=DM+Sans:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --bg:#F7F4EF;--surface:#fff;--text:#1C1917;--muted:#78716C;--hint:#A8A29E;
+  --nom:#185FA5;--noml:#E6F1FB;--nomt:#0C447C;--nomb:#B5D4F4;
+  --akk:#D85A30;--akkl:#FAECE7;--akkt:#7C2D12;--akkb:#FDBA74;
+  --dat:#7C3AED;--datl:#EDE9FE;--datt:#5B21B6;--datb:#C4B5FD;
+  --green:#1D9E75;--greenl:#E1F5EE;--greent:#0F6E56;
+  --red:#D85A30;--redl:#FAECE7;--redt:#993C1D;
+  --border:rgba(28,25,23,0.1);--bm:rgba(28,25,23,0.15);
+  --r:16px;--rs:12px;--sh:0 2px 12px rgba(28,25,23,0.07);--shc:0 8px 32px rgba(28,25,23,0.12)
+}
+html,body{min-height:100%;background:var(--bg);font-family:'DM Sans',sans-serif;color:var(--text);-webkit-font-smoothing:antialiased}
+body{display:flex;flex-direction:column;align-items:center;padding-bottom:32px}
+.hdr{width:100%;max-width:560px;padding:20px 20px 0;display:flex;justify-content:space-between;align-items:flex-start}
+.title{font-family:'DM Serif Display',serif;font-size:clamp(18px,5vw,24px)}
+.subtitle{font-size:12px;color:var(--muted);margin-top:3px}
+.counter{font-size:13px;color:var(--muted);margin-top:4px;white-space:nowrap}
+.prog-wrap{width:100%;max-width:560px;padding:12px 20px 0}
+.prog-meta{display:flex;justify-content:space-between;font-size:12px;color:var(--muted);margin-bottom:6px}
+.prog-bar{height:4px;background:var(--border);border-radius:4px;overflow:hidden}
+.prog-fill{height:100%;background:var(--nom);border-radius:4px;transition:width .4s}
+
+/* Card */
+.card-area{width:100%;max-width:560px;padding:14px 20px 0;display:flex;flex-direction:column}
+.card-wrap{perspective:1000px;height:clamp(230px,50vw,290px);cursor:pointer;-webkit-tap-highlight-color:transparent;user-select:none}
+.card{width:100%;height:100%;position:relative;transform-style:preserve-3d;transition:transform .5s cubic-bezier(.4,0,.2,1)}
+.card.flipped{transform:rotateY(180deg)}
+.face{position:absolute;inset:0;backface-visibility:hidden;-webkit-backface-visibility:hidden;border-radius:var(--r);background:var(--surface);box-shadow:var(--shc);display:flex;flex-direction:column;align-items:center;justify-content:center;padding:20px 24px;gap:6px;border:1px solid var(--border)}
+.back{transform:rotateY(180deg)}
+.f-label{font-size:10px;font-weight:600;letter-spacing:1.2px;text-transform:uppercase;color:var(--hint)}
+.f-person{font-family:'DM Serif Display',serif;font-size:clamp(20px,6vw,28px);color:var(--text);text-align:center;line-height:1.2}
+.f-ar{font-size:13px;color:var(--muted);direction:rtl;text-align:center}
+.f-hint{font-size:11px;color:var(--hint);margin-top:4px}
+/* Back — show all 3 cases */
+.cases-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;width:100%;margin-top:4px}
+.case-col{display:flex;flex-direction:column;align-items:center;gap:5px}
+.case-label{font-size:9px;font-weight:600;letter-spacing:.8px;text-transform:uppercase}
+.case-label.nom{color:var(--nomt)}
+.case-label.akk{color:var(--akkt)}
+.case-label.dat{color:var(--datt)}
+.case-val{font-family:'DM Serif Display',serif;font-size:clamp(18px,5.5vw,26px);font-weight:400;padding:5px 12px;border-radius:var(--rs)}
+.case-val.nom{background:var(--noml);color:var(--nomt)}
+.case-val.akk{background:var(--akkl);color:var(--akkt)}
+.case-val.dat{background:var(--datl);color:var(--datt)}
+.case-sub{font-size:10px;color:var(--hint);text-align:center}
+
+.btns{display:flex;gap:10px;margin-top:12px}
+.btn{flex:1;padding:13px;border-radius:var(--rs);border:1px solid var(--bm);background:var(--surface);color:var(--text);font-family:'DM Sans',sans-serif;font-size:14px;font-weight:500;cursor:pointer;transition:all .15s;-webkit-tap-highlight-color:transparent;box-shadow:var(--sh)}
+.btn:active{transform:scale(.97)}
+.btn.wrong{border-color:var(--red);color:var(--redt);background:var(--redl)}
+.btn.correct{border-color:var(--green);color:var(--greent);background:var(--greenl)}
+.btn.flip{background:var(--text);color:var(--bg);border-color:var(--text)}
+.stats{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin-top:12px}
+.stat{background:var(--surface);border:1px solid var(--border);border-radius:var(--rs);padding:12px 8px;text-align:center;box-shadow:var(--sh)}
+.stat-n{font-family:'DM Serif Display',serif;font-size:24px;line-height:1}
+.stat-l{font-size:10px;font-weight:600;letter-spacing:.5px;text-transform:uppercase;color:var(--hint);margin-top:3px}
+.done{text-align:center;padding:40px 20px;display:flex;flex-direction:column;align-items:center;gap:12px}
+.done h2{font-family:'DM Serif Display',serif;font-size:28px}
+.restart{padding:13px 32px;border-radius:var(--rs);background:var(--text);color:var(--bg);font-family:'DM Sans',sans-serif;font-size:15px;font-weight:500;border:none;cursor:pointer}
+.footer{padding:20px 0 8px;font-size:11px;font-weight:600;letter-spacing:2px;text-transform:uppercase;color:var(--hint);text-align:center;width:100%}
+</style>
+</head>
+<body>
+<div class="hdr">
+  <div><div class="title">Personalpronomen</div><div class="subtitle">Alle 3 Formen auf einen Blick</div></div>
+  <span class="counter" id="counter">1 / 9</span>
+</div>
+<div class="prog-wrap">
+  <div class="prog-meta"><span id="prog-lbl">0%</span><span id="prog-done">0 fertig</span></div>
+  <div class="prog-bar"><div class="prog-fill" id="prog" style="width:0%"></div></div>
+</div>
+
+<div class="card-area" id="card-area">
+  <div class="card-wrap" onclick="flipCard()">
+    <div class="card" id="card">
+      <div class="face front">
+        <div class="f-label">Person</div>
+        <div class="f-person" id="f-person">1. Person Singular<br><small style="font-size:14px;font-weight:400;color:var(--muted)">المتكلم المفرد</small></div>
+        <div class="f-hint">Was sind Nom · Akk · Dat?</div>
+      </div>
+      <div class="face back">
+        <div class="f-label">Nominativ · Akkusativ · Dativ</div>
+        <div class="f-person" id="b-person">1. Person Singular</div>
+        <div class="cases-grid" id="b-cases"></div>
+        <div class="f-ar" id="b-ar"></div>
+      </div>
+    </div>
+  </div>
+  <div class="btns" id="btns" style="display:none">
+    <button class="btn wrong" onclick="answer(false)">✗ nochmal</button>
+    <button class="btn correct" onclick="answer(true)">✓ gewusst</button>
+  </div>
+  <div class="btns" id="flipbtn">
+    <button class="btn flip" onclick="flipCard()">umdrehen</button>
+  </div>
+  <div class="stats">
+    <div class="stat"><div class="stat-n" id="s-c" style="color:var(--green)">0</div><div class="stat-l">Gewusst</div></div>
+    <div class="stat"><div class="stat-n" id="s-w" style="color:var(--red)">0</div><div class="stat-l">Nochmal</div></div>
+    <div class="stat"><div class="stat-n" id="s-l">9</div><div class="stat-l">Verbleibend</div></div>
+  </div>
+</div>
+<div class="footer">by Mostafa Toumi</div>
+<script>
+const ALL=[
+  {person:"1. Person Singular",short:"ich",ar:"أنا — المتكلم المفرد",nom:"ich",akk:"mich",dat:"mir",nomQ:"Wer? Ich bin hier.",akkQ:"Er sieht mich.",datQ:"Er gibt mir das Buch."},
+  {person:"2. Person Singular",short:"du",ar:"أنت — المخاطب المفرد",nom:"du",akk:"dich",dat:"dir",nomQ:"Wer? Du bist hier.",akkQ:"Ich sehe dich.",datQ:"Ich helfe dir."},
+  {person:"3. Pers. Sg. mask.",short:"er",ar:"هو — الغائب المذكر",nom:"er",akk:"ihn",dat:"ihm",nomQ:"Wer? Er arbeitet.",akkQ:"Ich kenne ihn.",datQ:"Ich gebe ihm Geld."},
+  {person:"3. Pers. Sg. fem.",short:"sie",ar:"هي — الغائبة المؤنثة",nom:"sie",akk:"sie",dat:"ihr",nomQ:"Wer? Sie lernt.",akkQ:"Ich sehe sie.",datQ:"Ich helfe ihr."},
+  {person:"3. Pers. Sg. neutr.",short:"es",ar:"هو/هي — المحايد",nom:"es",akk:"es",dat:"ihm",nomQ:"Wer? Es regnet.",akkQ:"Ich mag es.",datQ:"Ich gebe ihm (dem Kind) etwas."},
+  {person:"1. Person Plural",short:"wir",ar:"نحن — المتكلم الجمع",nom:"wir",akk:"uns",dat:"uns",nomQ:"Wer? Wir gehen.",akkQ:"Er sieht uns.",datQ:"Er hilft uns."},
+  {person:"2. Person Plural",short:"ihr",ar:"أنتم — المخاطب الجمع",nom:"ihr",akk:"euch",dat:"euch",nomQ:"Wer? Ihr kommt.",akkQ:"Ich sehe euch.",datQ:"Ich helfe euch."},
+  {person:"3. Person Plural",short:"sie",ar:"هم — الغائب الجمع",nom:"sie",akk:"sie",dat:"ihnen",nomQ:"Wer? Sie kommen.",akkQ:"Ich sehe sie.",datQ:"Ich gebe ihnen das Buch."},
+  {person:"Formell (Sie)",short:"Sie",ar:"حضرتك — الرسمي",nom:"Sie",akk:"Sie",dat:"Ihnen",nomQ:"Wer? Sie sind Herr Müller.",akkQ:"Ich sehe Sie.",datQ:"Ich danke Ihnen."},
+];
+let deck=[],idx=0,correct=0,wrong=0,flipped=false;
+function resetDeck(){
+  deck=[...ALL].sort(()=>Math.random()-.5);
+  idx=0;correct=0;wrong=0;flipped=false;
+  document.getElementById('card').classList.remove('flipped');
+  document.getElementById('btns').style.display='none';
+  document.getElementById('flipbtn').style.display='';
+  updateStats();showCard();
+}
+function showCard(){
+  if(idx>=deck.length){showDone();return;}
+  const c=deck[idx];
+  document.getElementById('f-person').innerHTML=c.person+'<br><small style="font-size:14px;font-weight:400;color:var(--muted)">'+c.ar+'</small>';
+  document.getElementById('b-person').textContent=c.person;
+  // Build cases grid
+  const grid=document.getElementById('b-cases');
+  grid.innerHTML=`
+    <div class="case-col">
+      <div class="case-label nom">Nominativ</div>
+      <div class="case-val nom">${c.nom}</div>
+      <div class="case-sub">Wer?</div>
+    </div>
+    <div class="case-col">
+      <div class="case-label akk">Akkusativ</div>
+      <div class="case-val akk">${c.akk}</div>
+      <div class="case-sub">Wen?</div>
+    </div>
+    <div class="case-col">
+      <div class="case-label dat">Dativ</div>
+      <div class="case-val dat">${c.dat}</div>
+      <div class="case-sub">Wem?</div>
+    </div>`;
+  document.getElementById('b-ar').textContent=c.ar;
+  const total=deck.length;
+  document.getElementById('counter').textContent=(idx+1)+' / '+total;
+  document.getElementById('prog-lbl').textContent=Math.round(idx/total*100)+'%';
+  document.getElementById('prog-done').textContent=idx+' fertig';
+  document.getElementById('prog').style.width=(idx/total*100)+'%';
+  flipped=false;
+  document.getElementById('card').classList.remove('flipped');
+  document.getElementById('btns').style.display='none';
+  document.getElementById('flipbtn').style.display='';
+}
+function flipCard(){if(flipped)return;flipped=true;document.getElementById('card').classList.add('flipped');setTimeout(()=>{document.getElementById('btns').style.display='';document.getElementById('flipbtn').style.display='none';},250);}
+function answer(ok){if(ok)correct++;else{wrong++;deck.push(deck[idx]);}idx++;updateStats();showCard();}
+function updateStats(){document.getElementById('s-c').textContent=correct;document.getElementById('s-w').textContent=wrong;document.getElementById('s-l').textContent=Math.max(0,deck.length-idx);}
+function showDone(){const pct=Math.round(correct/(correct+wrong)*100)||0;document.getElementById('card-area').innerHTML=`<div class="done"><div style="font-size:48px">${pct>=80?'🎉':pct>=50?'💪':'📚'}</div><h2>Geschafft!</h2><p style="color:var(--muted);font-size:14px">${correct} gewusst · ${wrong} nochmal · ${pct}%</p><button class="restart" onclick="location.reload()">Nochmal ↺</button></div>`;}
+resetDeck();
+</script>
+</body>
+</html>

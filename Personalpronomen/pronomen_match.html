@@ -1,0 +1,237 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<title>Personalpronomen — Match</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=DM+Sans:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --bg:#F7F4EF;--surface:#fff;--text:#1C1917;--muted:#78716C;--hint:#A8A29E;
+  --nom:#185FA5;--noml:#E6F1FB;--nomt:#0C447C;--nomb:#B5D4F4;
+  --akk:#D85A30;--akkl:#FAECE7;--akkt:#7C2D12;--akkb:#FDBA74;
+  --dat:#7C3AED;--datl:#EDE9FE;--datt:#5B21B6;--datb:#C4B5FD;
+  --green:#1D9E75;--greenl:#E1F5EE;--greent:#0F6E56;
+  --red:#D85A30;--redl:#FAECE7;
+  --border:rgba(28,25,23,0.1);--bm:rgba(28,25,23,0.15);
+  --r:16px;--rs:12px;--sh:0 2px 12px rgba(28,25,23,0.07);--shc:0 4px 20px rgba(28,25,23,0.10)
+}
+html,body{min-height:100%;background:var(--bg);font-family:'DM Sans',sans-serif;color:var(--text);-webkit-font-smoothing:antialiased}
+body{display:flex;flex-direction:column;align-items:center;padding-bottom:32px}
+.hdr{width:100%;max-width:620px;padding:20px 20px 0;display:flex;justify-content:space-between;align-items:flex-start}
+.title{font-family:'DM Serif Display',serif;font-size:clamp(18px,5vw,24px)}
+.subtitle{font-size:12px;color:var(--muted);margin-top:3px}
+.meta{text-align:right;font-size:12px;color:var(--muted)}
+.prog-wrap{width:100%;max-width:620px;padding:10px 20px 0}
+.prog-bar{height:4px;background:var(--border);border-radius:4px;overflow:hidden}
+.prog-fill{height:100%;background:var(--nom);border-radius:4px;transition:width .4s}
+.srow{width:100%;max-width:620px;padding:10px 20px 0;display:flex;gap:10px}
+.sp{flex:1;background:var(--surface);border:1px solid var(--border);border-radius:var(--rs);padding:10px 8px;text-align:center;box-shadow:var(--sh)}
+.sp-n{font-family:'DM Serif Display',serif;font-size:20px;line-height:1}
+.sp-l{font-size:10px;font-weight:600;letter-spacing:.5px;text-transform:uppercase;color:var(--hint);margin-top:3px}
+/* Person hint */
+.person-hint{width:100%;max-width:620px;padding:10px 20px 0}
+.ph-box{background:var(--surface);border:1px solid var(--border);border-radius:var(--rs);padding:12px 16px;box-shadow:var(--sh);font-size:13px;color:var(--muted)}
+.ph-box strong{color:var(--text);font-weight:600}
+/* 3 buckets */
+.buckets{width:100%;max-width:620px;padding:10px 20px 0;display:grid;grid-template-columns:repeat(3,1fr);gap:10px}
+.bucket{border-radius:var(--rs);border:2px dashed;padding:10px 8px;min-height:72px;display:flex;flex-direction:column;align-items:center;gap:5px;transition:all .2s}
+.bucket.nom{border-color:var(--nomb);background:var(--noml)}
+.bucket.akk{border-color:var(--akkb);background:var(--akkl)}
+.bucket.dat{border-color:var(--datb);background:var(--datl)}
+.bucket.dragover{transform:scale(1.04);box-shadow:var(--shc)}
+.bt{font-size:10px;font-weight:600;letter-spacing:.8px;text-transform:uppercase}
+.bucket.nom .bt{color:var(--nomt)}
+.bucket.akk .bt{color:var(--akkt)}
+.bucket.dat .bt{color:var(--datt)}
+.bt-hint{font-size:10px;opacity:.7}
+.bucket.nom .bt-hint{color:var(--nomt)}
+.bucket.akk .bt-hint{color:var(--akkt)}
+.bucket.dat .bt-hint{color:var(--datt)}
+.bc{display:flex;flex-wrap:wrap;gap:4px;justify-content:center;width:100%}
+.pchip{font-family:'DM Serif Display',serif;font-size:14px;font-weight:400;padding:3px 10px;border-radius:20px;white-space:nowrap}
+.pchip.ok{background:rgba(255,255,255,.7)}
+.pchip.fail{text-decoration:line-through;opacity:.5}
+/* Pool */
+.pool-lbl{width:100%;max-width:620px;padding:12px 20px 4px;font-size:11px;font-weight:600;letter-spacing:1px;text-transform:uppercase;color:var(--hint)}
+.pool{width:100%;max-width:620px;padding:0 20px;display:flex;flex-wrap:wrap;gap:8px;justify-content:center;min-height:44px}
+.chip{background:var(--surface);border:1.5px solid var(--bm);border-radius:20px;padding:8px 16px;font-family:'DM Serif Display',serif;font-size:16px;font-weight:400;color:var(--text);cursor:grab;user-select:none;box-shadow:var(--sh);transition:transform .15s,box-shadow .15s;-webkit-tap-highlight-color:transparent}
+.chip:active{cursor:grabbing;transform:scale(1.06);box-shadow:var(--shc)}
+.chip.dragging{opacity:.4}
+.chip.selected{background:var(--text);color:var(--bg);border-color:var(--text);transform:scale(1.06)}
+.toast{position:fixed;bottom:80px;left:50%;transform:translateX(-50%) translateY(20px);padding:10px 20px;border-radius:20px;font-size:14px;font-weight:600;opacity:0;transition:opacity .2s,transform .2s;pointer-events:none;z-index:100}
+.toast.show{opacity:1;transform:translateX(-50%) translateY(0)}
+.toast.ok{background:var(--greenl);color:var(--greent);border:1px solid var(--green)}
+.toast.fail{background:var(--redl);color:var(--red);border:1px solid var(--red)}
+/* Done */
+.done{width:100%;max-width:620px;padding:40px 20px;display:flex;flex-direction:column;align-items:center;text-align:center;gap:12px}
+.done h2{font-family:'DM Serif Display',serif;font-size:28px}
+.dgrid{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;width:100%;margin-top:8px}
+.dg{background:var(--surface);border:1px solid var(--border);border-radius:var(--rs);padding:14px 8px;text-align:center;box-shadow:var(--sh)}
+.dg-n{font-family:'DM Serif Display',serif;font-size:26px;line-height:1}
+.dg-l{font-size:10px;font-weight:600;text-transform:uppercase;letter-spacing:.5px;color:var(--hint);margin-top:4px}
+.restart{padding:13px 32px;border-radius:var(--rs);background:var(--text);color:var(--bg);font-family:'DM Sans',sans-serif;font-size:15px;font-weight:500;border:none;cursor:pointer;margin-top:4px}
+.footer{padding:20px 0 8px;font-size:11px;font-weight:600;letter-spacing:2px;text-transform:uppercase;color:var(--hint);text-align:center;width:100%}
+</style>
+</head>
+<body>
+<div class="hdr">
+  <div><div class="title">Personalpronomen Match</div><div class="subtitle">Nominativ · Akkusativ · Dativ</div></div>
+  <div class="meta" id="meta">Runde 1 / 3</div>
+</div>
+<div class="prog-wrap"><div class="prog-bar"><div class="prog-fill" id="prog" style="width:0%"></div></div></div>
+<div class="srow">
+  <div class="sp"><div class="sp-n" id="sc-ok" style="color:var(--green)">0</div><div class="sp-l">Richtig</div></div>
+  <div class="sp"><div class="sp-n" id="sc-no" style="color:var(--red)">0</div><div class="sp-l">Falsch</div></div>
+  <div class="sp"><div class="sp-n" id="sc-pt" style="color:var(--nom)">0</div><div class="sp-l">Punkte</div></div>
+</div>
+<div class="person-hint">
+  <div class="ph-box" id="phbox">Ziehe jedes Pronomen in den richtigen Kasus.</div>
+</div>
+<div class="buckets">
+  <div class="bucket nom" id="b-nom" ondragover="dov(event)" ondrop="drop(event,'nom')" onclick="tapBucket('nom')">
+    <div class="bt">Nominativ</div><div class="bt-hint">Wer?</div><div class="bc" id="bc-nom"></div>
+  </div>
+  <div class="bucket akk" id="b-akk" ondragover="dov(event)" ondrop="drop(event,'akk')" onclick="tapBucket('akk')">
+    <div class="bt">Akkusativ</div><div class="bt-hint">Wen?</div><div class="bc" id="bc-akk"></div>
+  </div>
+  <div class="bucket dat" id="b-dat" ondragover="dov(event)" ondrop="drop(event,'dat')" onclick="tapBucket('dat')">
+    <div class="bt">Dativ</div><div class="bt-hint">Wem?</div><div class="bc" id="bc-dat"></div>
+  </div>
+</div>
+<div class="pool-lbl">Pronomen zum Zuordnen:</div>
+<div class="pool" id="pool"></div>
+<div class="toast" id="toast"></div>
+<div class="footer">by Mostafa Toumi</div>
+
+<script>
+// Each person row: {person, ar, nom, akk, dat}
+const PERSONS=[
+  {person:"ich / أنا",     nom:"ich",  akk:"mich", dat:"mir"},
+  {person:"du / أنت",      nom:"du",   akk:"dich", dat:"dir"},
+  {person:"er / هو",       nom:"er",   akk:"ihn",  dat:"ihm"},
+  {person:"sie (sg) / هي", nom:"sie",  akk:"sie",  dat:"ihr"},
+  {person:"es / هو-هي",    nom:"es",   akk:"es",   dat:"ihm"},
+  {person:"wir / نحن",     nom:"wir",  akk:"uns",  dat:"uns"},
+  {person:"ihr / أنتم",    nom:"ihr",  akk:"euch", dat:"euch"},
+  {person:"sie (pl) / هم", nom:"sie",  akk:"sie",  dat:"ihnen"},
+  {person:"Sie / حضرتك",   nom:"Sie",  akk:"Sie",  dat:"Ihnen"},
+];
+
+// 3 rounds: each round covers 3 persons, showing all 3 case forms of each
+// Round 1: persons 0-2, Round 2: persons 3-5, Round 3: persons 6-8
+const ROUNDS=[
+  [0,1,2],[3,4,5],[6,7,8]
+];
+
+let rIdx=0,correct=0,wrong=0,points=0,dragItem=null,selectedChip=null;
+
+function init(){rIdx=0;correct=0;wrong=0;points=0;loadRound();}
+
+function loadRound(){
+  if(rIdx>=ROUNDS.length){showDone();return;}
+  selectedChip=null;
+  const personIdxs=ROUNDS[rIdx];
+  document.getElementById('meta').textContent='Runde '+(rIdx+1)+' / '+ROUNDS.length;
+  document.getElementById('prog').style.width=(rIdx/ROUNDS.length*100)+'%';
+  ['nom','akk','dat'].forEach(k=>{document.getElementById('bc-'+k).innerHTML='';});
+
+  // Build hint
+  const names=personIdxs.map(i=>PERSONS[i].person).join(' · ');
+  document.getElementById('phbox').innerHTML='<strong>Personen:</strong> '+names+'<br><span style="font-size:12px;color:var(--hint)">Jede Person hat 3 Formen — Nom, Akk, Dat. Ordne sie zu!</span>';
+
+  // Build pool: all pronomen for this round (9 chips: 3 persons × 3 cases)
+  const pool=document.getElementById('pool');pool.innerHTML='';
+  const items=[];
+  personIdxs.forEach(pi=>{
+    const p=PERSONS[pi];
+    items.push({v:p.nom,cas:'nom',person:p.person});
+    items.push({v:p.akk,cas:'akk',person:p.person});
+    items.push({v:p.dat,cas:'dat',person:p.person});
+  });
+  // Shuffle
+  items.sort(()=>Math.random()-.5);
+  items.forEach(item=>{
+    const chip=document.createElement('div');
+    chip.className='chip';
+    chip.textContent=item.v;
+    chip.dataset.v=item.v;
+    chip.dataset.cas=item.cas;
+    chip.dataset.person=item.person;
+    chip.draggable=true;
+    chip.addEventListener('dragstart',e=>{dragItem=chip;chip.classList.add('dragging');e.dataTransfer.effectAllowed='move';});
+    chip.addEventListener('dragend',()=>{chip.classList.remove('dragging');dragItem=null;});
+    chip.addEventListener('click',()=>selectChip(chip));
+    pool.appendChild(chip);
+  });
+}
+
+function selectChip(chip){
+  if(selectedChip===chip){chip.classList.remove('selected');selectedChip=null;return;}
+  if(selectedChip)selectedChip.classList.remove('selected');
+  chip.classList.add('selected');selectedChip=chip;
+}
+
+function tapBucket(cas){if(!selectedChip)return;placeChip(selectedChip,cas);selectedChip=null;}
+function dov(e){e.preventDefault();e.currentTarget.classList.add('dragover');}
+function drop(e,cas){e.preventDefault();e.currentTarget.classList.remove('dragover');if(!dragItem)return;placeChip(dragItem,cas);}
+document.querySelectorAll('.bucket').forEach(b=>b.addEventListener('dragleave',()=>b.classList.remove('dragover')));
+
+function placeChip(chip,cas){
+  const correctCas=chip.dataset.cas;
+  const v=chip.dataset.v;
+  const ok=cas===correctCas;
+  if(ok){correct++;points+=2;}else{wrong++;points=Math.max(0,points-1);}
+  document.getElementById('sc-ok').textContent=correct;
+  document.getElementById('sc-no').textContent=wrong;
+  document.getElementById('sc-pt').textContent=points;
+  const placed=document.createElement('span');
+  placed.className='pchip '+(ok?'ok':'fail');
+  placed.textContent=v+(ok?'':' ✗');
+  document.getElementById('bc-'+cas).appendChild(placed);
+  if(!ok){
+    showToast('✗ '+v+' → '+correctCas,'fail');
+    const hint=document.createElement('span');hint.className='pchip ok';hint.textContent=v+' ✓';hint.style.opacity='.4';
+    document.getElementById('bc-'+correctCas).appendChild(hint);
+  } else {
+    showToast('✓ '+v+' korrekt!','ok');
+  }
+  chip.remove();
+  if(document.getElementById('pool').children.length===0){
+    setTimeout(()=>{rIdx++;loadRound();},700);
+  }
+}
+
+let toastTimer;
+function showToast(msg,type){
+  const t=document.getElementById('toast');clearTimeout(toastTimer);
+  t.textContent=msg;t.className='toast show '+type;
+  toastTimer=setTimeout(()=>t.classList.remove('show'),1300);
+}
+
+function showDone(){
+  document.querySelector('.buckets').style.display='none';
+  document.querySelector('.pool-lbl').style.display='none';
+  document.getElementById('pool').style.display='none';
+  document.querySelector('.person-hint').style.display='none';
+  document.getElementById('prog').style.width='100%';
+  const total=correct+wrong,pct=Math.round(correct/total*100)||0;
+  const d=document.createElement('div');d.className='done';
+  d.innerHTML=`<div style="font-size:48px">${pct>=90?'🏆':pct>=70?'🎉':pct>=50?'💪':'📚'}</div>
+  <h2>Fertig!</h2>
+  <div style="font-family:'DM Serif Display',serif;font-size:56px;line-height:1">${pct}%</div>
+  <div class="dgrid">
+    <div class="dg"><div class="dg-n" style="color:var(--green)">${correct}</div><div class="dg-l">Richtig</div></div>
+    <div class="dg"><div class="dg-n" style="color:var(--red)">${wrong}</div><div class="dg-l">Falsch</div></div>
+    <div class="dg"><div class="dg-n" style="color:var(--nom)">${points}</div><div class="dg-l">Punkte</div></div>
+  </div>
+  <button class="restart" onclick="location.reload()">Nochmal ↺</button>`;
+  document.querySelector('.footer').before(d);
+}
+
+init();
+</script>
+</body>
+</html>

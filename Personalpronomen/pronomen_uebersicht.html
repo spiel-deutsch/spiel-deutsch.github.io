@@ -1,0 +1,412 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Personalpronomen — Übersicht</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=DM+Sans:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --bg:#F7F4EF;--surface:#fff;--text:#1C1917;--muted:#78716C;--hint:#A8A29E;
+  --nom:#185FA5;--noml:#E6F1FB;--nomt:#0C447C;--nomb:#B5D4F4;
+  --akk:#D85A30;--akkl:#FAECE7;--akkt:#7C2D12;--akkb:#FDBA74;
+  --dat:#7C3AED;--datl:#EDE9FE;--datt:#5B21B6;--datb:#C4B5FD;
+  --border:rgba(28,25,23,0.1);--bm:rgba(28,25,23,0.15);
+  --r:16px;--rs:12px;--sh:0 2px 12px rgba(28,25,23,0.07);--shc:0 8px 32px rgba(28,25,23,0.11)
+}
+html,body{min-height:100%;background:var(--bg);font-family:'DM Sans',sans-serif;color:var(--text);-webkit-font-smoothing:antialiased}
+body{display:flex;flex-direction:column;align-items:center;padding-bottom:48px}
+
+.hero{width:100%;max-width:720px;padding:clamp(32px,8vw,60px) 24px 0;text-align:center}
+.tag{display:inline-block;font-size:11px;font-weight:600;letter-spacing:2px;text-transform:uppercase;color:var(--nomt);background:var(--noml);border:1px solid var(--nomb);border-radius:20px;padding:4px 14px;margin-bottom:16px}
+.h1{font-family:'DM Serif Display',serif;font-size:clamp(28px,7vw,48px);letter-spacing:-.5px;line-height:1.1}
+.h1 em{font-style:italic;color:var(--nom)}
+.sub{font-size:14px;color:var(--muted);margin:10px auto 0;line-height:1.6;max-width:460px}
+
+.nav{width:100%;max-width:720px;padding:18px 24px 0;display:flex;gap:8px;flex-wrap:wrap}
+.nb{padding:5px 13px;border-radius:20px;border:1px solid var(--bm);font-family:'DM Sans',sans-serif;font-size:12px;font-weight:600;cursor:pointer;background:var(--surface);color:var(--muted);text-decoration:none;transition:all .15s;box-shadow:var(--sh)}
+.nb:hover{background:var(--text);color:var(--bg);border-color:var(--text)}
+
+/* Section header */
+.sec-hdr{width:100%;max-width:720px;padding:clamp(24px,6vw,40px) 24px 0;display:flex;align-items:center;gap:12px}
+.sec-dot{width:10px;height:10px;border-radius:50%;flex-shrink:0}
+.sec-title{font-family:'DM Serif Display',serif;font-size:clamp(18px,5vw,26px)}
+.sec-line{flex:1;height:1px;background:var(--border)}
+
+/* Intro box */
+.intro-wrap{width:100%;max-width:720px;padding:clamp(20px,5vw,32px) 24px 0}
+.intro-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:12px}
+.case-card{border-radius:var(--r);padding:18px 20px;border:1px solid}
+.case-card.nom{background:var(--noml);border-color:var(--nomb)}
+.case-card.akk{background:var(--akkl);border-color:var(--akkb)}
+.case-card.dat{background:var(--datl);border-color:var(--datb)}
+.cc-top{display:flex;align-items:center;gap:8px;margin-bottom:10px}
+.cc-dot{width:8px;height:8px;border-radius:50%}
+.cc-title{font-family:'DM Serif Display',serif;font-size:17px}
+.case-card.nom .cc-title{color:var(--nomt)}
+.case-card.akk .cc-title{color:var(--akkt)}
+.case-card.dat .cc-title{color:var(--datt)}
+.cc-q{font-size:13px;font-weight:600;margin-bottom:6px}
+.case-card.nom .cc-q{color:var(--nomt)}
+.case-card.akk .cc-q{color:var(--akkt)}
+.case-card.dat .cc-q{color:var(--datt)}
+.cc-body{font-size:13px;line-height:1.7}
+.case-card.nom .cc-body{color:var(--nomt)}
+.case-card.akk .cc-body{color:var(--akkt)}
+.case-card.dat .cc-body{color:var(--datt)}
+.cc-ex{font-size:12px;font-style:italic;margin-top:8px;opacity:.85}
+
+/* MAIN TABLE */
+.tbl-wrap{width:100%;max-width:720px;padding:12px 24px 0}
+.tbl-box{background:var(--surface);border:1px solid var(--border);border-radius:var(--r);overflow:auto;box-shadow:var(--sh)}
+.main-tbl{width:100%;border-collapse:collapse;font-size:14px;min-width:480px}
+.main-tbl th{padding:10px 14px;text-align:center;font-size:11px;font-weight:600;letter-spacing:.8px;text-transform:uppercase;color:#fff;border-bottom:1px solid rgba(255,255,255,.2)}
+.main-tbl th.nom-h{background:var(--nom)}
+.main-tbl th.akk-h{background:var(--akk)}
+.main-tbl th.dat-h{background:var(--dat)}
+.main-tbl th.person-h{background:var(--text);text-align:left;border-radius:0}
+.main-tbl td{padding:10px 14px;border-bottom:1px solid var(--border);text-align:center;vertical-align:middle}
+.main-tbl tr:last-child td{border-bottom:none}
+.main-tbl td.person-col{text-align:left;font-weight:600;color:var(--text);font-size:13px}
+.main-tbl td.person-col .ar{display:block;font-size:11px;color:var(--hint);direction:rtl;font-weight:400;margin-top:2px}
+.nom-cell{font-weight:700;font-size:15px;color:var(--nomt);background:rgba(24,95,165,.06);border-radius:6px;padding:4px 10px;display:inline-block}
+.akk-cell{font-weight:700;font-size:15px;color:var(--akkt);background:rgba(216,90,48,.08);border-radius:6px;padding:4px 10px;display:inline-block}
+.dat-cell{font-weight:700;font-size:15px;color:var(--datt);background:rgba(124,58,237,.08);border-radius:6px;padding:4px 10px;display:inline-block}
+.main-tbl tr:hover td{background:var(--bg)}
+
+/* Memory tips */
+.tips-wrap{width:100%;max-width:720px;padding:12px 24px 0;display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:12px}
+.tip-box{background:var(--surface);border:1px solid var(--border);border-radius:var(--r);padding:18px 20px;box-shadow:var(--sh)}
+.tip-title{font-size:13px;font-weight:600;color:var(--text);margin-bottom:10px;display:flex;align-items:center;gap:8px}
+.tip-icon{font-size:16px}
+.tip-body{font-size:13px;color:var(--muted);line-height:1.7}
+.tip-body strong{color:var(--text);font-weight:600}
+.tip-body em{font-style:italic}
+.mono{font-family:monospace;font-size:12px;background:var(--bg);padding:1px 5px;border-radius:4px;border:1px solid var(--border)}
+
+/* Sentence examples */
+.ex-grid{width:100%;max-width:720px;padding:12px 24px 0;display:grid;grid-template-columns:repeat(auto-fit,minmax(300px,1fr));gap:12px}
+.ex-card{background:var(--surface);border:1px solid var(--border);border-radius:var(--r);padding:18px 20px;box-shadow:var(--sh)}
+.ex-case-title{font-size:11px;font-weight:600;letter-spacing:1px;text-transform:uppercase;margin-bottom:12px}
+.ex-case-title.nom{color:var(--nomt)}
+.ex-case-title.akk{color:var(--akkt)}
+.ex-case-title.dat{color:var(--datt)}
+.ex-row{margin-bottom:10px;font-size:14px}
+.ex-row:last-child{margin-bottom:0}
+.ex-de{line-height:1.4}
+.ex-de .hl-nom{color:var(--nomt);font-weight:700}
+.ex-de .hl-akk{color:var(--akkt);font-weight:700}
+.ex-de .hl-dat{color:var(--datt);font-weight:700}
+.ex-ar{font-size:12px;color:var(--hint);direction:rtl;display:block;margin-top:2px}
+
+/* Tricky pairs */
+.pairs-wrap{width:100%;max-width:720px;padding:12px 24px 0}
+.pairs-box{background:var(--surface);border:1px solid var(--border);border-radius:var(--r);padding:20px 22px;box-shadow:var(--sh)}
+.pairs-title{font-family:'DM Serif Display',serif;font-size:18px;margin-bottom:14px}
+.pair-row{display:flex;align-items:center;gap:10px;margin-bottom:12px;flex-wrap:wrap;font-size:14px}
+.pair-row:last-child{margin-bottom:0}
+.pair-badge{padding:4px 12px;border-radius:20px;font-weight:600;font-size:13px;white-space:nowrap}
+.pair-badge.nom{background:var(--noml);color:var(--nomt)}
+.pair-badge.akk{background:var(--akkl);color:var(--akkt)}
+.pair-badge.dat{background:var(--datl);color:var(--datt)}
+.pair-arrow{color:var(--hint);font-size:16px}
+.pair-note{font-size:13px;color:var(--muted)}
+
+/* Footer */
+.footer{width:100%;max-width:720px;padding:clamp(36px,8vw,56px) 24px 32px;display:flex;flex-direction:column;align-items:center;gap:6px;text-align:center;border-top:1px solid var(--border);margin-top:clamp(36px,8vw,56px)}
+.footer-brand{font-family:'DM Serif Display',serif;font-size:16px}
+.footer-credit{font-size:11px;font-weight:600;letter-spacing:2px;text-transform:uppercase;color:var(--hint);margin-top:2px}
+</style>
+</head>
+<body>
+
+<div class="hero">
+  <div class="tag">Grammatik Übersicht</div>
+  <h1 class="h1"><em>Personalpronomen</em></h1>
+  <p class="sub">Nominativ · Akkusativ · Dativ — alle Formen auf einen Blick, mit Regeln, Eselsbrücken und arabischen Bedeutungen.</p>
+</div>
+
+<div class="nav">
+  <a class="nb" href="#kasus">Die 3 Kasus</a>
+  <a class="nb" href="#tabelle">Vollständige Tabelle</a>
+  <a class="nb" href="#tipps">Eselsbrücken</a>
+  <a class="nb" href="#beispiele">Beispiele</a>
+  <a class="nb" href="#tricky">Schwierige Paare</a>
+</div>
+
+<!-- 3 KASUS ERKLÄRT -->
+<div class="sec-hdr" id="kasus">
+  <div class="sec-dot" style="background:var(--text)"></div>
+  <div class="sec-title">Die 3 Kasus — was ist der Unterschied?</div>
+  <div class="sec-line"></div>
+</div>
+<div class="intro-wrap">
+  <div class="intro-grid">
+    <div class="case-card nom">
+      <div class="cc-top"><div class="cc-dot" style="background:var(--nom)"></div><div class="cc-title">Nominativ</div></div>
+      <div class="cc-q">Frage: Wer? / Was?</div>
+      <div class="cc-body">Das <strong>Subjekt</strong> — die Person/Sache, die die Handlung ausführt.<br>الفاعل — من يقوم بالفعل</div>
+      <div class="cc-ex"><em><strong>Ich</strong> lerne Deutsch.</em><br>أنا أتعلم الألمانية</div>
+    </div>
+    <div class="case-card akk">
+      <div class="cc-top"><div class="cc-dot" style="background:var(--akk)"></div><div class="cc-title">Akkusativ</div></div>
+      <div class="cc-q">Frage: Wen? / Was?</div>
+      <div class="cc-body">Das <strong>direkte Objekt</strong> — wen/was die Handlung direkt betrifft.<br>المفعول به المباشر</div>
+      <div class="cc-ex"><em>Er sieht <strong>mich</strong>.</em><br>هو يراني</div>
+    </div>
+    <div class="case-card dat">
+      <div class="cc-top"><div class="cc-dot" style="background:var(--dat)"></div><div class="cc-title">Dativ</div></div>
+      <div class="cc-q">Frage: Wem?</div>
+      <div class="cc-body">Das <strong>indirekte Objekt</strong> — wem die Handlung zugute kommt.<br>المفعول به غير المباشر</div>
+      <div class="cc-ex"><em>Er gibt <strong>mir</strong> ein Buch.</em><br>هو يعطيني كتاباً</div>
+    </div>
+  </div>
+</div>
+
+<!-- VOLLSTÄNDIGE TABELLE -->
+<div class="sec-hdr" id="tabelle">
+  <div class="sec-dot" style="background:var(--nom)"></div>
+  <div class="sec-title">Vollständige Tabelle</div>
+  <div class="sec-line"></div>
+</div>
+<div class="tbl-wrap">
+  <div class="tbl-box">
+    <table class="main-tbl">
+      <thead>
+        <tr>
+          <th class="person-h" style="text-align:left">Person</th>
+          <th class="nom-h">Nominativ<br><span style="font-size:10px;opacity:.8">Wer?</span></th>
+          <th class="akk-h">Akkusativ<br><span style="font-size:10px;opacity:.8">Wen?</span></th>
+          <th class="dat-h">Dativ<br><span style="font-size:10px;opacity:.8">Wem?</span></th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td class="person-col">1. Person Singular<span class="ar">المتكلم المفرد</span></td>
+          <td><span class="nom-cell">ich</span></td>
+          <td><span class="akk-cell">mich</span></td>
+          <td><span class="dat-cell">mir</span></td>
+        </tr>
+        <tr>
+          <td class="person-col">2. Person Singular<span class="ar">المخاطب المفرد</span></td>
+          <td><span class="nom-cell">du</span></td>
+          <td><span class="akk-cell">dich</span></td>
+          <td><span class="dat-cell">dir</span></td>
+        </tr>
+        <tr>
+          <td class="person-col">3. Person Sg. mask.<span class="ar">الغائب المذكر</span></td>
+          <td><span class="nom-cell">er</span></td>
+          <td><span class="akk-cell">ihn</span></td>
+          <td><span class="dat-cell">ihm</span></td>
+        </tr>
+        <tr>
+          <td class="person-col">3. Person Sg. fem.<span class="ar">الغائبة المؤنثة</span></td>
+          <td><span class="nom-cell">sie</span></td>
+          <td><span class="akk-cell">sie</span></td>
+          <td><span class="dat-cell">ihr</span></td>
+        </tr>
+        <tr>
+          <td class="person-col">3. Person Sg. neutr.<span class="ar">الغائب المحايد</span></td>
+          <td><span class="nom-cell">es</span></td>
+          <td><span class="akk-cell">es</span></td>
+          <td><span class="dat-cell">ihm</span></td>
+        </tr>
+        <tr>
+          <td class="person-col">1. Person Plural<span class="ar">المتكلم الجمع</span></td>
+          <td><span class="nom-cell">wir</span></td>
+          <td><span class="akk-cell">uns</span></td>
+          <td><span class="dat-cell">uns</span></td>
+        </tr>
+        <tr>
+          <td class="person-col">2. Person Plural<span class="ar">المخاطب الجمع</span></td>
+          <td><span class="nom-cell">ihr</span></td>
+          <td><span class="akk-cell">euch</span></td>
+          <td><span class="dat-cell">euch</span></td>
+        </tr>
+        <tr>
+          <td class="person-col">3. Person Plural<span class="ar">الغائب الجمع</span></td>
+          <td><span class="nom-cell">sie</span></td>
+          <td><span class="akk-cell">sie</span></td>
+          <td><span class="dat-cell">ihnen</span></td>
+        </tr>
+        <tr>
+          <td class="person-col">Formell (Sie)<span class="ar">الصيغة الرسمية</span></td>
+          <td><span class="nom-cell">Sie</span></td>
+          <td><span class="akk-cell">Sie</span></td>
+          <td><span class="dat-cell">Ihnen</span></td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</div>
+
+<!-- ESELSBRÜCKEN -->
+<div class="sec-hdr" id="tipps">
+  <div class="sec-dot" style="background:var(--text)"></div>
+  <div class="sec-title">Eselsbrücken &amp; Tipps</div>
+  <div class="sec-line"></div>
+</div>
+<div class="tips-wrap">
+  <div class="tip-box">
+    <div class="tip-title"><span class="tip-icon">🔵</span>Nominativ — leicht!</div>
+    <div class="tip-body">Die Nominativformen sind <strong>dieselben wie im Englischen</strong> für die Grundformen: ich, du, er, sie, es, wir, ihr, sie.<br><br>Wenn du sagst <em>"Ich bin …"</em> → immer <strong class="mono">ich</strong>.</div>
+  </div>
+  <div class="tip-box">
+    <div class="tip-title"><span class="tip-icon">🟠</span>Akkusativ — nur er/ihn ändert sich!</div>
+    <div class="tip-body">Fast alle Akkusativformen sind gleich wie Nominativ — <strong>außer er → ihn</strong>.<br><br>Trick: <em>"ich sehe <strong>ihn</strong>"</em> → der Mann wird zu <strong class="mono">ihn</strong>.<br>Alle anderen: ich→mich, du→dich, sie→sie, es→es.</div>
+  </div>
+  <div class="tip-box">
+    <div class="tip-title"><span class="tip-icon">🟣</span>Dativ — die schwierigste Form!</div>
+    <div class="tip-body">Merke diese Dativformen:<br><strong class="mono">mir · dir · ihm · ihr · ihm</strong><br><strong class="mono">uns · euch · ihnen · Ihnen</strong><br><br>Trick: <strong>Dativ klingt auf "m"</strong> bei mask/neutr: <em>ihm</em>.</div>
+  </div>
+  <div class="tip-box">
+    <div class="tip-title"><span class="tip-icon">⚡</span>Schnell-Regel</div>
+    <div class="tip-body"><strong>Wer?</strong> → Nominativ (Subjekt)<br><strong>Wen?</strong> → Akkusativ (direkt)<br><strong>Wem?</strong> → Dativ (indirekt)<br><br><em>Ich gebe <strong>ihm</strong> (wem?) das Buch (was?).</em></div>
+  </div>
+  <div class="tip-box">
+    <div class="tip-title"><span class="tip-icon">🎯</span>wir &amp; ihr — gleich!</div>
+    <div class="tip-body">Für <strong>wir</strong>: Akkusativ = Dativ = <strong class="mono">uns</strong><br>Für <strong>ihr</strong>: Akkusativ = Dativ = <strong class="mono">euch</strong><br><br>Keine Änderung nötig! Einfach merken.</div>
+  </div>
+  <div class="tip-box">
+    <div class="tip-title"><span class="tip-icon">👔</span>Formell Sie</div>
+    <div class="tip-body">Nom/Akk: <strong class="mono">Sie</strong> (großes S)<br>Dativ: <strong class="mono">Ihnen</strong> (großes I)<br><br>Immer mit Großbuchstaben — damit man es von <em>sie</em> (3. Person) unterscheidet.</div>
+  </div>
+</div>
+
+<!-- BEISPIELE -->
+<div class="sec-hdr" id="beispiele">
+  <div class="sec-dot" style="background:var(--nom)"></div>
+  <div class="sec-title">Beispiele im Satz</div>
+  <div class="sec-line"></div>
+</div>
+<div class="ex-grid">
+  <div class="ex-card">
+    <div class="ex-case-title nom">Nominativ — Wer macht es?</div>
+    <div class="ex-row">
+      <div class="ex-de"><span class="hl-nom">Ich</span> lerne Deutsch.</div>
+      <span class="ex-ar">أنا أتعلم الألمانية</span>
+    </div>
+    <div class="ex-row">
+      <div class="ex-de"><span class="hl-nom">Du</span> sprichst gut Arabisch.</div>
+      <span class="ex-ar">أنت تتكلم العربية جيداً</span>
+    </div>
+    <div class="ex-row">
+      <div class="ex-de"><span class="hl-nom">Er</span> arbeitet in Berlin.</div>
+      <span class="ex-ar">هو يعمل في برلين</span>
+    </div>
+    <div class="ex-row">
+      <div class="ex-de"><span class="hl-nom">Wir</span> gehen ins Kino.</div>
+      <span class="ex-ar">نحن نذهب إلى السينما</span>
+    </div>
+    <div class="ex-row">
+      <div class="ex-de"><span class="hl-nom">Sie</span> kommen aus Marokko.</div>
+      <span class="ex-ar">هم يأتون من المغرب</span>
+    </div>
+  </div>
+  <div class="ex-card">
+    <div class="ex-case-title akk">Akkusativ — Wen/Was betrifft es?</div>
+    <div class="ex-row">
+      <div class="ex-de">Er sieht <span class="hl-akk">mich</span>.</div>
+      <span class="ex-ar">هو يراني</span>
+    </div>
+    <div class="ex-row">
+      <div class="ex-de">Ich liebe <span class="hl-akk">dich</span>.</div>
+      <span class="ex-ar">أنا أحبك</span>
+    </div>
+    <div class="ex-row">
+      <div class="ex-de">Sie kennt <span class="hl-akk">ihn</span> gut.</div>
+      <span class="ex-ar">هي تعرفه جيداً</span>
+    </div>
+    <div class="ex-row">
+      <div class="ex-de">Er fragt <span class="hl-akk">uns</span>.</div>
+      <span class="ex-ar">هو يسألنا</span>
+    </div>
+    <div class="ex-row">
+      <div class="ex-de">Ich rufe <span class="hl-akk">sie</span> an.</div>
+      <span class="ex-ar">أنا أتصل بها / بهم</span>
+    </div>
+  </div>
+  <div class="ex-card">
+    <div class="ex-case-title dat">Dativ — Wem kommt es zugute?</div>
+    <div class="ex-row">
+      <div class="ex-de">Er gibt <span class="hl-dat">mir</span> das Buch.</div>
+      <span class="ex-ar">هو يعطيني الكتاب</span>
+    </div>
+    <div class="ex-row">
+      <div class="ex-de">Ich helfe <span class="hl-dat">dir</span>.</div>
+      <span class="ex-ar">أنا أساعدك</span>
+    </div>
+    <div class="ex-row">
+      <div class="ex-de">Sie dankt <span class="hl-dat">ihm</span>.</div>
+      <span class="ex-ar">هي تشكره</span>
+    </div>
+    <div class="ex-row">
+      <div class="ex-de">Ich zeige <span class="hl-dat">ihnen</span> den Weg.</div>
+      <span class="ex-ar">أريهم الطريق</span>
+    </div>
+    <div class="ex-row">
+      <div class="ex-de">Er schreibt <span class="hl-dat">uns</span> eine E-Mail.</div>
+      <span class="ex-ar">هو يكتب لنا بريداً إلكترونياً</span>
+    </div>
+  </div>
+</div>
+
+<!-- SCHWIERIGE PAARE -->
+<div class="sec-hdr" id="tricky">
+  <div class="sec-dot" style="background:var(--akk)"></div>
+  <div class="sec-title">Schwierige Paare — Verwechslungsgefahr!</div>
+  <div class="sec-line"></div>
+</div>
+<div class="pairs-wrap">
+  <div class="pairs-box">
+    <div class="pairs-title">Diese Formen sind leicht zu verwechseln</div>
+    <div class="pair-row">
+      <span class="pair-badge nom">sie (Nom)</span>
+      <span class="pair-arrow">↔</span>
+      <span class="pair-badge akk">sie (Akk)</span>
+      <span class="pair-arrow">↔</span>
+      <span class="pair-badge dat">ihr (Dat)</span>
+      <span class="pair-note">— 3. Pers. Sg. fem.: sie/sie/ihr</span>
+    </div>
+    <div class="pair-row">
+      <span class="pair-badge nom">sie (Nom, Pl.)</span>
+      <span class="pair-arrow">↔</span>
+      <span class="pair-badge akk">sie (Akk, Pl.)</span>
+      <span class="pair-arrow">↔</span>
+      <span class="pair-badge dat">ihnen (Dat, Pl.)</span>
+      <span class="pair-note">— 3. Pers. Pl.: sie/sie/ihnen</span>
+    </div>
+    <div class="pair-row">
+      <span class="pair-badge nom">er (Nom)</span>
+      <span class="pair-arrow">→</span>
+      <span class="pair-badge akk">ihn (Akk)</span>
+      <span class="pair-arrow">→</span>
+      <span class="pair-badge dat">ihm (Dat)</span>
+      <span class="pair-note">— der einzige mit 3 verschiedenen Formen!</span>
+    </div>
+    <div class="pair-row">
+      <span class="pair-badge nom">ihr (Nom)</span>
+      <span class="pair-arrow">↔</span>
+      <span class="pair-badge dat">ihr (Dat, sie)</span>
+      <span class="pair-note">— "ihr" = euch ODER ihr (Dativ von sie)</span>
+    </div>
+    <div class="pair-row">
+      <span class="pair-badge nom">Sie (Nom, formell)</span>
+      <span class="pair-arrow">↔</span>
+      <span class="pair-badge nom">sie (Nom, Pl.)</span>
+      <span class="pair-note">— Großschreibung = formell!</span>
+    </div>
+    <div style="margin-top:16px;padding:14px;background:var(--bg);border-radius:var(--rs);font-size:13px;color:var(--muted);line-height:1.7">
+      <strong style="color:var(--text)">Wichtigste Regel:</strong> Bei <strong>er</strong> → nur im Akkusativ ändert sich die Form zu <strong>ihn</strong>. Bei allen anderen bleibt Nom = Akk <em>außer</em> ich→mich und du→dich.
+    </div>
+  </div>
+</div>
+
+<div class="footer">
+  <div class="footer-brand">Spiel Deutsch</div>
+  <div class="footer-credit">by Mostafa Toumi</div>
+</div>
+</body>
+</html>

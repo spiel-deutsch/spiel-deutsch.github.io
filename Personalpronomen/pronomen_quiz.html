@@ -1,0 +1,287 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<title>Personalpronomen — Quiz</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=DM+Sans:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --bg:#F7F4EF;--surface:#fff;--text:#1C1917;--muted:#78716C;--hint:#A8A29E;
+  --nom:#185FA5;--noml:#E6F1FB;--nomt:#0C447C;--nomb:#B5D4F4;
+  --akk:#D85A30;--akkl:#FAECE7;--akkt:#7C2D12;--akkb:#FDBA74;
+  --dat:#7C3AED;--datl:#EDE9FE;--datt:#5B21B6;--datb:#C4B5FD;
+  --green:#1D9E75;--greenl:#E1F5EE;--greent:#0F6E56;
+  --red:#D85A30;--redl:#FAECE7;--redt:#7C2D12;
+  --amber:#B45309;--amberl:#FEF3C7;
+  --border:rgba(28,25,23,0.1);--bm:rgba(28,25,23,0.15);
+  --r:16px;--rs:12px;--sh:0 2px 12px rgba(28,25,23,0.07);--shc:0 8px 32px rgba(28,25,23,0.12)
+}
+html,body{min-height:100%;background:var(--bg);font-family:'DM Sans',sans-serif;color:var(--text);-webkit-font-smoothing:antialiased}
+body{display:flex;flex-direction:column;align-items:center;padding-bottom:32px}
+.hdr{width:100%;max-width:560px;padding:20px 20px 0}
+.title{font-family:'DM Serif Display',serif;font-size:clamp(18px,5vw,24px)}
+.subtitle{font-size:12px;color:var(--muted);margin-top:3px}
+.prog-wrap{width:100%;max-width:560px;padding:12px 20px 0}
+.prog-meta{display:flex;justify-content:space-between;font-size:12px;color:var(--muted);margin-bottom:6px}
+.prog-bar{height:4px;background:var(--border);border-radius:4px;overflow:hidden}
+.prog-fill{height:100%;border-radius:4px;transition:width .4s,background .3s}
+.scores{width:100%;max-width:560px;padding:10px 20px 0;display:flex;gap:10px}
+.sc{flex:1;background:var(--surface);border:1px solid var(--border);border-radius:var(--rs);padding:10px 8px;text-align:center;box-shadow:var(--sh)}
+.sc-n{font-family:'DM Serif Display',serif;font-size:22px;line-height:1}
+.sc-l{font-size:10px;font-weight:600;letter-spacing:.5px;text-transform:uppercase;color:var(--hint);margin-top:3px}
+/* Case badge on question */
+.case-indicator{width:100%;max-width:560px;padding:10px 20px 0;display:flex;align-items:center;gap:10px}
+.case-badge{padding:4px 14px;border-radius:20px;font-size:12px;font-weight:600}
+.case-badge.nom{background:var(--noml);color:var(--nomt);border:1px solid var(--nomb)}
+.case-badge.akk{background:var(--akkl);color:var(--akkt);border:1px solid var(--akkb)}
+.case-badge.dat{background:var(--datl);color:var(--datt);border:1px solid var(--datb)}
+.case-hint{font-size:12px;color:var(--hint)}
+/* Question card */
+.qwrap{width:100%;max-width:560px;padding:6px 20px 0}
+.qcard{background:var(--surface);border:1px solid var(--border);border-radius:var(--r);box-shadow:var(--shc);padding:clamp(18px,5vw,26px) 22px;text-align:center;display:flex;flex-direction:column;align-items:center;gap:8px;min-height:160px;justify-content:center;position:relative;overflow:hidden}
+.qcard::after{content:'';position:absolute;inset:0;border-radius:var(--r);opacity:0;pointer-events:none}
+.qcard.fok::after{background:var(--greenl);animation:fl .35s ease forwards}
+.qcard.fno::after{background:var(--redl);animation:fl .35s ease forwards}
+@keyframes fl{0%{opacity:.7}100%{opacity:0}}
+.qcard.shake{animation:sk .4s cubic-bezier(.36,.07,.19,.97)}
+@keyframes sk{10%,90%{transform:translateX(-3px)}20%,80%{transform:translateX(4px)}30%,50%,70%{transform:translateX(-5px)}40%,60%{transform:translateX(5px)}}
+.q-label{font-size:10px;font-weight:600;letter-spacing:1.2px;text-transform:uppercase;color:var(--hint)}
+.q-sentence{font-family:'DM Serif Display',serif;font-size:clamp(17px,4.5vw,24px);color:var(--text);line-height:1.5;display:flex;flex-wrap:wrap;align-items:center;justify-content:center;gap:5px}
+.q-blank{display:inline-block;min-width:70px;border-bottom:3px solid;text-align:center;font-size:clamp(17px,4.5vw,24px);padding:0 6px;transition:all .2s}
+.q-blank.nom{border-color:var(--nom);color:var(--nomt)}
+.q-blank.akk{border-color:var(--akk);color:var(--akkt)}
+.q-blank.dat{border-color:var(--dat);color:var(--datt)}
+.q-blank.filled-ok{border-radius:6px;padding:2px 8px}
+.q-blank.filled-ok.nom{background:var(--noml)}
+.q-blank.filled-ok.akk{background:var(--akkl)}
+.q-blank.filled-ok.dat{background:var(--datl)}
+.q-blank.filled-no{background:var(--redl);border-color:var(--red);color:var(--redt);border-radius:6px;padding:2px 8px}
+.q-ar{font-size:13px;color:var(--muted);direction:rtl;margin-top:2px}
+/* Options grid — 3 cols */
+.opts{width:100%;max-width:560px;padding:12px 20px 0;display:grid;grid-template-columns:repeat(3,1fr);gap:8px}
+.opt{background:var(--surface);border:1.5px solid var(--bm);border-radius:var(--rs);padding:clamp(12px,3.5vw,16px) 8px;font-family:'DM Serif Display',serif;font-size:clamp(16px,4.5vw,22px);color:var(--text);cursor:pointer;text-align:center;transition:all .12s;box-shadow:var(--sh);-webkit-tap-highlight-color:transparent}
+.opt:active:not([disabled]){transform:scale(.96)}
+.opt.ok.nom{background:var(--noml);border-color:var(--nom);color:var(--nomt)}
+.opt.ok.akk{background:var(--akkl);border-color:var(--akk);color:var(--akkt)}
+.opt.ok.dat{background:var(--datl);border-color:var(--dat);color:var(--datt)}
+.opt.no{background:var(--redl);border-color:var(--red);color:var(--redt)}
+.opt.dim{opacity:.3}
+.opt[disabled]{cursor:default}
+/* Feedback */
+.fbrow{width:100%;max-width:560px;padding:12px 20px 0;display:flex;align-items:center;justify-content:space-between;gap:12px;min-height:48px}
+.fbmsg{font-size:14px;font-weight:500;color:var(--muted);flex:1;line-height:1.5}
+.fbmsg.ok{color:var(--greent)}
+.fbmsg.no{color:var(--redt)}
+.nxt{padding:10px 22px;border-radius:var(--rs);background:var(--text);color:var(--bg);border:none;font-family:'DM Sans',sans-serif;font-size:14px;font-weight:500;cursor:pointer;white-space:nowrap}
+/* Done */
+.done-scr{width:100%;max-width:560px;padding:40px 20px;display:flex;flex-direction:column;align-items:center;text-align:center;gap:12px}
+.done-scr h2{font-family:'DM Serif Display',serif;font-size:30px}
+.dgrid{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;width:100%;margin-top:8px}
+.dg{background:var(--surface);border:1px solid var(--border);border-radius:var(--rs);padding:14px 8px;text-align:center;box-shadow:var(--sh)}
+.dg-n{font-family:'DM Serif Display',serif;font-size:26px;line-height:1}
+.dg-l{font-size:10px;font-weight:600;text-transform:uppercase;letter-spacing:.5px;color:var(--hint);margin-top:4px}
+.restart{padding:13px 32px;border-radius:var(--rs);background:var(--text);color:var(--bg);font-family:'DM Sans',sans-serif;font-size:15px;font-weight:500;border:none;cursor:pointer;margin-top:4px}
+.footer{padding:20px 0 8px;font-size:11px;font-weight:600;letter-spacing:2px;text-transform:uppercase;color:var(--hint);text-align:center;width:100%}
+</style>
+</head>
+<body>
+<div class="hdr">
+  <div class="title">Personalpronomen Quiz</div>
+  <div class="subtitle">Welches Pronomen passt in den Satz?</div>
+</div>
+<div class="prog-wrap">
+  <div class="prog-meta"><span id="counter">Frage 1 / 36</span><span id="pct">0%</span></div>
+  <div class="prog-bar"><div class="prog-fill" id="prog" style="width:0%;background:var(--nom)"></div></div>
+</div>
+<div class="scores">
+  <div class="sc"><div class="sc-n" id="sc-c" style="color:var(--green)">0</div><div class="sc-l">Richtig</div></div>
+  <div class="sc"><div class="sc-n" id="sc-w" style="color:var(--red)">0</div><div class="sc-l">Falsch</div></div>
+  <div class="sc"><div class="sc-n" id="sc-s" style="color:var(--amber)">0</div><div class="sc-l">Streak</div></div>
+</div>
+<div class="case-indicator">
+  <span class="case-badge" id="case-badge">Nominativ</span>
+  <span class="case-hint" id="case-hint">Wer?</span>
+</div>
+<div class="qwrap">
+  <div class="qcard" id="qcard">
+    <div class="q-label">Ergänze das Pronomen</div>
+    <div class="q-sentence" id="qsentence"></div>
+    <div class="q-ar" id="qar"></div>
+  </div>
+</div>
+<div class="opts" id="opts"></div>
+<div class="fbrow" id="fbrow"><div class="fbmsg" id="fbmsg"></div></div>
+<div class="footer">by Mostafa Toumi</div>
+
+<script>
+// Questions: {sentence with [BLANK], correct answer, case, arabic, wrong options}
+const QS=[
+  // ── NOMINATIV ──
+  {s:["___ lerne Deutsch."],correct:"Ich",cas:"nom",ar:"أنا أتعلم الألمانية",wrong:["Du","Er","Wir"]},
+  {s:["___ sprichst sehr gut Deutsch."],correct:"Du",cas:"nom",ar:"أنت تتكلم الألمانية جيداً جداً",wrong:["Ich","Er","Ihr"]},
+  {s:["___ kommt aus Marokko."],correct:"Er",cas:"nom",ar:"هو يأتي من المغرب",wrong:["Sie","Ich","Wir"]},
+  {s:["___ lernt jeden Tag Deutsch."],correct:"Sie",cas:"nom",ar:"هي تتعلم الألمانية كل يوم",wrong:["Er","Wir","Du"]},
+  {s:["___ regnet heute."],correct:"Es",cas:"nom",ar:"اليوم تمطر",wrong:["Er","Sie","Wir"]},
+  {s:["___ gehen morgen ins Kino."],correct:"Wir",cas:"nom",ar:"نحن نذهب غداً إلى السينما",wrong:["Ihr","Sie","Ich"]},
+  {s:["___ seid sehr fleißig."],correct:"Ihr",cas:"nom",ar:"أنتم مجتهدون جداً",wrong:["Wir","Sie","Du"]},
+  {s:["___ kommen aus Berlin."],correct:"Sie",cas:"nom",ar:"هم يأتون من برلين",wrong:["Er","Wir","Ihr"]},
+  {s:["___ sind Herr Müller, nicht wahr?"],correct:"Sie",cas:"nom",ar:"أنت حضرة المدير، أليس كذلك؟",wrong:["Ich","Wir","Er"]},
+  {s:["___ ist mein bester Freund."],correct:"Er",cas:"nom",ar:"هو أفضل صديق لي",wrong:["Sie","Es","Du"]},
+  {s:["___ ist sehr schön, diese Stadt."],correct:"Sie",cas:"nom",ar:"إنها جميلة جداً، هذه المدينة",wrong:["Er","Es","Wir"]},
+  {s:["___ ist mein Lieblingstier."],correct:"Es",cas:"nom",ar:"إنه حيوانه المفضل",wrong:["Er","Sie","Du"]},
+  // ── AKKUSATIV ──
+  {s:["Er liebt","___."],correct:"mich",cas:"akk",ar:"هو يحبني",wrong:["mir","dich","uns"]},
+  {s:["Ich vermisse","___."],correct:"dich",cas:"akk",ar:"أنا أشتاق إليك",wrong:["dir","mich","euch"]},
+  {s:["Kennst du","___?"],correct:"ihn",cas:"akk",ar:"هل تعرفه؟",wrong:["ihm","sie","mich"]},
+  {s:["Ich rufe","___ an."],correct:"sie",cas:"akk",ar:"أنا أتصل بها",wrong:["ihr","ihn","dich"]},
+  {s:["Siehst du","___ dort?"],correct:"es",cas:"akk",ar:"هل ترى ذلك هناك؟",wrong:["ihm","sie","ihn"]},
+  {s:["Er fragt","___."],correct:"uns",cas:"akk",ar:"هو يسألنا",wrong:["mir","euch","ihnen"]},
+  {s:["Ich besuche","___ morgen."],correct:"euch",cas:"akk",ar:"أنا سأزوركم غداً",wrong:["euch","uns","ihnen"]},
+  {s:["Ich kenne","___ gut."],correct:"sie",cas:"akk",ar:"أنا أعرفهم جيداً",wrong:["ihnen","ihn","dich"]},
+  {s:["Darf ich","___ etwas fragen?"],correct:"Sie",cas:"akk",ar:"هل يمكنني أن أسألك شيئاً؟",wrong:["Ihnen","Er","Wir"]},
+  {s:["Er sieht","___ nicht."],correct:"mich",cas:"akk",ar:"هو لا يراني",wrong:["mir","dich","uns"]},
+  {s:["Ich mag","___ sehr."],correct:"ihn",cas:"akk",ar:"أنا أحبه كثيراً",wrong:["ihm","sie","mich"]},
+  {s:["Triffst du","___ heute?"],correct:"sie",cas:"akk",ar:"هل ستلتقي بها اليوم؟",wrong:["ihr","ihn","uns"]},
+  // ── DATIV ──
+  {s:["Er gibt","___ ein Geschenk."],correct:"mir",cas:"dat",ar:"هو يعطيني هدية",wrong:["mich","dir","uns"]},
+  {s:["Ich helfe","___."],correct:"dir",cas:"dat",ar:"أنا أساعدك",wrong:["dich","mir","euch"]},
+  {s:["Sie dankt","___."],correct:"ihm",cas:"dat",ar:"هي تشكره",wrong:["ihn","ihr","uns"]},
+  {s:["Ich schreibe","___ eine E-Mail."],correct:"ihr",cas:"dat",ar:"أنا أكتب لها بريداً إلكترونياً",wrong:["sie","ihm","mir"]},
+  {s:["Das gehört","___."],correct:"ihm",cas:"dat",ar:"هذا ينتمي إليه",wrong:["ihn","ihr","uns"]},
+  {s:["Er erzählt","___ eine Geschichte."],correct:"uns",cas:"dat",ar:"هو يحكي لنا قصة",wrong:["uns","euch","ihnen"]},
+  {s:["Ich zeige","___ den Weg."],correct:"euch",cas:"dat",ar:"أريكم الطريق",wrong:["euch","uns","ihnen"]},
+  {s:["Ich gebe","___ das Buch."],correct:"ihnen",cas:"dat",ar:"أنا أعطيهم الكتاب",wrong:["sie","ihm","uns"]},
+  {s:["Kann ich","___ helfen?"],correct:"Ihnen",cas:"dat",ar:"هل يمكنني مساعدتك؟",wrong:["Sie","Ihm","Mir"]},
+  {s:["Das schmeckt","___ sehr gut."],correct:"mir",cas:"dat",ar:"هذا يعجبني جداً",wrong:["mich","dir","uns"]},
+  {s:["Er folgt","___."],correct:"ihr",cas:"dat",ar:"هو يتبعها",wrong:["sie","ihm","mich"]},
+  {s:["Ich vertraue","___."],correct:"dir",cas:"dat",ar:"أنا أثق بك",wrong:["dich","mir","euch"]},
+];
+
+const CASE_META={
+  nom:{label:"Nominativ",hint:"Wer? — Subjekt",bar:"var(--nom)"},
+  akk:{label:"Akkusativ",hint:"Wen? — direktes Objekt",bar:"var(--akk)"},
+  dat:{label:"Dativ",hint:"Wem? — indirektes Objekt",bar:"var(--dat)"},
+};
+
+function shuffle(a){return[...a].sort(()=>Math.random()-.5)}
+let qs=[],qi=0,correct=0,wrong=0,streak=0,answered=false;
+
+function init(){qs=shuffle(QS);qi=0;correct=0;wrong=0;streak=0;answered=false;showQ();}
+
+function showQ(){
+  if(qi>=qs.length){showDone();return;}
+  answered=false;
+  const q=qs[qi];
+  const cm=CASE_META[q.cas];
+  document.getElementById('counter').textContent='Frage '+(qi+1)+' / '+qs.length;
+  const pct=Math.round(qi/qs.length*100);
+  document.getElementById('pct').textContent=pct+'%';
+  document.getElementById('prog').style.width=pct+'%';
+  document.getElementById('prog').style.background=cm.bar;
+  const badge=document.getElementById('case-badge');
+  badge.textContent=cm.label;
+  badge.className='case-badge '+q.cas;
+  document.getElementById('case-hint').textContent=cm.hint;
+  document.getElementById('fbmsg').textContent='';
+  document.getElementById('fbmsg').className='fbmsg';
+  const oldnxt=document.getElementById('nxt-btn');if(oldnxt)oldnxt.remove();
+
+  // Build sentence
+  const sent=document.getElementById('qsentence');
+  sent.innerHTML='';
+  q.s.forEach((part,i)=>{
+    if(i>0){
+      const blank=document.createElement('span');
+      blank.className='q-blank '+q.cas;
+      blank.id='q-blank';
+      blank.textContent='___';
+      sent.appendChild(blank);
+    }
+    if(part){const s=document.createElement('span');s.textContent=part;sent.appendChild(s);}
+  });
+  // If blank goes first
+  if(q.s.length===1){
+    // already handled above — blank is position 0
+    sent.innerHTML='';
+    const blank=document.createElement('span');
+    blank.className='q-blank '+q.cas;blank.id='q-blank';blank.textContent='___';
+    sent.appendChild(blank);
+    const s=document.createElement('span');s.textContent=q.s[0].replace('___','');sent.appendChild(s);
+  }
+
+  document.getElementById('qar').textContent=q.ar;
+
+  // Build options: correct + 3 wrong shuffled
+  const opts=document.getElementById('opts');opts.innerHTML='';
+  const choices=shuffle([q.correct,...q.wrong.slice(0,3)]);
+  choices.forEach(ch=>{
+    const b=document.createElement('button');b.className='opt';b.textContent=ch;
+    b.onclick=()=>pick(b,ch,q);
+    opts.appendChild(b);
+  });
+}
+
+function pick(btn,val,q){
+  if(answered)return;answered=true;
+  const ok=val===q.correct;
+  const blank=document.getElementById('q-blank');
+  if(blank){blank.textContent=val;blank.classList.add(ok?'filled-ok':'filled-no');}
+  document.querySelectorAll('.opt').forEach(b=>{
+    b.disabled=true;
+    if(b.textContent===q.correct)b.classList.add('ok',q.cas);
+    else if(b===btn&&!ok)b.classList.add('no');
+    else b.classList.add('dim');
+  });
+  const qcard=document.getElementById('qcard');
+  const fb=document.getElementById('fbmsg');
+  if(ok){
+    correct++;streak++;
+    fb.textContent='✓ Richtig!'+(streak>=3?' 🔥 '+streak+'er Streak!':'');
+    fb.className='fbmsg ok';
+    qcard.classList.add('fok');setTimeout(()=>qcard.classList.remove('fok'),350);
+  } else {
+    wrong++;streak=0;
+    fb.textContent='✗ Richtig wäre: '+q.correct;
+    fb.className='fbmsg no';
+    qcard.classList.add('fno','shake');setTimeout(()=>qcard.classList.remove('fno','shake'),400);
+  }
+  document.getElementById('sc-c').textContent=correct;
+  document.getElementById('sc-w').textContent=wrong;
+  document.getElementById('sc-s').textContent=streak;
+  const nb=document.createElement('button');nb.className='nxt';nb.id='nxt-btn';
+  nb.textContent=qi+1<qs.length?'Weiter →':'Ergebnis →';
+  nb.onclick=()=>{qi++;showQ();};
+  document.getElementById('fbrow').appendChild(nb);
+}
+
+function showDone(){
+  const total=correct+wrong,pct=Math.round(correct/total*100)||0;
+  document.querySelector('.qwrap').style.display='none';
+  document.getElementById('opts').style.display='none';
+  document.getElementById('fbrow').style.display='none';
+  document.querySelector('.case-indicator').style.display='none';
+  const d=document.createElement('div');d.className='done-scr';
+  d.innerHTML=`<div style="font-size:52px">${pct>=90?'🏆':pct>=70?'🎉':pct>=50?'💪':'📚'}</div>
+  <h2>Quiz beendet!</h2>
+  <div style="font-family:'DM Serif Display',serif;font-size:60px;line-height:1">${pct}%</div>
+  <div class="dgrid">
+    <div class="dg"><div class="dg-n" style="color:var(--green)">${correct}</div><div class="dg-l">Richtig</div></div>
+    <div class="dg"><div class="dg-n" style="color:var(--red)">${wrong}</div><div class="dg-l">Falsch</div></div>
+    <div class="dg"><div class="dg-n">${total}</div><div class="dg-l">Gesamt</div></div>
+  </div>
+  <button class="restart" onclick="location.reload()">Nochmal ↺</button>`;
+  document.querySelector('.footer').before(d);
+}
+
+// Fix sentence rendering
+function fixSentenceRendering(){
+  // re-override showQ for correct blank-first pattern
+}
+
+init();
+</script>
+</body>
+</html>
