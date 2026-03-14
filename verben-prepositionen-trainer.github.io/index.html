@@ -3,248 +3,646 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-<title>Präpositionen Match — Spiel Deutsch</title>
+<title>Verben Quiz — Mostafa Toumi</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
-<link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=DM+Sans:wght@400;500;600&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display&family=DM+Sans:wght@400;500;600&display=swap" rel="stylesheet">
 <style>
-*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
-:root{
-  --bg:#F7F4EF;--surface:#fff;--text:#1C1917;--muted:#78716C;--hint:#A8A29E;
-  --akk:#185FA5;--akk-l:#E6F1FB;--akk-t:#0C447C;--akk-b:#B5D4F4;
-  --dat:#1D9E75;--dat-l:#E1F5EE;--dat-t:#0F6E56;--dat-b:#9FE1CB;
-  --gen:#7C3AED;--gen-l:#EDE9FE;--gen-t:#5B21B6;--gen-b:#C4B5FD;
-  --wex:#B45309;--wex-l:#FEF3C7;--wex-t:#92400E;--wex-b:#FDE68A;
-  --border:rgba(28,25,23,0.1);--bm:rgba(28,25,23,0.15);
-  --r:16px;--rs:12px;--sh:0 2px 12px rgba(28,25,23,0.07);--shc:0 4px 20px rgba(28,25,23,0.10)
-}
-html,body{min-height:100%;background:var(--bg);font-family:'DM Sans',sans-serif;color:var(--text);-webkit-font-smoothing:antialiased}
-body{display:flex;flex-direction:column;align-items:center;padding-bottom:32px}
-.hdr{width:100%;max-width:600px;padding:20px 20px 0;display:flex;justify-content:space-between;align-items:flex-start}
-.title{font-family:'DM Serif Display',serif;font-size:clamp(18px,5vw,24px)}
-.subtitle{font-size:12px;color:var(--muted);margin-top:3px}
-.meta{text-align:right;font-size:12px;color:var(--muted)}
-.prog-wrap{width:100%;max-width:600px;padding:12px 20px 0}
-.prog-bar{height:4px;background:var(--border);border-radius:4px;overflow:hidden}
-.prog-fill{height:100%;background:var(--gen);border-radius:4px;transition:width .4s}
-/* Score pills */
-.srow{width:100%;max-width:600px;padding:10px 20px 0;display:flex;gap:10px}
-.sp{flex:1;background:var(--surface);border:1px solid var(--border);border-radius:var(--rs);padding:10px 8px;text-align:center;box-shadow:var(--sh)}
-.sp-n{font-family:'DM Serif Display',serif;font-size:20px;line-height:1}
-.sp-l{font-size:10px;font-weight:600;letter-spacing:.5px;text-transform:uppercase;color:var(--hint);margin-top:3px}
-/* Round indicator */
-.round-lbl{width:100%;max-width:600px;padding:12px 20px 0;font-size:12px;color:var(--muted);font-weight:500}
-/* Buckets */
-.buckets{width:100%;max-width:600px;padding:10px 20px 0;display:grid;grid-template-columns:1fr 1fr;gap:10px}
-@media(min-width:500px){.buckets{grid-template-columns:repeat(4,1fr)}}
-.bucket{border-radius:var(--rs);border:2px dashed;padding:10px 8px;min-height:80px;display:flex;flex-direction:column;align-items:center;gap:6px;transition:all .2s;cursor:default}
-.bucket.akk{border-color:var(--akk-b);background:var(--akk-l)}
-.bucket.dat{border-color:var(--dat-b);background:var(--dat-l)}
-.bucket.gen{border-color:var(--gen-b);background:var(--gen-l)}
-.bucket.wex{border-color:var(--wex-b);background:var(--wex-l)}
-.bucket.dragover{transform:scale(1.04);box-shadow:var(--shc)}
-.bucket-title{font-size:11px;font-weight:600;letter-spacing:.8px;text-transform:uppercase}
-.bucket.akk .bucket-title{color:var(--akk-t)}
-.bucket.dat .bucket-title{color:var(--dat-t)}
-.bucket.gen .bucket-title{color:var(--gen-t)}
-.bucket.wex .bucket-title{color:var(--wex-t)}
-.bucket-chips{display:flex;flex-wrap:wrap;gap:4px;justify-content:center;width:100%}
-.placed-chip{font-size:12px;font-weight:600;padding:3px 8px;border-radius:20px;white-space:nowrap}
-.placed-chip.ok{background:rgba(255,255,255,.7)}
-.placed-chip.fail{background:rgba(220,80,30,.15);text-decoration:line-through;opacity:.6}
-/* Card pool */
-.pool-lbl{width:100%;max-width:600px;padding:14px 20px 4px;font-size:11px;font-weight:600;letter-spacing:1px;text-transform:uppercase;color:var(--hint)}
-.pool{width:100%;max-width:600px;padding:0 20px 0;display:flex;flex-wrap:wrap;gap:8px;justify-content:center;min-height:44px}
-.chip{background:var(--surface);border:1.5px solid var(--bm);border-radius:20px;padding:7px 14px;font-family:'DM Sans',sans-serif;font-size:14px;font-weight:600;color:var(--text);cursor:grab;user-select:none;box-shadow:var(--sh);transition:transform .15s,box-shadow .15s;-webkit-tap-highlight-color:transparent}
-.chip:active{cursor:grabbing;transform:scale(1.05);box-shadow:var(--shc)}
-.chip.dragging{opacity:.4}
-.chip.selected{background:var(--text);color:var(--bg);border-color:var(--text);transform:scale(1.05)}
-/* Feedback toast */
-.toast{position:fixed;bottom:80px;left:50%;transform:translateX(-50%) translateY(20px);padding:10px 20px;border-radius:20px;font-size:14px;font-weight:600;opacity:0;transition:opacity .2s,transform .2s;pointer-events:none;z-index:100}
-.toast.show{opacity:1;transform:translateX(-50%) translateY(0)}
-.toast.ok{background:var(--dat-l);color:var(--dat-t);border:1px solid var(--dat)}
-.toast.fail{background:var(--red-l,#FAECE7);color:#993C1D;border:1px solid #D85A30}
-/* Done screen */
-.done{width:100%;max-width:600px;padding:40px 20px;display:flex;flex-direction:column;align-items:center;text-align:center;gap:12px}
-.done h2{font-family:'DM Serif Display',serif;font-size:28px}
-.done-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:10px;width:100%;max-width:360px;margin-top:8px}
-.dg{background:var(--surface);border:1px solid var(--border);border-radius:var(--rs);padding:14px 8px;text-align:center;box-shadow:var(--sh)}
-.dg-n{font-family:'DM Serif Display',serif;font-size:26px;line-height:1}
-.dg-l{font-size:10px;font-weight:600;text-transform:uppercase;letter-spacing:.5px;color:var(--hint);margin-top:4px}
-.restart{padding:13px 32px;border-radius:var(--rs);background:var(--text);color:var(--bg);font-family:'DM Sans',sans-serif;font-size:15px;font-weight:500;border:none;cursor:pointer;margin-top:8px}
-.footer{padding:20px 0 8px;font-size:11px;font-weight:600;letter-spacing:2px;text-transform:uppercase;color:var(--hint);text-align:center;width:100%}
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  :root {
+    --bg: #F7F4EF;
+    --surface: #FFFFFF;
+    --text: #1C1917;
+    --text-muted: #78716C;
+    --text-hint: #A8A29E;
+    --green: #1D9E75;
+    --green-light: #E1F5EE;
+    --green-text: #0F6E56;
+    --red: #D85A30;
+    --red-light: #FAECE7;
+    --red-text: #993C1D;
+    --blue: #185FA5;
+    --blue-light: #E6F1FB;
+    --border: rgba(28,25,23,0.1);
+    --border-mid: rgba(28,25,23,0.15);
+    --radius: 16px;
+    --radius-sm: 12px;
+    --shadow: 0 2px 12px rgba(28,25,23,0.07);
+    --shadow-card: 0 8px 32px rgba(28,25,23,0.11);
+  }
+
+  html, body {
+    min-height: 100%;
+    background: var(--bg);
+    font-family: 'DM Sans', sans-serif;
+    color: var(--text);
+    -webkit-font-smoothing: antialiased;
+  }
+
+  body {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding-bottom: 32px;
+  }
+
+  /* ── Header ── */
+  .app-header {
+    width: 100%;
+    max-width: 540px;
+    padding: 20px 20px 0;
+  }
+
+  .app-title {
+    font-family: 'DM Serif Display', serif;
+    font-size: clamp(20px, 5vw, 26px);
+    color: var(--text);
+    letter-spacing: -0.3px;
+  }
+
+  .app-subtitle {
+    font-size: 13px;
+    color: var(--text-muted);
+    margin-top: 3px;
+  }
+
+  /* ── Progress ── */
+  .progress-wrap {
+    width: 100%;
+    max-width: 540px;
+    padding: 16px 20px 0;
+  }
+
+  .progress-meta {
+    display: flex;
+    justify-content: space-between;
+    font-size: 12px;
+    color: var(--text-muted);
+    margin-bottom: 6px;
+  }
+
+  .progress-bar {
+    height: 4px;
+    background: var(--border);
+    border-radius: 4px;
+    overflow: hidden;
+  }
+
+  .progress-fill {
+    height: 100%;
+    background: var(--green);
+    border-radius: 4px;
+    transition: width 0.4s cubic-bezier(.4,0,.2,1);
+  }
+
+  /* ── Score streak bar ── */
+  .score-bar {
+    width: 100%;
+    max-width: 540px;
+    padding: 12px 20px 0;
+    display: flex;
+    gap: 10px;
+  }
+
+  .score-pill {
+    flex: 1;
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: var(--radius-sm);
+    padding: 10px 8px;
+    text-align: center;
+    box-shadow: var(--shadow);
+  }
+
+  .score-pill-n {
+    font-family: 'DM Serif Display', serif;
+    font-size: 22px;
+    line-height: 1;
+  }
+
+  .score-pill-n.green { color: var(--green); }
+  .score-pill-n.red   { color: var(--red); }
+  .score-pill-n.blue  { color: var(--blue); }
+
+  .score-pill-l {
+    font-size: 10px;
+    font-weight: 600;
+    letter-spacing: 0.5px;
+    color: var(--text-hint);
+    margin-top: 3px;
+    text-transform: uppercase;
+  }
+
+  /* ── Question card ── */
+  .question-area {
+    width: 100%;
+    max-width: 540px;
+    padding: 16px 20px 0;
+  }
+
+  .question-card {
+    background: var(--surface);
+    border-radius: var(--radius);
+    border: 1px solid var(--border);
+    box-shadow: var(--shadow-card);
+    padding: 28px 24px 24px;
+    text-align: center;
+    min-height: 140px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    transition: transform 0.15s;
+  }
+
+  .question-card.shake {
+    animation: shake 0.4s cubic-bezier(.36,.07,.19,.97);
+  }
+
+  @keyframes shake {
+    10%, 90% { transform: translateX(-3px); }
+    20%, 80% { transform: translateX(4px); }
+    30%, 50%, 70% { transform: translateX(-5px); }
+    40%, 60% { transform: translateX(5px); }
+  }
+
+  .q-label {
+    font-size: 11px;
+    font-weight: 600;
+    letter-spacing: 1.2px;
+    text-transform: uppercase;
+    color: var(--text-hint);
+  }
+
+  .q-verb {
+    font-family: 'DM Serif Display', serif;
+    font-size: clamp(28px, 8vw, 40px);
+    color: var(--text);
+    line-height: 1.15;
+  }
+
+  .q-arabic {
+    font-size: clamp(14px, 3.5vw, 16px);
+    color: var(--text-muted);
+    direction: rtl;
+  }
+
+  .q-prompt {
+    font-size: 13px;
+    color: var(--text-hint);
+    margin-top: 4px;
+  }
+
+  /* ── Answer options ── */
+  .options-grid {
+    width: 100%;
+    max-width: 540px;
+    padding: 14px 20px 0;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 10px;
+  }
+
+  .option-btn {
+    background: var(--surface);
+    border: 1.5px solid var(--border-mid);
+    border-radius: var(--radius-sm);
+    padding: 14px 10px;
+    font-family: 'DM Sans', sans-serif;
+    font-size: clamp(13px, 3.5vw, 15px);
+    font-weight: 600;
+    color: var(--text);
+    cursor: pointer;
+    text-align: center;
+    transition: all 0.15s;
+    box-shadow: var(--shadow);
+    -webkit-tap-highlight-color: transparent;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .option-btn:active:not([disabled]) {
+    transform: scale(0.97);
+  }
+
+  .option-btn:hover:not([disabled]):not(.correct):not(.wrong) {
+    border-color: var(--blue);
+    background: var(--blue-light);
+    color: var(--blue);
+  }
+
+  .option-btn.correct {
+    background: var(--green-light);
+    border-color: var(--green);
+    color: var(--green-text);
+  }
+
+  .option-btn.wrong {
+    background: var(--red-light);
+    border-color: var(--red);
+    color: var(--red-text);
+  }
+
+  .option-btn.reveal {
+    background: var(--green-light);
+    border-color: var(--green);
+    color: var(--green-text);
+    opacity: 0.5;
+  }
+
+  .option-btn[disabled] {
+    cursor: default;
+  }
+
+  /* ── Feedback bar ── */
+  .feedback {
+    width: 100%;
+    max-width: 540px;
+    padding: 12px 20px 0;
+    min-height: 52px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 12px;
+  }
+
+  .feedback-msg {
+    font-size: 14px;
+    font-weight: 500;
+    color: var(--text-muted);
+    flex: 1;
+  }
+
+  .feedback-msg.correct { color: var(--green-text); }
+  .feedback-msg.wrong   { color: var(--red-text); }
+
+  .next-btn {
+    padding: 10px 22px;
+    border-radius: var(--radius-sm);
+    background: var(--text);
+    color: var(--bg);
+    border: none;
+    font-family: 'DM Sans', sans-serif;
+    font-size: 14px;
+    font-weight: 500;
+    cursor: pointer;
+    -webkit-tap-highlight-color: transparent;
+    white-space: nowrap;
+    transition: opacity 0.15s;
+  }
+
+  .next-btn:active { opacity: 0.8; }
+
+  /* ── Streak indicator ── */
+  .streak-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+    font-size: 12px;
+    font-weight: 600;
+    color: #B45309;
+    background: #FEF3C7;
+    border: 1px solid #F59E0B;
+    border-radius: 20px;
+    padding: 3px 10px;
+    margin-left: 8px;
+  }
+
+  /* ── Done screen ── */
+  .done-screen {
+    width: 100%;
+    max-width: 540px;
+    padding: 40px 20px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 16px;
+    text-align: center;
+  }
+
+  .done-emoji { font-size: 52px; }
+
+  .done-title {
+    font-family: 'DM Serif Display', serif;
+    font-size: 32px;
+    color: var(--text);
+    margin-top: 4px;
+  }
+
+  .done-score-big {
+    font-family: 'DM Serif Display', serif;
+    font-size: 64px;
+    line-height: 1;
+    color: var(--text);
+  }
+
+  .done-score-label {
+    font-size: 13px;
+    color: var(--text-muted);
+    margin-top: -8px;
+  }
+
+  .done-details {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 10px;
+    width: 100%;
+    margin-top: 8px;
+  }
+
+  .done-detail {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: var(--radius-sm);
+    padding: 14px 8px;
+    box-shadow: var(--shadow);
+  }
+
+  .done-detail-n {
+    font-family: 'DM Serif Display', serif;
+    font-size: 26px;
+  }
+
+  .done-detail-l {
+    font-size: 11px;
+    color: var(--text-muted);
+    font-weight: 600;
+    letter-spacing: 0.3px;
+    margin-top: 3px;
+    text-transform: uppercase;
+  }
+
+  .restart-btn {
+    margin-top: 8px;
+    padding: 14px 36px;
+    border-radius: var(--radius-sm);
+    background: var(--text);
+    color: var(--bg);
+    font-family: 'DM Sans', sans-serif;
+    font-size: 15px;
+    font-weight: 500;
+    border: none;
+    cursor: pointer;
+    -webkit-tap-highlight-color: transparent;
+  }
+
+  .restart-btn:active { opacity: 0.85; }
+
+  /* ── Footer ── */
+  .footer {
+    width: 100%;
+    text-align: center;
+    padding: 24px 0 8px;
+    font-size: 11px;
+    font-weight: 600;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    color: var(--text-hint);
+  }
+
+  @media (min-width: 600px) {
+    body { padding-top: 24px; }
+    .app-header, .progress-wrap, .score-bar, .question-area, .options-grid, .feedback, .done-screen {
+      padding-left: 0; padding-right: 0;
+    }
+    .app-header { padding-top: 0; }
+  }
 </style>
 </head>
 <body>
-<div class="hdr">
-  <div>
-    <div class="title">Präpositionen Match</div>
-    <div class="subtitle">Ziehe jeden Begriff in den richtigen Kasus</div>
-  </div>
-  <div class="meta" id="meta">Runde 1 / 5</div>
+
+<div class="app-header">
+  <div class="app-title">Verben Quiz</div>
+  <div class="app-subtitle">Welche Präposition passt?</div>
 </div>
-<div class="prog-wrap">
-  <div class="prog-bar"><div class="prog-fill" id="prog" style="width:0%"></div></div>
+
+<div class="progress-wrap">
+  <div class="progress-meta">
+    <span id="counter">Frage 1 / 48</span>
+    <span id="pct">0%</span>
+  </div>
+  <div class="progress-bar"><div class="progress-fill" id="prog" style="width:0%"></div></div>
 </div>
-<div class="srow">
-  <div class="sp"><div class="sp-n" id="sc-ok" style="color:var(--dat)">0</div><div class="sp-l">Richtig</div></div>
-  <div class="sp"><div class="sp-n" id="sc-no" style="color:#D85A30">0</div><div class="sp-l">Falsch</div></div>
-  <div class="sp"><div class="sp-n" id="sc-pt" style="color:var(--gen-t)">0</div><div class="sp-l">Punkte</div></div>
-</div>
-<div class="round-lbl" id="round-lbl">Ordne die Präpositionen dem richtigen Kasus zu:</div>
-<div class="buckets" id="buckets">
-  <div class="bucket akk" id="b-Akkusativ" ondragover="dov(event)" ondrop="drop(event,'Akkusativ')" onclick="tapBucket('Akkusativ')">
-    <div class="bucket-title">Akkusativ</div>
-    <div class="bucket-chips" id="bc-Akkusativ"></div>
+
+<div class="score-bar">
+  <div class="score-pill">
+    <div class="score-pill-n green" id="s-correct">0</div>
+    <div class="score-pill-l">Richtig</div>
   </div>
-  <div class="bucket dat" id="b-Dativ" ondragover="dov(event)" ondrop="drop(event,'Dativ')" onclick="tapBucket('Dativ')">
-    <div class="bucket-title">Dativ</div>
-    <div class="bucket-chips" id="bc-Dativ"></div>
+  <div class="score-pill">
+    <div class="score-pill-n red" id="s-wrong">0</div>
+    <div class="score-pill-l">Falsch</div>
   </div>
-  <div class="bucket gen" id="b-Genitiv" ondragover="dov(event)" ondrop="drop(event,'Genitiv')" onclick="tapBucket('Genitiv')">
-    <div class="bucket-title">Genitiv</div>
-    <div class="bucket-chips" id="bc-Genitiv"></div>
-  </div>
-  <div class="bucket wex" id="b-Wechsel" ondragover="dov(event)" ondrop="drop(event,'Wechsel')" onclick="tapBucket('Wechsel')">
-    <div class="bucket-title">Wechsel</div>
-    <div class="bucket-chips" id="bc-Wechsel"></div>
+  <div class="score-pill">
+    <div class="score-pill-n blue" id="s-streak">0</div>
+    <div class="score-pill-l">Streak</div>
   </div>
 </div>
-<div class="pool-lbl">Präpositionen zum Zuordnen:</div>
-<div class="pool" id="pool"></div>
-<div class="toast" id="toast"></div>
+
+<div class="question-area">
+  <div class="question-card" id="qcard">
+    <div class="q-label">Verb</div>
+    <div class="q-verb" id="q-verb">warten</div>
+    <div class="q-arabic" id="q-arabic">ينتظر</div>
+    <div class="q-prompt">Welche Präposition?</div>
+  </div>
+</div>
+
+<div class="options-grid" id="options-grid"></div>
+
+<div class="feedback" id="feedback">
+  <div class="feedback-msg" id="feedback-msg"></div>
+</div>
+
 <div class="footer">by Mostafa Toumi</div>
 
 <script>
-const ALL=[
-  {p:"durch",c:"Akkusativ"},{p:"für",c:"Akkusativ"},{p:"gegen",c:"Akkusativ"},
-  {p:"ohne",c:"Akkusativ"},{p:"um",c:"Akkusativ"},{p:"bis",c:"Akkusativ"},{p:"entlang",c:"Akkusativ"},
-  {p:"aus",c:"Dativ"},{p:"außer",c:"Dativ"},{p:"bei",c:"Dativ"},{p:"mit",c:"Dativ"},
-  {p:"nach",c:"Dativ"},{p:"seit",c:"Dativ"},{p:"von",c:"Dativ"},{p:"zu",c:"Dativ"},{p:"gegenüber",c:"Dativ"},
-  {p:"wegen",c:"Genitiv"},{p:"trotz",c:"Genitiv"},{p:"während",c:"Genitiv"},{p:"statt",c:"Genitiv"},
-  {p:"innerhalb",c:"Genitiv"},{p:"außerhalb",c:"Genitiv"},{p:"oberhalb",c:"Genitiv"},
-  {p:"unterhalb",c:"Genitiv"},{p:"diesseits",c:"Genitiv"},{p:"jenseits",c:"Genitiv"},
-  {p:"an",c:"Wechsel"},{p:"auf",c:"Wechsel"},{p:"hinter",c:"Wechsel"},{p:"in",c:"Wechsel"},
-  {p:"neben",c:"Wechsel"},{p:"über",c:"Wechsel"},{p:"unter",c:"Wechsel"},{p:"vor",c:"Wechsel"},{p:"zwischen",c:"Wechsel"},
+const ALL = [
+  {v:"warten",a:"ينتظر",p:"auf + Akk"},
+  {v:"fragen",a:"يسأل",p:"nach + Dat"},
+  {v:"suchen",a:"يبحث",p:"nach + Dat"},
+  {v:"teilnehmen",a:"يشارك",p:"an + Dat"},
+  {v:"sich erinnern",a:"يتذكر",p:"an + Akk"},
+  {v:"sich ärgern",a:"يغضب / ينزعج",p:"über + Akk"},
+  {v:"sich interessieren",a:"يهتم (für)",p:"für + Akk"},
+  {v:"sich interessieren",a:"يهتم (an)",p:"an + Dat"},
+  {v:"einladen",a:"يدعو",p:"zu + Dat"},
+  {v:"gratulieren",a:"يهنئ",p:"zu + Dat"},
+  {v:"antworten",a:"يجيب / يرد",p:"auf + Akk"},
+  {v:"danken",a:"يشكر",p:"für + Akk"},
+  {v:"sich gewöhnen",a:"يعتاد",p:"an + Akk"},
+  {v:"sich freuen",a:"يفرح / يتطلع",p:"auf + Akk"},
+  {v:"warnen",a:"يحذر",p:"vor + Dat"},
+  {v:"aufpassen",a:"ينتبه / يحذر",p:"auf + Akk"},
+  {v:"achten",a:"ينتبه / يراعي",p:"auf + Akk"},
+  {v:"telefonieren",a:"يتحدث في الهاتف",p:"mit + Dat"},
+  {v:"träumen",a:"يحلم",p:"von + Dat"},
+  {v:"sich informieren",a:"يستعلم",p:"über + Akk"},
+  {v:"sich streiten",a:"يتشاجر",p:"mit + Dat"},
+  {v:"sprechen",a:"يتحدث",p:"mit + Dat"},
+  {v:"denken",a:"يفكر",p:"an + Akk"},
+  {v:"nachdenken",a:"يفكر بعمق",p:"über + Akk"},
+  {v:"lachen",a:"يضحك",p:"über + Akk"},
+  {v:"weinen",a:"يبكي",p:"über + Akk"},
+  {v:"sich trennen",a:"ينفصل",p:"von + Dat"},
+  {v:"leiden",a:"يعاني",p:"an + Dat"},
+  {v:"sich fürchten",a:"يخاف",p:"vor + Dat"},
+  {v:"zufrieden sein",a:"يكون راضياً",p:"mit + Dat"},
+  {v:"spielen",a:"يلعب",p:"mit + Dat"},
+  {v:"sich beschäftigen",a:"ينشغل",p:"mit + Dat"},
+  {v:"klagen",a:"يشتكي",p:"über + Akk"},
+  {v:"sich beschweren",a:"يتذمر / يشتكي",p:"über + Akk"},
+  {v:"sich entschuldigen",a:"يعتذر",p:"für + Akk"},
+  {v:"sich entscheiden",a:"يقرر",p:"für + Akk"},
+  {v:"sterben",a:"يموت",p:"an + Dat"},
+  {v:"streben",a:"يسعى",p:"nach + Dat"},
+  {v:"hoffen",a:"يأمل",p:"auf + Akk"},
+  {v:"zweifeln",a:"يشك",p:"an + Dat"},
+  {v:"sich vorbereiten",a:"يستعد",p:"auf + Akk"},
+  {v:"schmecken",a:"طعمه / مذاقه",p:"nach + Dat"},
+  {v:"sich entschuldigen (bei)",a:"يعتذر عند شخص",p:"bei + Dat"},
+  {v:"zahlen",a:"يدفع",p:"für + Akk"},
+  {v:"es geht",a:"يتعلق بـ",p:"um + Akk"},
+  {v:"sich bewerben",a:"يتقدم لوظيفة",p:"um + Akk"},
+  {v:"erzählen",a:"يحكي / يروي",p:"von + Dat"},
+  {v:"träumen (von)",a:"يحلم بـ",p:"von + Dat"},
 ];
-const PER_ROUND=7;
-const ROUNDS=Math.ceil(ALL.length/PER_ROUND);
 
-let rounds=[],rIdx=0,correct=0,wrong=0,points=0;
-let dragItem=null,selectedChip=null,pending={};
+// All unique prepositions for wrong options
+const ALL_PREPS = [...new Set(ALL.map(x => x.p))];
 
-function shuffle(a){return[...a].sort(()=>Math.random()-.5)}
+let questions = [], qIdx = 0, correct = 0, wrong = 0, streak = 0, bestStreak = 0, answered = false;
 
-function init(){
-  const sh=shuffle(ALL);
-  rounds=[];
-  for(let i=0;i<sh.length;i+=PER_ROUND) rounds.push(sh.slice(i,i+PER_ROUND));
-  rIdx=0;correct=0;wrong=0;points=0;
-  loadRound();
+function shuffle(arr) { return [...arr].sort(() => Math.random() - 0.5); }
+
+function getWrongOptions(correctPrep, count) {
+  const pool = ALL_PREPS.filter(p => p !== correctPrep);
+  return shuffle(pool).slice(0, count);
 }
 
-function loadRound(){
-  if(rIdx>=rounds.length){showDone();return;}
-  pending={};
-  document.getElementById('meta').textContent='Runde '+(rIdx+1)+' / '+rounds.length;
-  document.getElementById('round-lbl').textContent='Ordne die Präpositionen dem richtigen Kasus zu:';
-  document.getElementById('prog').style.width=(rIdx/rounds.length*100)+'%';
-  ['Akkusativ','Dativ','Genitiv','Wechsel'].forEach(k=>{document.getElementById('bc-'+k).innerHTML='';});
-  selectedChip=null;
-  const pool=document.getElementById('pool');
-  pool.innerHTML='';
-  const items=shuffle(rounds[rIdx]);
-  items.forEach(item=>{
-    const chip=document.createElement('div');
-    chip.className='chip';chip.textContent=item.p;chip.dataset.p=item.p;chip.dataset.c=item.c;
-    chip.draggable=true;
-    chip.addEventListener('dragstart',e=>{dragItem=chip;chip.classList.add('dragging');e.dataTransfer.effectAllowed='move';});
-    chip.addEventListener('dragend',()=>{chip.classList.remove('dragging');dragItem=null;});
-    chip.addEventListener('click',()=>selectChip(chip));
-    pool.appendChild(chip);
+function buildQuestions() {
+  questions = shuffle(ALL);
+  qIdx = 0; correct = 0; wrong = 0; streak = 0; bestStreak = 0;
+}
+
+function showQuestion() {
+  if (qIdx >= questions.length) { showDone(); return; }
+  answered = false;
+  const q = questions[qIdx];
+
+  document.getElementById('q-verb').textContent = q.v;
+  document.getElementById('q-arabic').textContent = q.a;
+  document.getElementById('counter').textContent = 'Frage ' + (qIdx+1) + ' / ' + questions.length;
+  const pct = Math.round(qIdx / questions.length * 100);
+  document.getElementById('pct').textContent = pct + '%';
+  document.getElementById('prog').style.width = pct + '%';
+  document.getElementById('feedback-msg').textContent = '';
+  document.getElementById('feedback-msg').className = 'feedback-msg';
+
+  // Remove old next button if any
+  const oldNext = document.getElementById('next-btn');
+  if (oldNext) oldNext.remove();
+
+  // Build 4 options: 1 correct + 3 wrong
+  const wrongs = getWrongOptions(q.p, 3);
+  const options = shuffle([q.p, ...wrongs]);
+
+  const grid = document.getElementById('options-grid');
+  grid.innerHTML = '';
+  options.forEach(opt => {
+    const btn = document.createElement('button');
+    btn.className = 'option-btn';
+    btn.textContent = opt;
+    btn.onclick = () => handleAnswer(btn, opt, q.p, options);
+    grid.appendChild(btn);
   });
 }
 
-function selectChip(chip){
-  if(selectedChip===chip){chip.classList.remove('selected');selectedChip=null;return;}
-  if(selectedChip)selectedChip.classList.remove('selected');
-  chip.classList.add('selected');selectedChip=chip;
-}
+function handleAnswer(btn, chosen, correct_p, allOptions) {
+  if (answered) return;
+  answered = true;
 
-function tapBucket(cas){
-  if(!selectedChip)return;
-  placeChip(selectedChip,cas);
-  selectedChip=null;
-}
+  const isCorrect = chosen === correct_p;
+  const allBtns = document.querySelectorAll('.option-btn');
 
-function dov(e){e.preventDefault();e.currentTarget.classList.add('dragover');}
+  allBtns.forEach(b => {
+    b.disabled = true;
+    if (b.textContent === correct_p) b.classList.add('correct');
+    else if (b === btn && !isCorrect) b.classList.add('wrong');
+    else b.classList.add('reveal');
+  });
 
-function drop(e,cas){
-  e.preventDefault();e.currentTarget.classList.remove('dragover');
-  if(!dragItem)return;
-  placeChip(dragItem,cas);
-}
+  const fb = document.getElementById('feedback-msg');
 
-document.querySelectorAll('.bucket').forEach(b=>{
-  b.addEventListener('dragleave',()=>b.classList.remove('dragover'));
-});
-
-function placeChip(chip,cas){
-  const correctCas=chip.dataset.c;
-  const p=chip.dataset.p;
-  const ok=cas===correctCas;
-  if(ok){correct++;points+=2;}else{wrong++;points=Math.max(0,points-1);}
-  pending[p]={ok,cas,correct:correctCas};
-  document.getElementById('sc-ok').textContent=correct;
-  document.getElementById('sc-no').textContent=wrong;
-  document.getElementById('sc-pt').textContent=points;
-  const placed=document.createElement('span');
-  placed.className='placed-chip '+(ok?'ok':'fail');
-  placed.textContent=p+(ok?'':' ✗');
-  document.getElementById('bc-'+cas).appendChild(placed);
-  chip.remove();
-  if(!ok){
-    showToast('✗ '+p+' → '+correctCas,'fail');
-    const correct_bucket=document.getElementById('bc-'+correctCas);
-    const hint=document.createElement('span');
-    hint.className='placed-chip ok';hint.textContent=p+' ✓';hint.style.opacity='.5';
-    correct_bucket.appendChild(hint);
+  if (isCorrect) {
+    correct++;
+    streak++;
+    if (streak > bestStreak) bestStreak = streak;
+    fb.textContent = '✓ Richtig!';
+    if (streak >= 3) fb.textContent += '  🔥 ' + streak + 'er Streak!';
+    fb.className = 'feedback-msg correct';
   } else {
-    showToast('✓ Richtig!','ok');
+    wrong++;
+    streak = 0;
+    fb.textContent = '✗ Falsch — richtig: ' + correct_p;
+    fb.className = 'feedback-msg wrong';
+    document.getElementById('qcard').classList.add('shake');
+    setTimeout(() => document.getElementById('qcard').classList.remove('shake'), 400);
   }
-  if(document.getElementById('pool').children.length===0){
-    setTimeout(()=>{rIdx++;loadRound();},800);
-  }
+
+  document.getElementById('s-correct').textContent = correct;
+  document.getElementById('s-wrong').textContent = wrong;
+  document.getElementById('s-streak').textContent = streak;
+
+  // Next button
+  const nextBtn = document.createElement('button');
+  nextBtn.className = 'next-btn';
+  nextBtn.id = 'next-btn';
+  nextBtn.textContent = qIdx + 1 < questions.length ? 'Weiter →' : 'Ergebnis →';
+  nextBtn.onclick = () => { qIdx++; showQuestion(); };
+  document.getElementById('feedback').appendChild(nextBtn);
 }
 
-let toastTimer;
-function showToast(msg,type){
-  const t=document.getElementById('toast');
-  clearTimeout(toastTimer);
-  t.textContent=msg;t.className='toast show '+type;
-  toastTimer=setTimeout(()=>t.classList.remove('show'),1400);
+function showDone() {
+  const total = correct + wrong;
+  const pct = Math.round(correct / total * 100) || 0;
+  let emoji = pct >= 90 ? '🏆' : pct >= 70 ? '🎉' : pct >= 50 ? '💪' : '📚';
+
+  document.querySelector('.question-area').style.display = 'none';
+  document.getElementById('options-grid').style.display = 'none';
+  document.getElementById('feedback').style.display = 'none';
+  document.getElementById('prog').style.width = '100%';
+  document.getElementById('pct').textContent = '100%';
+
+  const done = document.createElement('div');
+  done.className = 'done-screen';
+  done.innerHTML = `
+    <div class="done-emoji">${emoji}</div>
+    <div class="done-title">Quiz beendet!</div>
+    <div class="done-score-big">${pct}%</div>
+    <div class="done-score-label">von ${total} Fragen richtig beantwortet</div>
+    <div class="done-details">
+      <div class="done-detail">
+        <div class="done-detail-n" style="color:var(--green)">${correct}</div>
+        <div class="done-detail-l">Richtig</div>
+      </div>
+      <div class="done-detail">
+        <div class="done-detail-n" style="color:var(--red)">${wrong}</div>
+        <div class="done-detail-l">Falsch</div>
+      </div>
+      <div class="done-detail">
+        <div class="done-detail-n" style="color:#B45309">${bestStreak}</div>
+        <div class="done-detail-l">Best Streak</div>
+      </div>
+    </div>
+    <button class="restart-btn" onclick="location.reload()">Nochmal spielen ↺</button>
+  `;
+  document.querySelector('.footer').before(done);
 }
 
-function showDone(){
-  const total=correct+wrong;
-  const pct=Math.round(correct/total*100)||0;
-  document.getElementById('buckets').style.display='none';
-  document.querySelector('.pool-lbl').style.display='none';
-  document.getElementById('pool').style.display='none';
-  document.getElementById('round-lbl').style.display='none';
-  const d=document.createElement('div');d.className='done';
-  d.innerHTML=`<div style="font-size:48px">${pct>=90?'🏆':pct>=70?'🎉':pct>=50?'💪':'📚'}</div>
-  <h2>Fertig!</h2>
-  <div style="font-family:'DM Serif Display',serif;font-size:56px;line-height:1">${pct}%</div>
-  <div class="done-grid">
-    <div class="dg"><div class="dg-n" style="color:var(--dat)">${correct}</div><div class="dg-l">Richtig</div></div>
-    <div class="dg"><div class="dg-n" style="color:#D85A30">${wrong}</div><div class="dg-l">Falsch</div></div>
-    <div class="dg"><div class="dg-n" style="color:var(--gen-t)">${points}</div><div class="dg-l">Punkte</div></div>
-    <div class="dg"><div class="dg-n">${total}</div><div class="dg-l">Gesamt</div></div>
-  </div>
-  <button class="restart" onclick="init();document.querySelector('.buckets').style.display='';document.querySelector('.pool-lbl').style.display='';document.getElementById('pool').style.display='';document.getElementById('round-lbl').style.display='';this.parentElement.remove()">Nochmal ↺</button>`;
-  document.querySelector('.footer').before(d);
-}
-init();
+buildQuestions();
+showQuestion();
 </script>
 </body>
 </html>
