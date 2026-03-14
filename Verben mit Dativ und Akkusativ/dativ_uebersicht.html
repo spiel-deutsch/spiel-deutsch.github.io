@@ -1,0 +1,197 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Verben mit Dativ — Übersicht</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=DM+Sans:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --bg:#F7F4EF;--surface:#fff;--text:#1C1917;--muted:#78716C;--hint:#A8A29E;
+  --c:#7C3AED;--cl:#EDE9FE;--ct:#5B21B6;--cb:#C4B5FD;
+  --sw:#1D9E75;--swl:#E1F5EE;--swt:#0F6E56;--swb:#9FE1CB;
+  --st:#185FA5;--stl:#E6F1FB;--stt:#0C447C;--stb:#B5D4F4;
+  --tr:#B45309;--trl:#FEF3C7;--trt:#92400E;--trb:#FDE68A;
+  --border:rgba(28,25,23,0.1);--bm:rgba(28,25,23,0.15);
+  --r:16px;--rs:12px;--sh:0 2px 12px rgba(28,25,23,0.07)
+}
+html,body{min-height:100%;background:var(--bg);font-family:'DM Sans',sans-serif;color:var(--text);-webkit-font-smoothing:antialiased}
+body{display:flex;flex-direction:column;align-items:center;padding-bottom:48px}
+.hero{width:100%;max-width:680px;padding:clamp(32px,8vw,60px) 24px 0;text-align:center}
+.tag{display:inline-block;font-size:11px;font-weight:600;letter-spacing:2px;text-transform:uppercase;color:var(--ct);background:var(--cl);border:1px solid var(--cb);border-radius:20px;padding:4px 14px;margin-bottom:16px}
+.h1{font-family:'DM Serif Display',serif;font-size:clamp(28px,7vw,46px);letter-spacing:-.5px;line-height:1.1}
+.h1 em{font-style:italic;color:var(--c)}
+.sub{font-size:14px;color:var(--muted);margin:10px auto 0;line-height:1.6;max-width:440px}
+.nav{width:100%;max-width:680px;padding:18px 24px 0;display:flex;gap:8px;flex-wrap:wrap}
+.nb{padding:5px 13px;border-radius:20px;border:1px solid var(--bm);font-family:'DM Sans',sans-serif;font-size:12px;font-weight:600;cursor:pointer;background:var(--surface);color:var(--muted);text-decoration:none;transition:all .15s;box-shadow:var(--sh)}
+.nb:hover{background:var(--text);color:var(--bg);border-color:var(--text)}
+.sec-hdr{width:100%;max-width:680px;padding:clamp(24px,6vw,40px) 24px 0;display:flex;align-items:center;gap:12px}
+.sec-dot{width:10px;height:10px;border-radius:50%;flex-shrink:0}
+.sec-title{font-family:'DM Serif Display',serif;font-size:clamp(18px,5vw,24px)}
+.sec-line{flex:1;height:1px;background:var(--border)}
+.rule-wrap{width:100%;max-width:680px;padding:clamp(20px,5vw,32px) 24px 0}
+.rule-box{border-radius:var(--r);border:1px solid var(--cb);background:var(--cl);padding:20px 22px}
+.rb-title{font-family:'DM Serif Display',serif;font-size:19px;color:var(--ct);margin-bottom:10px}
+.rb-body{font-size:14px;color:var(--ct);line-height:1.75}
+.rb-body strong{font-weight:600}
+.rb-body code{font-family:monospace;font-size:13px;background:rgba(124,58,237,.12);padding:1px 6px;border-radius:4px}
+.chips{display:flex;gap:8px;flex-wrap:wrap;margin-top:14px}
+.chip{padding:5px 13px;border-radius:20px;font-size:12px;font-weight:600}
+.chip.sw{background:var(--swl);color:var(--swt);border:1px solid var(--swb)}
+.chip.st{background:var(--stl);color:var(--stt);border:1px solid var(--stb)}
+.chip.tr{background:var(--trl);color:var(--trt);border:1px solid var(--trb)}
+.memo{width:100%;max-width:680px;padding:12px 24px 0}
+.memo-box{border-radius:var(--rs);padding:14px 18px;font-size:13px;line-height:1.7;background:var(--cl);border:1px solid var(--cb);color:var(--ct)}
+.memo-box strong{font-weight:600}
+.mono{font-family:monospace;background:rgba(0,0,0,.07);padding:1px 5px;border-radius:4px;font-size:12px}
+.tbl-wrap{width:100%;max-width:680px;padding:12px 24px 0}
+.tbl-box{background:var(--surface);border:1px solid var(--border);border-radius:var(--r);overflow:hidden;box-shadow:var(--sh)}
+.tbl{width:100%;border-collapse:collapse;font-size:13px;table-layout:fixed}
+.tbl th{padding:8px 12px;text-align:left;font-size:11px;font-weight:600;letter-spacing:.5px;text-transform:uppercase;color:var(--hint);border-bottom:1px solid var(--border)}
+.tbl td{padding:8px 12px;border-bottom:1px solid var(--border);vertical-align:middle;color:var(--muted)}
+.tbl tr:last-child td{border-bottom:none}
+.tbl td:first-child{color:var(--hint);width:36px;text-align:center;font-size:12px}
+.tbl td:nth-child(2){font-weight:600;color:var(--text)}
+.cs{display:inline-block;padding:2px 8px;border-radius:20px;font-size:11px;font-weight:600;white-space:nowrap}
+.csw{background:var(--swl);color:var(--swt)}
+.cst{background:var(--stl);color:var(--stt)}
+.ctr{background:var(--trl);color:var(--trt)}
+.ar{direction:rtl;text-align:right;font-size:12px;color:var(--hint)}
+.footer{width:100%;max-width:680px;padding:clamp(36px,8vw,56px) 24px 32px;display:flex;flex-direction:column;align-items:center;gap:6px;text-align:center;border-top:1px solid var(--border);margin-top:clamp(36px,8vw,56px)}
+.footer-brand{font-family:'DM Serif Display',serif;font-size:16px}
+.footer-credit{font-size:11px;font-weight:600;letter-spacing:2px;text-transform:uppercase;color:var(--hint);margin-top:2px}
+@media(max-width:480px){.tbl td:last-child,.tbl th:last-child{display:none}}
+</style>
+</head>
+<body>
+<div class="hero">
+  <div class="tag">Grammatik Übersicht</div>
+  <h1 class="h1">Verben mit <em>Dativ</em></h1>
+  <p class="sub">37 Verben, die immer den Dativ verlangen — mit Typen und arabischen Bedeutungen.</p>
+</div>
+<div class="nav">
+  <a class="nb" href="#regel">Die Regel</a>
+  <a class="nb" href="#schwach">Schwach</a>
+  <a class="nb" href="#stark">Stark</a>
+  <a class="nb" href="#trennbar">Trennbar</a>
+</div>
+
+<!-- REGEL -->
+<div class="rule-wrap" id="regel">
+  <div class="rule-box">
+    <div class="rb-title">Warum Dativ?</div>
+    <div class="rb-body">
+      Diese Verben verlangen immer den <strong>Dativ</strong> für ihr Objekt — nie den Akkusativ.<br>
+      Das Objekt ist meistens eine Person:<br>
+      <em>Ich helfe <strong>dem Mann</strong>.</em> (Wem? → Dativ ✓)<br><br>
+      <strong>Trick:</strong> Frage <code>Wem?</code> — wenn die Antwort passt → Dativ.<br>
+      <em>Ich danke <strong>wem?</strong> → meiner Mutter.</em> → Dativ ✓
+    </div>
+    <div class="chips">
+      <span class="chip sw">Schwach → +te</span>
+      <span class="chip st">Stark → Vokalwechsel</span>
+      <span class="chip tr">Trennbar</span>
+    </div>
+  </div>
+</div>
+
+<div class="memo">
+  <div class="memo-box">
+    <strong>Wichtigste Dativ-Verben:</strong><br>
+    <span class="mono">helfen · danken · gefallen · antworten · glauben · vertrauen · folgen · gehören · fehlen · schaden · passen · schmecken · nutzen · empfehlen · begegnen · verzeihen · gelingen</span>
+  </div>
+</div>
+
+<!-- SCHWACHE VERBEN -->
+<div class="sec-hdr" id="schwach">
+  <div class="sec-dot" style="background:var(--sw)"></div>
+  <div class="sec-title">Schwache Verben</div>
+  <div class="sec-line"></div>
+</div>
+<div class="tbl-wrap">
+  <div class="tbl-box">
+    <table class="tbl">
+      <thead><tr><th>#</th><th>Infinitiv</th><th>Typ</th><th>Arabisch</th></tr></thead>
+      <tbody>
+        <tr><td>1</td><td>danken</td><td><span class="cs csw">dankte</span></td><td class="ar">يشكر</td></tr>
+        <tr><td>2</td><td>gratulieren</td><td><span class="cs csw">gratulierte</span></td><td class="ar">يهنئ</td></tr>
+        <tr><td>3</td><td>gehorchen</td><td><span class="cs csw">gehorchte</span></td><td class="ar">يطيع</td></tr>
+        <tr><td>4</td><td>folgen</td><td><span class="cs csw">folgte</span></td><td class="ar">يتبع</td></tr>
+        <tr><td>5</td><td>schaden</td><td><span class="cs csw">schadete</span></td><td class="ar">يضر</td></tr>
+        <tr><td>6</td><td>gehören</td><td><span class="cs csw">gehörte</span></td><td class="ar">ينتمي إلى</td></tr>
+        <tr><td>7</td><td>glauben</td><td><span class="cs csw">glaubte</span></td><td class="ar">يصدق / يعتقد</td></tr>
+        <tr><td>8</td><td>vertrauen</td><td><span class="cs csw">vertraute</span></td><td class="ar">يثق بـ</td></tr>
+        <tr><td>9</td><td>begegnen</td><td><span class="cs csw">begegnete</span></td><td class="ar">يقابل / يصادف</td></tr>
+        <tr><td>10</td><td>genügen</td><td><span class="cs csw">genügte</span></td><td class="ar">يكفي</td></tr>
+        <tr><td>11</td><td>schmecken</td><td><span class="cs csw">schmeckte</span></td><td class="ar">مذاقه يعجب</td></tr>
+        <tr><td>12</td><td>fehlen</td><td><span class="cs csw">fehlte</span></td><td class="ar">ينقص / يفتقد</td></tr>
+        <tr><td>13</td><td>dienen</td><td><span class="cs csw">diente</span></td><td class="ar">يخدم</td></tr>
+        <tr><td>14</td><td>passen</td><td><span class="cs csw">passte</span></td><td class="ar">يناسب</td></tr>
+        <tr><td>15</td><td>ähneln</td><td><span class="cs csw">ähnelte</span></td><td class="ar">يشبه</td></tr>
+        <tr><td>16</td><td>passieren</td><td><span class="cs csw">passierte</span></td><td class="ar">يحدث</td></tr>
+        <tr><td>17</td><td>nutzen</td><td><span class="cs csw">nutzte</span></td><td class="ar">يفيد / يستفيد</td></tr>
+        <tr><td>18</td><td>drohen</td><td><span class="cs csw">drohte</span></td><td class="ar">يهدد</td></tr>
+        <tr><td>19</td><td>leidtun</td><td><span class="cs csw">tat leid</span></td><td class="ar">يؤسف</td></tr>
+        <tr><td>20</td><td>weh tun</td><td><span class="cs csw">tat weh</span></td><td class="ar">يؤلم</td></tr>
+      </tbody>
+    </table>
+  </div>
+</div>
+
+<!-- STARKE VERBEN -->
+<div class="sec-hdr" id="stark">
+  <div class="sec-dot" style="background:var(--st)"></div>
+  <div class="sec-title">Starke Verben</div>
+  <div class="sec-line"></div>
+</div>
+<div class="tbl-wrap">
+  <div class="tbl-box">
+    <table class="tbl">
+      <thead><tr><th>#</th><th>Infinitiv</th><th>Präteritum</th><th>Arabisch</th></tr></thead>
+      <tbody>
+        <tr><td>1</td><td>helfen</td><td><span class="cs cst">half</span></td><td class="ar">يساعد</td></tr>
+        <tr><td>2</td><td>gefallen</td><td><span class="cs cst">gefiel</span></td><td class="ar">يعجب</td></tr>
+        <tr><td>3</td><td>befehlen</td><td><span class="cs cst">befahl</span></td><td class="ar">يأمر</td></tr>
+        <tr><td>4</td><td>missfallen</td><td><span class="cs cst">missfiel</span></td><td class="ar">لا يعجب</td></tr>
+        <tr><td>5</td><td>gelingen</td><td><span class="cs cst">gelang</span></td><td class="ar">ينجح</td></tr>
+        <tr><td>6</td><td>verzeihen</td><td><span class="cs cst">verzieh</span></td><td class="ar">يسامح</td></tr>
+        <tr><td>7</td><td>stehen</td><td><span class="cs cst">stand</span></td><td class="ar">يقف</td></tr>
+        <tr><td>8</td><td>gleichen</td><td><span class="cs cst">glich</span></td><td class="ar">يشبه</td></tr>
+        <tr><td>9</td><td>empfehlen</td><td><span class="cs cst">empfahl</span></td><td class="ar">ينصح / يوصي</td></tr>
+      </tbody>
+    </table>
+  </div>
+</div>
+
+<!-- TRENNBARE VERBEN -->
+<div class="sec-hdr" id="trennbar">
+  <div class="sec-dot" style="background:var(--tr)"></div>
+  <div class="sec-title">Trennbare Verben</div>
+  <div class="sec-line"></div>
+</div>
+<div class="tbl-wrap">
+  <div class="tbl-box">
+    <table class="tbl">
+      <thead><tr><th>#</th><th>Infinitiv</th><th>Präteritum</th><th>Arabisch</th></tr></thead>
+      <tbody>
+        <tr><td>1</td><td>antworten</td><td><span class="cs csw">antwortete</span></td><td class="ar">يجيب</td></tr>
+        <tr><td>2</td><td>beistehen</td><td><span class="cs ctr">stand bei</span></td><td class="ar">يساند / يقف إلى جانب</td></tr>
+        <tr><td>3</td><td>einfallen</td><td><span class="cs ctr">fiel ein</span></td><td class="ar">يخطر ببال</td></tr>
+        <tr><td>4</td><td>beitreten</td><td><span class="cs ctr">trat bei</span></td><td class="ar">ينضم إلى</td></tr>
+        <tr><td>5</td><td>zuhören</td><td><span class="cs ctr">hörte zu</span></td><td class="ar">يستمع</td></tr>
+        <tr><td>6</td><td>mitteilen</td><td><span class="cs ctr">teilte mit</span></td><td class="ar">يخبر / يبلغ</td></tr>
+        <tr><td>7</td><td>zureden</td><td><span class="cs ctr">redete zu</span></td><td class="ar">يقنع بالكلام</td></tr>
+        <tr><td>8</td><td>ausweichen</td><td><span class="cs ctr">wich aus</span></td><td class="ar">يتجنب</td></tr>
+      </tbody>
+    </table>
+  </div>
+</div>
+
+<div class="footer">
+  <div class="footer-brand">Spiel Deutsch</div>
+  <div class="footer-credit">by Mostafa Toumi</div>
+</div>
+</body>
+</html>

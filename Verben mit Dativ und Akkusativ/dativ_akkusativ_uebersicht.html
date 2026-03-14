@@ -1,0 +1,218 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Verben mit Dativ und Akkusativ — Übersicht</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=DM+Sans:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --bg:#F7F4EF;--surface:#fff;--text:#1C1917;--muted:#78716C;--hint:#A8A29E;
+  --dat:#7C3AED;--datl:#EDE9FE;--datt:#5B21B6;--datb:#C4B5FD;
+  --akk:#185FA5;--akkl:#E6F1FB;--akkt:#0C447C;--akkb:#B5D4F4;
+  --sw:#1D9E75;--swl:#E1F5EE;--swt:#0F6E56;--swb:#9FE1CB;
+  --st:#185FA5;--stl:#E6F1FB;--stt:#0C447C;--stb:#B5D4F4;
+  --tr:#B45309;--trl:#FEF3C7;--trt:#92400E;--trb:#FDE68A;
+  --border:rgba(28,25,23,0.1);--bm:rgba(28,25,23,0.15);
+  --r:16px;--rs:12px;--sh:0 2px 12px rgba(28,25,23,0.07)
+}
+html,body{min-height:100%;background:var(--bg);font-family:'DM Sans',sans-serif;color:var(--text);-webkit-font-smoothing:antialiased}
+body{display:flex;flex-direction:column;align-items:center;padding-bottom:48px}
+.hero{width:100%;max-width:680px;padding:clamp(32px,8vw,60px) 24px 0;text-align:center}
+.tag{display:inline-block;font-size:11px;font-weight:600;letter-spacing:2px;text-transform:uppercase;color:var(--akkt);background:var(--akkl);border:1px solid var(--akkb);border-radius:20px;padding:4px 14px;margin-bottom:16px}
+.h1{font-family:'DM Serif Display',serif;font-size:clamp(26px,6vw,42px);letter-spacing:-.5px;line-height:1.1}
+.h1 span.dat{color:var(--dat)}
+.h1 span.akk{color:var(--akk)}
+.sub{font-size:14px;color:var(--muted);margin:10px auto 0;line-height:1.6;max-width:460px}
+.nav{width:100%;max-width:680px;padding:18px 24px 0;display:flex;gap:8px;flex-wrap:wrap}
+.nb{padding:5px 13px;border-radius:20px;border:1px solid var(--bm);font-family:'DM Sans',sans-serif;font-size:12px;font-weight:600;cursor:pointer;background:var(--surface);color:var(--muted);text-decoration:none;transition:all .15s;box-shadow:var(--sh)}
+.nb:hover{background:var(--text);color:var(--bg);border-color:var(--text)}
+.rule-wrap{width:100%;max-width:680px;padding:clamp(20px,5vw,32px) 24px 0}
+/* Two-column rule cards */
+.rule-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+@media(max-width:480px){.rule-grid{grid-template-columns:1fr}}
+.rule-box{border-radius:var(--r);padding:18px 20px;border:1px solid}
+.rule-box.dat{background:var(--datl);border-color:var(--datb)}
+.rule-box.akk{background:var(--akkl);border-color:var(--akkb)}
+.rb-title{font-family:'DM Serif Display',serif;font-size:17px;margin-bottom:8px}
+.rule-box.dat .rb-title{color:var(--datt)}
+.rule-box.akk .rb-title{color:var(--akkt)}
+.rb-body{font-size:13px;line-height:1.7}
+.rule-box.dat .rb-body{color:var(--datt)}
+.rule-box.akk .rb-body{color:var(--akkt)}
+.rb-body code{font-family:monospace;font-size:12px;background:rgba(0,0,0,.08);padding:1px 5px;border-radius:4px}
+.rb-body strong{font-weight:600}
+/* Pattern box */
+.pattern{width:100%;max-width:680px;padding:14px 24px 0}
+.pattern-box{background:var(--surface);border:1px solid var(--border);border-radius:var(--r);padding:20px 22px;box-shadow:var(--sh)}
+.pat-title{font-size:13px;font-weight:600;color:var(--muted);margin-bottom:12px;text-transform:uppercase;letter-spacing:.8px}
+.pat-row{display:flex;align-items:center;gap:10px;flex-wrap:wrap;margin-bottom:10px}
+.pat-row:last-child{margin-bottom:0}
+.pat-verb{font-family:'DM Serif Display',serif;font-size:18px;color:var(--text);min-width:100px}
+.pat-arrow{color:var(--hint);font-size:14px}
+.pat-badge{padding:4px 12px;border-radius:20px;font-size:12px;font-weight:600}
+.pat-badge.dat{background:var(--datl);color:var(--datt);border:1px solid var(--datb)}
+.pat-badge.akk{background:var(--akkl);color:var(--akkt);border:1px solid var(--akkb)}
+.pat-ex{font-size:13px;color:var(--muted);font-style:italic}
+/* Section header */
+.sec-hdr{width:100%;max-width:680px;padding:clamp(24px,6vw,40px) 24px 0;display:flex;align-items:center;gap:12px}
+.sec-dot{width:10px;height:10px;border-radius:50%;flex-shrink:0}
+.sec-title{font-family:'DM Serif Display',serif;font-size:clamp(18px,5vw,24px)}
+.sec-line{flex:1;height:1px;background:var(--border)}
+/* Table */
+.tbl-wrap{width:100%;max-width:680px;padding:12px 24px 0}
+.tbl-box{background:var(--surface);border:1px solid var(--border);border-radius:var(--r);overflow:hidden;box-shadow:var(--sh)}
+.tbl{width:100%;border-collapse:collapse;font-size:13px}
+.tbl th{padding:8px 12px;text-align:left;font-size:11px;font-weight:600;letter-spacing:.5px;text-transform:uppercase;color:var(--hint);border-bottom:1px solid var(--border)}
+.tbl td{padding:8px 12px;border-bottom:1px solid var(--border);vertical-align:middle;color:var(--muted)}
+.tbl tr:last-child td{border-bottom:none}
+.tbl td:first-child{color:var(--hint);width:32px;text-align:center;font-size:12px}
+.tbl td:nth-child(2){font-weight:600;color:var(--text)}
+.tbl td:nth-child(3){font-size:13px}
+.cs{display:inline-block;padding:2px 8px;border-radius:20px;font-size:11px;font-weight:600;white-space:nowrap}
+.csw{background:var(--swl);color:var(--swt)}
+.cst{background:var(--stl);color:var(--stt)}
+.ctr{background:var(--trl);color:var(--trt)}
+.ar{direction:rtl;text-align:right;font-size:12px;color:var(--hint)}
+/* Memo */
+.memo{width:100%;max-width:680px;padding:12px 24px 0}
+.memo-box{border-radius:var(--rs);padding:14px 18px;font-size:13px;line-height:1.7;background:var(--akkl);border:1px solid var(--akkb);color:var(--akkt)}
+.memo-box strong{font-weight:600}
+.mono{font-family:monospace;background:rgba(0,0,0,.07);padding:1px 5px;border-radius:4px;font-size:12px}
+.footer{width:100%;max-width:680px;padding:clamp(36px,8vw,56px) 24px 32px;display:flex;flex-direction:column;align-items:center;gap:6px;text-align:center;border-top:1px solid var(--border);margin-top:clamp(36px,8vw,56px)}
+.footer-brand{font-family:'DM Serif Display',serif;font-size:16px}
+.footer-credit{font-size:11px;font-weight:600;letter-spacing:2px;text-transform:uppercase;color:var(--hint);margin-top:2px}
+@media(max-width:480px){.tbl td:last-child,.tbl th:last-child{display:none}}
+</style>
+</head>
+<body>
+<div class="hero">
+  <div class="tag">Grammatik Übersicht</div>
+  <h1 class="h1">Verben mit <span class="dat">Dativ</span><br>und <span class="akk">Akkusativ</span></h1>
+  <p class="sub">Verben, die zwei Objekte verlangen — eine Person im Dativ und eine Sache im Akkusativ.</p>
+</div>
+<div class="nav">
+  <a class="nb" href="#regel">Die Regel</a>
+  <a class="nb" href="#muster">Satzmuster</a>
+  <a class="nb" href="#liste">Verbliste</a>
+</div>
+
+<!-- REGELN -->
+<div class="rule-wrap" id="regel">
+  <div class="rule-grid">
+    <div class="rule-box dat">
+      <div class="rb-title">Dativobjekt</div>
+      <div class="rb-body">
+        <strong>Wem?</strong> → meistens eine <strong>Person</strong><br>
+        Artikel: <code>dem / einem</code> (m/n)<br>
+        <code>der / einer</code> (f)<br><br>
+        <em>Ich gebe <strong>dem Kind</strong> ...</em>
+      </div>
+    </div>
+    <div class="rule-box akk">
+      <div class="rb-title">Akkusativobjekt</div>
+      <div class="rb-body">
+        <strong>Was?</strong> → meistens eine <strong>Sache</strong><br>
+        Artikel: <code>den / einen</code> (m)<br>
+        <code>das / ein</code> (n) · <code>die / eine</code> (f)<br><br>
+        <em>... <strong>das Buch</strong>.</em>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- SATZMUSTER -->
+<div class="sec-hdr" id="muster">
+  <div class="sec-dot" style="background:var(--akk)"></div>
+  <div class="sec-title">Satzmuster</div>
+  <div class="sec-line"></div>
+</div>
+<div class="pattern">
+  <div class="pattern-box">
+    <div class="pat-title">Verb → Dativ (Person) + Akkusativ (Sache)</div>
+    <div class="pat-row">
+      <div class="pat-verb">geben</div>
+      <div class="pat-arrow">→</div>
+      <span class="pat-badge dat">Wem?</span>
+      <span class="pat-badge akk">Was?</span>
+      <div class="pat-ex">Ich gebe <strong>meiner Mutter</strong> <strong>ein Geschenk</strong>.</div>
+    </div>
+    <div class="pat-row">
+      <div class="pat-verb">zeigen</div>
+      <div class="pat-arrow">→</div>
+      <span class="pat-badge dat">Wem?</span>
+      <span class="pat-badge akk">Was?</span>
+      <div class="pat-ex">Er zeigt <strong>dem Arzt</strong> <strong>den Befund</strong>.</div>
+    </div>
+    <div class="pat-row">
+      <div class="pat-verb">schicken</div>
+      <div class="pat-arrow">→</div>
+      <span class="pat-badge dat">Wem?</span>
+      <span class="pat-badge akk">Was?</span>
+      <div class="pat-ex">Sie schickt <strong>ihrer Freundin</strong> <strong>eine Nachricht</strong>.</div>
+    </div>
+    <div class="pat-row">
+      <div class="pat-verb">erklären</div>
+      <div class="pat-arrow">→</div>
+      <span class="pat-badge dat">Wem?</span>
+      <span class="pat-badge akk">Was?</span>
+      <div class="pat-ex">Er erklärt <strong>den Schülern</strong> <strong>die Regel</strong>.</div>
+    </div>
+  </div>
+</div>
+
+<div class="memo">
+  <div class="memo-box">
+    <strong>Reihenfolge im Satz:</strong><br>
+    Normalerweise: <span class="mono">Dativ vor Akkusativ</span> — <em>Ich gebe <strong>ihr</strong> <strong>das Buch</strong>.</em><br>
+    Mit Pronomen: Beide Pronomen → <span class="mono">Akkusativ zuerst</span> — <em>Ich gebe <strong>es</strong> <strong>ihr</strong>.</em>
+  </div>
+</div>
+
+<!-- VERBLISTE -->
+<div class="sec-hdr" id="liste">
+  <div class="sec-dot" style="background:var(--akk)"></div>
+  <div class="sec-title">Verbliste</div>
+  <div class="sec-line"></div>
+</div>
+<div class="tbl-wrap">
+  <div class="tbl-box">
+    <table class="tbl">
+      <thead><tr><th>#</th><th>Infinitiv</th><th>Präteritum</th><th>Arabisch</th></tr></thead>
+      <tbody>
+        <tr><td>1</td><td>geben</td><td><span class="cs cst">gab</span></td><td class="ar">يعطي</td></tr>
+        <tr><td>2</td><td>zeigen</td><td><span class="cs csw">zeigte</span></td><td class="ar">يريـ / يظهر</td></tr>
+        <tr><td>3</td><td>schicken</td><td><span class="cs csw">schickte</span></td><td class="ar">يرسل</td></tr>
+        <tr><td>4</td><td>senden</td><td><span class="cs csw">sendete / sandte</span></td><td class="ar">يرسل / يبعث</td></tr>
+        <tr><td>5</td><td>bringen</td><td><span class="cs csw">brachte</span></td><td class="ar">يحضر / يجلب</td></tr>
+        <tr><td>6</td><td>erklären</td><td><span class="cs csw">erklärte</span></td><td class="ar">يشرح / يوضح</td></tr>
+        <tr><td>7</td><td>erzählen</td><td><span class="cs csw">erzählte</span></td><td class="ar">يحكي / يروي</td></tr>
+        <tr><td>8</td><td>sagen</td><td><span class="cs csw">sagte</span></td><td class="ar">يقول</td></tr>
+        <tr><td>9</td><td>empfehlen</td><td><span class="cs cst">empfahl</span></td><td class="ar">ينصح / يوصي</td></tr>
+        <tr><td>10</td><td>kaufen</td><td><span class="cs csw">kaufte</span></td><td class="ar">يشتري (لـ...)</td></tr>
+        <tr><td>11</td><td>kochen</td><td><span class="cs csw">kochte</span></td><td class="ar">يطبخ (لـ...)</td></tr>
+        <tr><td>12</td><td>leihen</td><td><span class="cs cst">lieh</span></td><td class="ar">يعير / يقرض</td></tr>
+        <tr><td>13</td><td>schenken</td><td><span class="cs csw">schenkte</span></td><td class="ar">يهدي</td></tr>
+        <tr><td>14</td><td>verkaufen</td><td><span class="cs csw">verkaufte</span></td><td class="ar">يبيع</td></tr>
+        <tr><td>15</td><td>lesen</td><td><span class="cs cst">las</span></td><td class="ar">يقرأ (لـ...)</td></tr>
+        <tr><td>16</td><td>schreiben</td><td><span class="cs cst">schrieb</span></td><td class="ar">يكتب (لـ...)</td></tr>
+        <tr><td>17</td><td>anbieten</td><td><span class="cs ctr">bot an</span></td><td class="ar">يعرض / يقدم</td></tr>
+        <tr><td>18</td><td>vorstellen</td><td><span class="cs ctr">stellte vor</span></td><td class="ar">يقدّم / يعرّف</td></tr>
+        <tr><td>19</td><td>mitbringen</td><td><span class="cs ctr">brachte mit</span></td><td class="ar">يحضر معه</td></tr>
+        <tr><td>20</td><td>zurückgeben</td><td><span class="cs ctr">gab zurück</span></td><td class="ar">يُعيد / يردّ</td></tr>
+        <tr><td>21</td><td>weitergeben</td><td><span class="cs ctr">gab weiter</span></td><td class="ar">يمرر / ينقل</td></tr>
+        <tr><td>22</td><td>abnehmen</td><td><span class="cs ctr">nahm ab</span></td><td class="ar">يأخذ من / ينزع</td></tr>
+        <tr><td>23</td><td>beibringen</td><td><span class="cs ctr">brachte bei</span></td><td class="ar">يعلّم / يدرّب</td></tr>
+      </tbody>
+    </table>
+  </div>
+</div>
+
+<div class="footer">
+  <div class="footer-brand">Spiel Deutsch</div>
+  <div class="footer-credit">by Mostafa Toumi</div>
+</div>
+</body>
+</html>

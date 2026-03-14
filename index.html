@@ -7,88 +7,97 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=DM+Sans:wght@400;500;600&display=swap" rel="stylesheet">
 <style>
-  *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
-  :root{
-    --bg:#F7F4EF;--surface:#fff;--text:#1C1917;--muted:#78716C;--hint:#A8A29E;
-    --green:#1D9E75;--green-l:#E1F5EE;--green-t:#0F6E56;
-    --akk:#185FA5;--akk-l:#E6F1FB;--akk-t:#0C447C;--akk-b:#B5D4F4;
-    --gen:#7C3AED;--gen-l:#EDE9FE;--gen-t:#5B21B6;--gen-b:#C4B5FD;
-    --prt:#D85A30;--prt-l:#FAECE7;--prt-t:#7C2D12;--prt-b:#FDBA74;
-    --amber:#B45309;--amber-l:#FEF3C7;--amber-b:#F59E0B;
-    --border:rgba(28,25,23,0.10);--bm:rgba(28,25,23,0.15);
-    --r:16px;--rs:12px;--sh:0 2px 16px rgba(28,25,23,0.08);--shc:0 8px 40px rgba(28,25,23,0.10)
-  }
-  html,body{min-height:100%;background:var(--bg);font-family:'DM Sans',sans-serif;color:var(--text);-webkit-font-smoothing:antialiased}
-  body{display:flex;flex-direction:column;align-items:center}
-  .hero{width:100%;max-width:640px;padding:clamp(40px,10vw,80px) 24px 0;text-align:center}
-  .hero-tag{display:inline-block;font-size:11px;font-weight:600;letter-spacing:2px;text-transform:uppercase;color:var(--green-t);background:var(--green-l);border:1px solid var(--green);border-radius:20px;padding:4px 14px;margin-bottom:20px}
-  .hero-title{font-family:'DM Serif Display',serif;font-size:clamp(36px,9vw,60px);line-height:1.1;letter-spacing:-1px}
-  .hero-title em{font-style:italic;color:var(--green)}
-  .hero-sub{font-size:clamp(15px,3.5vw,17px);color:var(--muted);margin:16px auto 0;line-height:1.6;max-width:400px}
-  .dots{display:flex;justify-content:center;gap:6px;margin-top:28px}
-  .dot{width:6px;height:6px;border-radius:50%;background:var(--bm)}
-  .dot.active{background:var(--green)}
-  .stats-strip{width:100%;max-width:640px;padding:clamp(28px,7vw,48px) 24px 0;display:grid;grid-template-columns:repeat(4,1fr);gap:10px}
-  .stat-box{background:var(--surface);border:1px solid var(--border);border-radius:var(--rs);padding:14px 10px;text-align:center;box-shadow:var(--sh)}
-  .stat-box-n{font-family:'DM Serif Display',serif;font-size:28px;color:var(--text);line-height:1}
-  .stat-box-l{font-size:10px;font-weight:600;letter-spacing:.5px;text-transform:uppercase;color:var(--hint);margin-top:4px}
-  .section-label{width:100%;max-width:640px;padding:clamp(28px,7vw,48px) 24px 0;display:flex;align-items:center;gap:12px}
-  .section-label-text{font-size:11px;font-weight:600;letter-spacing:1.5px;text-transform:uppercase;color:var(--hint);white-space:nowrap}
-  .section-label-line{flex:1;height:1px;background:var(--border)}
-  .ref-card{width:100%;max-width:640px;padding:10px 24px 0}
-  .ref-link{display:flex;align-items:center;justify-content:space-between;background:var(--surface);border:1px solid var(--border);border-radius:var(--r);box-shadow:var(--shc);padding:18px 22px;text-decoration:none;color:inherit;transition:transform .2s,box-shadow .2s;position:relative;overflow:hidden;-webkit-tap-highlight-color:transparent}
-  .ref-link::before{content:'';position:absolute;top:0;left:0;right:0;height:3px;transform:scaleX(0);transform-origin:left;transition:transform .25s cubic-bezier(.4,0,.2,1)}
-  .ref-link:hover{transform:translateY(-2px);box-shadow:0 16px 48px rgba(28,25,23,0.13)}
-  .ref-link:hover::before{transform:scaleX(1)}
-  .ref-link.green-ref::before{background:var(--green)}
-  .ref-link.gen-ref::before{background:var(--gen)}
-  .ref-link.prt-ref::before{background:var(--prt)}
-  .ref-left{display:flex;align-items:center;gap:14px}
-  .ref-icon{font-size:26px;line-height:1}
-  .ref-title{font-family:'DM Serif Display',serif;font-size:18px;line-height:1.2}
-  .ref-desc{font-size:13px;color:var(--muted);margin-top:3px;line-height:1.4}
-  .ref-tag{font-size:10px;font-weight:600;letter-spacing:.8px;text-transform:uppercase;padding:3px 9px;border-radius:20px;white-space:nowrap}
-  .ref-tag.green{background:var(--green-l);color:var(--green-t);border:1px solid var(--green)}
-  .ref-tag.gen{background:var(--gen-l);color:var(--gen-t);border:1px solid var(--gen-b)}
-  .ref-tag.prt{background:var(--prt-l);color:var(--prt-t);border:1px solid var(--prt-b)}
-  .cards-grid{width:100%;max-width:640px;padding:12px 24px 0;display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:12px}
-  .game-card{background:var(--surface);border:1px solid var(--border);border-radius:var(--r);box-shadow:var(--shc);padding:22px;text-decoration:none;color:inherit;display:flex;flex-direction:column;gap:9px;transition:transform .2s,box-shadow .2s;-webkit-tap-highlight-color:transparent;position:relative;overflow:hidden}
-  .game-card::before{content:'';position:absolute;top:0;left:0;right:0;height:3px;transform:scaleX(0);transform-origin:left;transition:transform .25s cubic-bezier(.4,0,.2,1)}
-  .game-card:hover{transform:translateY(-3px);box-shadow:0 16px 48px rgba(28,25,23,0.13)}
-  .game-card:hover::before{transform:scaleX(1)}
-  .game-card.green-card::before{background:var(--green)}
-  .game-card.akk-card::before{background:var(--akk)}
-  .game-card.gen-card::before{background:var(--gen)}
-  .game-card.amber-card::before{background:var(--amber)}
-  .game-card.prt-card::before{background:var(--prt)}
-  .game-card.prt-st::before{background:var(--akk)}
-  .game-card.prt-tr::before{background:var(--amber)}
-  .card-icon{font-size:26px;line-height:1}
-  .card-badge{position:absolute;top:14px;right:14px;font-size:10px;font-weight:600;letter-spacing:.8px;text-transform:uppercase;padding:3px 9px;border-radius:20px}
-  .badge-popular{background:var(--green-l);color:var(--green-t);border:1px solid var(--green)}
-  .badge-new{background:var(--amber-l);color:var(--amber);border:1px solid var(--amber-b)}
-  .badge-hot{background:#FEE2E2;color:#991B1B;border:1px solid #F87171}
-  .badge-gen{background:var(--gen-l);color:var(--gen-t);border:1px solid var(--gen-b)}
-  .badge-akk{background:var(--akk-l);color:var(--akk-t);border:1px solid var(--akk-b)}
-  .badge-prt{background:var(--prt-l);color:var(--prt-t);border:1px solid var(--prt-b)}
-  .card-title{font-family:'DM Serif Display',serif;font-size:19px;color:var(--text);line-height:1.2}
-  .card-desc{font-size:13px;color:var(--muted);line-height:1.5}
-  .card-meta{display:flex;align-items:center;gap:7px;margin-top:3px;flex-wrap:wrap}
-  .meta-pill{font-size:11px;font-weight:600;color:var(--hint);background:var(--bg);border:1px solid var(--border);border-radius:20px;padding:3px 10px}
-  .card-cta{display:flex;align-items:center;gap:5px;font-size:13px;font-weight:600;margin-top:5px}
-  .card-cta-arrow{transition:transform .2s}
-  .game-card:hover .card-cta-arrow{transform:translateX(4px)}
-  .green-card .card-cta,.green-ref:hover .ref-tag{color:var(--green-t)}
-  .akk-card .card-cta{color:var(--akk-t)}
-  .gen-card .card-cta{color:var(--gen-t)}
-  .amber-card .card-cta{color:var(--amber)}
-  .prt-card .card-cta,.prt-st .card-cta{color:var(--prt-t)}
-  .prt-tr .card-cta{color:var(--amber)}
-  .footer{width:100%;max-width:640px;padding:clamp(40px,8vw,64px) 24px 32px;display:flex;flex-direction:column;align-items:center;gap:8px;text-align:center;border-top:1px solid var(--border);margin-top:clamp(40px,8vw,64px)}
-  .footer-brand{font-family:'DM Serif Display',serif;font-size:18px}
-  .footer-sub{font-size:12px;color:var(--hint)}
-  .footer-credit{font-size:11px;font-weight:600;letter-spacing:2px;text-transform:uppercase;color:var(--hint);margin-top:4px}
-  @media(max-width:420px){.cards-grid{grid-template-columns:1fr}.stats-strip{grid-template-columns:repeat(2,1fr)}}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --bg:#F7F4EF;--surface:#fff;--text:#1C1917;--muted:#78716C;--hint:#A8A29E;
+  --green:#1D9E75;--greenl:#E1F5EE;--greent:#0F6E56;
+  --akk:#185FA5;--akkl:#E6F1FB;--akkt:#0C447C;--akkb:#B5D4F4;
+  --gen:#7C3AED;--genl:#EDE9FE;--gent:#5B21B6;--genb:#C4B5FD;
+  --prt:#D85A30;--prtl:#FAECE7;--prtt:#7C2D12;--prtb:#FDBA74;
+  --dat:#7C3AED;--datl:#EDE9FE;--datt:#5B21B6;--datb:#C4B5FD;
+  --dak:#0891B2;--dakl:#E0F2FE;--dakt:#0C4A6E;--dakb:#7DD3FC;
+  --amber:#B45309;--amberl:#FEF3C7;--amberb:#F59E0B;
+  --border:rgba(28,25,23,0.10);--bm:rgba(28,25,23,0.15);
+  --r:16px;--rs:12px;--sh:0 2px 16px rgba(28,25,23,0.08);--shc:0 8px 40px rgba(28,25,23,0.10)
+}
+html,body{min-height:100%;background:var(--bg);font-family:'DM Sans',sans-serif;color:var(--text);-webkit-font-smoothing:antialiased}
+body{display:flex;flex-direction:column;align-items:center}
+
+/* ── Hero ── */
+.hero{width:100%;max-width:640px;padding:clamp(48px,12vw,96px) 24px 0;text-align:center}
+.hero-tag{display:inline-block;font-size:11px;font-weight:600;letter-spacing:2px;text-transform:uppercase;color:var(--greent);background:var(--greenl);border:1px solid var(--green);border-radius:20px;padding:4px 14px;margin-bottom:20px}
+.hero-title{font-family:'DM Serif Display',serif;font-size:clamp(40px,10vw,68px);line-height:1.05;letter-spacing:-1.5px}
+.hero-title em{font-style:italic;color:var(--green)}
+.hero-sub{font-size:clamp(15px,3.5vw,17px);color:var(--muted);margin:18px auto 0;line-height:1.65;max-width:380px}
+.dots{display:flex;justify-content:center;gap:6px;margin-top:32px}
+.dot{width:6px;height:6px;border-radius:50%;background:var(--bm)}
+.dot.active{background:var(--green)}
+
+/* ── Section label ── */
+.section-label{width:100%;max-width:640px;padding:clamp(36px,8vw,56px) 24px 0;display:flex;align-items:center;gap:12px}
+.sl-text{font-size:11px;font-weight:600;letter-spacing:1.5px;text-transform:uppercase;color:var(--hint);white-space:nowrap}
+.sl-line{flex:1;height:1px;background:var(--border)}
+
+/* ── Reference link (full width) ── */
+.ref-card{width:100%;max-width:640px;padding:10px 24px 0}
+.ref-link{display:flex;align-items:center;justify-content:space-between;background:var(--surface);border:1px solid var(--border);border-radius:var(--r);box-shadow:var(--shc);padding:16px 20px;text-decoration:none;color:inherit;transition:transform .2s,box-shadow .2s;position:relative;overflow:hidden;-webkit-tap-highlight-color:transparent}
+.ref-link::before{content:'';position:absolute;top:0;left:0;right:0;height:3px;transform:scaleX(0);transform-origin:left;transition:transform .25s cubic-bezier(.4,0,.2,1)}
+.ref-link:hover{transform:translateY(-2px);box-shadow:0 16px 48px rgba(28,25,23,0.13)}
+.ref-link:hover::before{transform:scaleX(1)}
+.ref-link.c-green::before{background:var(--green)}
+.ref-link.c-gen::before{background:var(--gen)}
+.ref-link.c-prt::before{background:var(--prt)}
+.ref-link.c-dat::before{background:var(--dat)}
+.ref-link.c-dak::before{background:var(--dak)}
+.ref-left{display:flex;align-items:center;gap:14px}
+.ref-icon{font-size:24px;line-height:1}
+.ref-title{font-family:'DM Serif Display',serif;font-size:17px;line-height:1.2}
+.ref-desc{font-size:13px;color:var(--muted);margin-top:3px;line-height:1.4}
+.ref-tag{font-size:10px;font-weight:600;letter-spacing:.8px;text-transform:uppercase;padding:3px 9px;border-radius:20px;white-space:nowrap;flex-shrink:0}
+.ref-tag.green{background:var(--greenl);color:var(--greent);border:1px solid var(--green)}
+.ref-tag.gen{background:var(--genl);color:var(--gent);border:1px solid var(--genb)}
+.ref-tag.prt{background:var(--prtl);color:var(--prtt);border:1px solid var(--prtb)}
+.ref-tag.dat{background:var(--datl);color:var(--datt);border:1px solid var(--datb)}
+.ref-tag.dak{background:var(--dakl);color:var(--dakt);border:1px solid var(--dakb)}
+
+/* ── Game cards grid ── */
+.cards-grid{width:100%;max-width:640px;padding:12px 24px 0;display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:12px}
+.game-card{background:var(--surface);border:1px solid var(--border);border-radius:var(--r);box-shadow:var(--shc);padding:22px;text-decoration:none;color:inherit;display:flex;flex-direction:column;gap:9px;transition:transform .2s,box-shadow .2s;-webkit-tap-highlight-color:transparent;position:relative;overflow:hidden}
+.game-card::before{content:'';position:absolute;top:0;left:0;right:0;height:3px;transform:scaleX(0);transform-origin:left;transition:transform .25s cubic-bezier(.4,0,.2,1)}
+.game-card:hover{transform:translateY(-3px);box-shadow:0 16px 48px rgba(28,25,23,0.13)}
+.game-card:hover::before{transform:scaleX(1)}
+.game-card:active{transform:translateY(-1px)}
+.gc-green::before{background:var(--green)} .gc-green .card-cta{color:var(--greent)}
+.gc-akk::before{background:var(--akk)}    .gc-akk .card-cta{color:var(--akkt)}
+.gc-gen::before{background:var(--gen)}    .gc-gen .card-cta{color:var(--gent)}
+.gc-amber::before{background:var(--amber)}.gc-amber .card-cta{color:var(--amber)}
+.gc-prt::before{background:var(--prt)}    .gc-prt .card-cta{color:var(--prtt)}
+.gc-dat::before{background:var(--dat)}    .gc-dat .card-cta{color:var(--datt)}
+.gc-dak::before{background:var(--dak)}    .gc-dak .card-cta{color:var(--dakt)}
+.card-icon{font-size:26px;line-height:1}
+.card-badge{position:absolute;top:14px;right:14px;font-size:10px;font-weight:600;letter-spacing:.8px;text-transform:uppercase;padding:3px 9px;border-radius:20px}
+.b-popular{background:var(--greenl);color:var(--greent);border:1px solid var(--green)}
+.b-new{background:var(--amberl);color:var(--amber);border:1px solid var(--amberb)}
+.b-hot{background:#FEE2E2;color:#991B1B;border:1px solid #F87171}
+.b-gen{background:var(--genl);color:var(--gent);border:1px solid var(--genb)}
+.b-akk{background:var(--akkl);color:var(--akkt);border:1px solid var(--akkb)}
+.b-prt{background:var(--prtl);color:var(--prtt);border:1px solid var(--prtb)}
+.b-dat{background:var(--datl);color:var(--datt);border:1px solid var(--datb)}
+.b-dak{background:var(--dakl);color:var(--dakt);border:1px solid var(--dakb)}
+.card-title{font-family:'DM Serif Display',serif;font-size:19px;color:var(--text);line-height:1.2}
+.card-desc{font-size:13px;color:var(--muted);line-height:1.5}
+.card-meta{display:flex;align-items:center;gap:7px;margin-top:3px;flex-wrap:wrap}
+.meta-pill{font-size:11px;font-weight:600;color:var(--hint);background:var(--bg);border:1px solid var(--border);border-radius:20px;padding:3px 10px}
+.card-cta{display:flex;align-items:center;gap:5px;font-size:13px;font-weight:600;margin-top:5px}
+.card-cta-arrow{transition:transform .2s}
+.game-card:hover .card-cta-arrow{transform:translateX(4px)}
+
+/* ── Footer ── */
+.footer{width:100%;max-width:640px;padding:clamp(40px,8vw,64px) 24px 32px;display:flex;flex-direction:column;align-items:center;gap:8px;text-align:center;border-top:1px solid var(--border);margin-top:clamp(40px,8vw,64px)}
+.footer-brand{font-family:'DM Serif Display',serif;font-size:18px}
+.footer-sub{font-size:12px;color:var(--hint)}
+.footer-credit{font-size:11px;font-weight:600;letter-spacing:2px;text-transform:uppercase;color:var(--hint);margin-top:4px}
+@media(max-width:420px){.cards-grid{grid-template-columns:1fr}}
 </style>
 </head>
 <body>
@@ -100,37 +109,29 @@
   <div class="dots"><div class="dot active"></div><div class="dot"></div><div class="dot"></div></div>
 </div>
 
-<div class="stats-strip">
-  <div class="stat-box"><div class="stat-box-n">48</div><div class="stat-box-l">Verben</div></div>
-  <div class="stat-box"><div class="stat-box-n">35</div><div class="stat-box-l">Präpositionen</div></div>
-  <div class="stat-box"><div class="stat-box-n">41</div><div class="stat-box-l">Präteritum</div></div>
-  <div class="stat-box"><div class="stat-box-n">11</div><div class="stat-box-l">Spiele</div></div>
-</div>
-
-<!-- ══ SECTION 1: Verben mit Präpositionen ══ -->
+<!-- ══ 1. Verben mit Präpositionen ══ -->
 <div class="section-label">
-  <span class="section-label-text">Verben mit Präpositionen</span>
-  <div class="section-label-line"></div>
+  <span class="sl-text">Verben mit Präpositionen</span><div class="sl-line"></div>
 </div>
 <div class="cards-grid">
-  <a class="game-card green-card" href="https://spiel-deutsch.github.io/verben_flashcards.html">
-    <span class="card-badge badge-popular">Beliebt</span>
+  <a class="game-card gc-green" href="https://spiel-deutsch.github.io/verben_flashcards.html">
+    <span class="card-badge b-popular">Beliebt</span>
     <div class="card-icon">🃏</div>
     <div class="card-title">Lernkarten</div>
     <div class="card-desc">Blättere durch alle 48 Verben. Filtere nach Präposition.</div>
     <div class="card-meta"><span class="meta-pill">48 Karten</span><span class="meta-pill">Selbsttest</span></div>
     <div class="card-cta">Jetzt lernen <span class="card-cta-arrow">→</span></div>
   </a>
-  <a class="game-card green-card" href="https://spiel-deutsch.github.io/verben_quiz.html">
-    <span class="card-badge badge-new">Neu</span>
+  <a class="game-card gc-green" href="https://spiel-deutsch.github.io/verben_quiz.html">
+    <span class="card-badge b-new">Quiz</span>
     <div class="card-icon">🎯</div>
     <div class="card-title">Multiple Choice Quiz</div>
     <div class="card-desc">Wähle die richtige Präposition aus 4 Antworten.</div>
     <div class="card-meta"><span class="meta-pill">48 Fragen</span><span class="meta-pill">Streak</span></div>
     <div class="card-cta">Quiz starten <span class="card-cta-arrow">→</span></div>
   </a>
-  <a class="game-card green-card" href="https://spiel-deutsch.github.io/speed_round.html">
-    <span class="card-badge badge-hot">🔥 Neu</span>
+  <a class="game-card gc-green" href="https://spiel-deutsch.github.io/speed_round.html">
+    <span class="card-badge b-hot">🔥</span>
     <div class="card-icon">⏱️</div>
     <div class="card-title">Speed Round</div>
     <div class="card-desc">Beantworte so viele Fragen wie möglich vor dem Timer.</div>
@@ -139,101 +140,151 @@
   </a>
 </div>
 
-<!-- ══ SECTION 2: Präpositionen Kasus ══ -->
+<!-- ══ 2. Präpositionen Kasus ══ -->
 <div class="section-label">
-  <span class="section-label-text">Präpositionen — Akkusativ · Dativ · Genitiv</span>
-  <div class="section-label-line"></div>
+  <span class="sl-text">Präpositionen — Akkusativ · Dativ · Genitiv</span><div class="sl-line"></div>
 </div>
 <div class="ref-card">
-  <a class="ref-link gen-ref" href="https://spiel-deutsch.github.io/praepositionen_uebersicht.html">
-    <div class="ref-left">
-      <div class="ref-icon">📖</div>
-      <div><div class="ref-title">Übersicht &amp; Regeln</div><div class="ref-desc">Alle 35 Präpositionen nach Kasus — mit Regeln, Eselsbrücken und Beispielen.</div></div>
+  <a class="ref-link c-gen" href="https://spiel-deutsch.github.io/praepositionen_uebersicht.html">
+    <div class="ref-left"><div class="ref-icon">📖</div>
+      <div><div class="ref-title">Übersicht &amp; Regeln</div><div class="ref-desc">Alle 35 Präpositionen mit Regeln, Eselsbrücken und Beispielen.</div></div>
     </div>
     <span class="ref-tag gen">Lesen →</span>
   </a>
 </div>
 <div class="cards-grid">
-  <a class="game-card gen-card" href="https://spiel-deutsch.github.io/praepositionen_karten.html">
-    <span class="card-badge badge-gen">Lernen</span>
+  <a class="game-card gc-gen" href="https://spiel-deutsch.github.io/praepositionen_karten.html">
+    <span class="card-badge b-gen">Lernen</span>
     <div class="card-icon">🃏</div>
     <div class="card-title">Lernkarten</div>
-    <div class="card-desc">Welcher Kasus gehört zur Präposition? Filter: Akk · Dat · Gen · Wechsel.</div>
+    <div class="card-desc">Welcher Kasus gehört zur Präposition?</div>
     <div class="card-meta"><span class="meta-pill">35 Karten</span><span class="meta-pill">4 Gruppen</span></div>
     <div class="card-cta">Lernen <span class="card-cta-arrow">→</span></div>
   </a>
-  <a class="game-card akk-card" href="https://spiel-deutsch.github.io/praepositionen_quiz.html">
-    <span class="card-badge badge-akk">Quiz</span>
+  <a class="game-card gc-akk" href="https://spiel-deutsch.github.io/praepositionen_quiz.html">
+    <span class="card-badge b-akk">Quiz</span>
     <div class="card-icon">🎯</div>
     <div class="card-title">Kasus Quiz</div>
-    <div class="card-desc">Akkusativ, Dativ oder Genitiv? Wähle den richtigen Kasus.</div>
+    <div class="card-desc">Akkusativ, Dativ oder Genitiv?</div>
     <div class="card-meta"><span class="meta-pill">35 Fragen</span><span class="meta-pill">Streak</span></div>
     <div class="card-cta">Quiz starten <span class="card-cta-arrow">→</span></div>
   </a>
-  <a class="game-card amber-card" href="https://spiel-deutsch.github.io/praepositionen_speed.html">
-    <span class="card-badge badge-hot">🔥</span>
+  <a class="game-card gc-amber" href="https://spiel-deutsch.github.io/praepositionen_speed.html">
+    <span class="card-badge b-hot">🔥</span>
     <div class="card-icon">⏱️</div>
     <div class="card-title">Speed Round</div>
     <div class="card-desc">Erkenne so schnell wie möglich den richtigen Kasus.</div>
     <div class="card-meta"><span class="meta-pill">Timer</span><span class="meta-pill">Highscore</span></div>
     <div class="card-cta">Starten <span class="card-cta-arrow">→</span></div>
   </a>
-  <a class="game-card gen-card" href="https://spiel-deutsch.github.io/praepositionen_match.html">
-    <span class="card-badge badge-new">Neu</span>
+  <a class="game-card gc-gen" href="https://spiel-deutsch.github.io/praepositionen_match.html">
+    <span class="card-badge b-new">Neu</span>
     <div class="card-icon">🧩</div>
     <div class="card-title">Match &amp; Zuordnen</div>
-    <div class="card-desc">Ziehe jede Präposition in den richtigen Kasus. 5 Runden.</div>
+    <div class="card-desc">Ziehe jede Präposition in den richtigen Kasus.</div>
     <div class="card-meta"><span class="meta-pill">Drag &amp; Drop</span><span class="meta-pill">5 Runden</span></div>
     <div class="card-cta">Spielen <span class="card-cta-arrow">→</span></div>
   </a>
 </div>
 
-<!-- ══ SECTION 3: Das Präteritum ══ -->
+<!-- ══ 3. Das Präteritum ══ -->
 <div class="section-label">
-  <span class="section-label-text">Das Präteritum</span>
-  <div class="section-label-line"></div>
+  <span class="sl-text">Das Präteritum</span><div class="sl-line"></div>
 </div>
 <div class="ref-card">
-  <a class="ref-link prt-ref" href="https://spiel-deutsch.github.io/praeteritum_uebersicht.html">
-    <div class="ref-left">
-      <div class="ref-icon">📖</div>
-      <div><div class="ref-title">Übersicht &amp; Regeln</div><div class="ref-desc">Schwach · Stark · Trennbar — alle 41 Verben mit Regeln, Tabellen und arabischen Bedeutungen.</div></div>
+  <a class="ref-link c-prt" href="https://spiel-deutsch.github.io/praeteritum_uebersicht.html">
+    <div class="ref-left"><div class="ref-icon">📖</div>
+      <div><div class="ref-title">Übersicht &amp; Regeln</div><div class="ref-desc">Schwach · Stark · Trennbar — 41 Verben mit Tabellen und arabischen Bedeutungen.</div></div>
     </div>
     <span class="ref-tag prt">Lesen →</span>
   </a>
 </div>
 <div class="cards-grid">
-  <a class="game-card prt-card" href="https://spiel-deutsch.github.io/praeteritum_karten.html">
-    <span class="card-badge badge-prt">Lernen</span>
+  <a class="game-card gc-prt" href="https://spiel-deutsch.github.io/praeteritum_karten.html">
+    <span class="card-badge b-prt">Lernen</span>
     <div class="card-icon">🃏</div>
     <div class="card-title">Lernkarten</div>
-    <div class="card-desc">Infinitiv → Präteritum. Filter nach Schwach, Stark oder Trennbar.</div>
+    <div class="card-desc">Infinitiv → Präteritum. Filter: Schwach, Stark, Trennbar.</div>
     <div class="card-meta"><span class="meta-pill">41 Karten</span><span class="meta-pill">3 Gruppen</span></div>
     <div class="card-cta">Lernen <span class="card-cta-arrow">→</span></div>
   </a>
-  <a class="game-card prt-st" href="https://spiel-deutsch.github.io/praeteritum_quiz.html">
-    <span class="card-badge badge-akk">Quiz</span>
+  <a class="game-card gc-akk" href="https://spiel-deutsch.github.io/praeteritum_quiz.html">
+    <span class="card-badge b-akk">Quiz</span>
     <div class="card-icon">🎯</div>
     <div class="card-title">Präteritum Quiz</div>
-    <div class="card-desc">Welche Präteritumform gehört zum Infinitiv? Wähle aus 4 Optionen.</div>
+    <div class="card-desc">Welche Präteritumform gehört zum Infinitiv?</div>
     <div class="card-meta"><span class="meta-pill">41 Fragen</span><span class="meta-pill">Streak</span></div>
     <div class="card-cta">Quiz starten <span class="card-cta-arrow">→</span></div>
   </a>
-  <a class="game-card prt-card" href="https://spiel-deutsch.github.io/praeteritum_speed.html">
-    <span class="card-badge badge-hot">🔥</span>
+  <a class="game-card gc-prt" href="https://spiel-deutsch.github.io/praeteritum_speed.html">
+    <span class="card-badge b-hot">🔥</span>
     <div class="card-icon">⏱️</div>
     <div class="card-title">Speed Round</div>
-    <div class="card-desc">Erkenne das Präteritum so schnell wie möglich — Timer läuft!</div>
+    <div class="card-desc">Erkenne das Präteritum so schnell wie möglich.</div>
     <div class="card-meta"><span class="meta-pill">Timer</span><span class="meta-pill">Highscore</span></div>
     <div class="card-cta">Starten <span class="card-cta-arrow">→</span></div>
   </a>
-  <a class="game-card prt-tr" href="https://spiel-deutsch.github.io/praeteritum_match.html">
-    <span class="card-badge badge-new">Neu</span>
+  <a class="game-card gc-amber" href="https://spiel-deutsch.github.io/praeteritum_match.html">
+    <span class="card-badge b-new">Neu</span>
     <div class="card-icon">🧩</div>
     <div class="card-title">Match &amp; Zuordnen</div>
     <div class="card-desc">Ordne jedes Verb nach Typ: Schwach · Stark · Trennbar.</div>
     <div class="card-meta"><span class="meta-pill">Drag &amp; Drop</span><span class="meta-pill">5 Runden</span></div>
     <div class="card-cta">Spielen <span class="card-cta-arrow">→</span></div>
+  </a>
+</div>
+
+<!-- ══ 4. Verben mit Dativ ══ -->
+<div class="section-label">
+  <span class="sl-text">Verben mit Dativ</span><div class="sl-line"></div>
+</div>
+<div class="ref-card">
+  <a class="ref-link c-dat" href="https://spiel-deutsch.github.io/dativ_uebersicht.html">
+    <div class="ref-left"><div class="ref-icon">📖</div>
+      <div><div class="ref-title">Übersicht &amp; Regeln</div><div class="ref-desc">37 Verben, die immer den Dativ verlangen — mit Typen, Präteritum und arabischen Bedeutungen.</div></div>
+    </div>
+    <span class="ref-tag dat">Lesen →</span>
+  </a>
+</div>
+<div class="cards-grid">
+  <a class="game-card gc-dat" href="https://spiel-deutsch.github.io/dativ_karten.html">
+    <span class="card-badge b-dat">Lernen</span>
+    <div class="card-icon">🃏</div>
+    <div class="card-title">Lernkarten</div>
+    <div class="card-desc">Verb → Präteritum + Bedeutung. Filter nach Schwach, Stark, Trennbar.</div>
+    <div class="card-meta"><span class="meta-pill">37 Karten</span><span class="meta-pill">+ Dativ</span></div>
+    <div class="card-cta">Lernen <span class="card-cta-arrow">→</span></div>
+  </a>
+  <a class="game-card gc-dat" href="https://spiel-deutsch.github.io/dativ_match.html">
+    <span class="card-badge b-new">Neu</span>
+    <div class="card-icon">🧩</div>
+    <div class="card-title">Match &amp; Zuordnen</div>
+    <div class="card-desc">Ordne jedes Dativ-Verb nach Typ: Schwach · Stark · Trennbar.</div>
+    <div class="card-meta"><span class="meta-pill">Drag &amp; Drop</span><span class="meta-pill">5 Runden</span></div>
+    <div class="card-cta">Spielen <span class="card-cta-arrow">→</span></div>
+  </a>
+</div>
+
+<!-- ══ 5. Verben mit Dativ und Akkusativ ══ -->
+<div class="section-label">
+  <span class="sl-text">Verben mit Dativ und Akkusativ</span><div class="sl-line"></div>
+</div>
+<div class="ref-card">
+  <a class="ref-link c-dak" href="https://spiel-deutsch.github.io/dativ_akkusativ_uebersicht.html">
+    <div class="ref-left"><div class="ref-icon">📖</div>
+      <div><div class="ref-title">Übersicht &amp; Regeln</div><div class="ref-desc">Verben mit zwei Objekten — Wem? (Dativ) + Was? (Akkusativ) — mit Satzmuster und 23 Verben.</div></div>
+    </div>
+    <span class="ref-tag dak">Lesen →</span>
+  </a>
+</div>
+<div class="cards-grid">
+  <a class="game-card gc-dak" href="https://spiel-deutsch.github.io/dativ_akkusativ_quiz.html">
+    <span class="card-badge b-dak">Quiz</span>
+    <div class="card-icon">🎯</div>
+    <div class="card-title">Satz-Quiz</div>
+    <div class="card-desc">Wähle das richtige Dativ- und Akkusativ-Objekt — vervollständige den Satz.</div>
+    <div class="card-meta"><span class="meta-pill">20 Sätze</span><span class="meta-pill">Wem? + Was?</span></div>
+    <div class="card-cta">Quiz starten <span class="card-cta-arrow">→</span></div>
   </a>
 </div>
 

@@ -1,0 +1,253 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<title>Dativ & Akkusativ Quiz</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=DM+Sans:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --bg:#F7F4EF;--surface:#fff;--text:#1C1917;--muted:#78716C;--hint:#A8A29E;
+  --dat:#7C3AED;--datl:#EDE9FE;--datt:#5B21B6;--datb:#C4B5FD;
+  --akk:#185FA5;--akkl:#E6F1FB;--akkt:#0C447C;--akkb:#B5D4F4;
+  --sw:#1D9E75;--swl:#E1F5EE;--swt:#0F6E56;
+  --red:#D85A30;--redl:#FAECE7;--redt:#993C1D;
+  --border:rgba(28,25,23,0.1);--bm:rgba(28,25,23,0.15);
+  --r:16px;--rs:12px;--sh:0 2px 12px rgba(28,25,23,0.07);--shc:0 8px 32px rgba(28,25,23,0.12)
+}
+html,body{min-height:100%;background:var(--bg);font-family:'DM Sans',sans-serif;color:var(--text);-webkit-font-smoothing:antialiased}
+body{display:flex;flex-direction:column;align-items:center;padding-bottom:32px}
+.hdr{width:100%;max-width:560px;padding:20px 20px 0}
+.title{font-family:'DM Serif Display',serif;font-size:clamp(18px,5vw,24px)}
+.subtitle{font-size:12px;color:var(--muted);margin-top:3px}
+.prog-wrap{width:100%;max-width:560px;padding:12px 20px 0}
+.prog-meta{display:flex;justify-content:space-between;font-size:12px;color:var(--muted);margin-bottom:6px}
+.prog-bar{height:4px;background:var(--border);border-radius:4px;overflow:hidden}
+.prog-fill{height:100%;background:var(--akk);border-radius:4px;transition:width .4s}
+.scores{width:100%;max-width:560px;padding:10px 20px 0;display:flex;gap:10px}
+.sc{flex:1;background:var(--surface);border:1px solid var(--border);border-radius:var(--rs);padding:10px 8px;text-align:center;box-shadow:var(--sh)}
+.sc-n{font-family:'DM Serif Display',serif;font-size:22px;line-height:1}
+.sc-l{font-size:10px;font-weight:600;letter-spacing:.5px;text-transform:uppercase;color:var(--hint);margin-top:3px}
+/* Question area */
+.qwrap{width:100%;max-width:560px;padding:14px 20px 0}
+.qcard{background:var(--surface);border:1px solid var(--border);border-radius:var(--r);box-shadow:var(--shc);padding:20px 22px}
+.q-label{font-size:10px;font-weight:600;letter-spacing:1.2px;text-transform:uppercase;color:var(--hint);margin-bottom:8px}
+.q-sentence{font-family:'DM Serif Display',serif;font-size:clamp(18px,5vw,24px);color:var(--text);line-height:1.5;display:flex;flex-wrap:wrap;align-items:center;gap:6px}
+.q-verb{color:var(--sw);font-style:italic}
+.q-slot{display:inline-flex;align-items:center;justify-content:center;min-width:90px;height:36px;border-radius:var(--rs);border:2px dashed;padding:0 12px;font-size:15px;font-weight:600;transition:all .2s;cursor:default}
+.q-slot.dat{border-color:var(--datb);background:var(--datl);color:var(--datt)}
+.q-slot.akk{border-color:var(--akkb);background:var(--akkl);color:var(--akkt)}
+.q-slot.filled{border-style:solid}
+.q-slot.correct{border-color:var(--sw);background:var(--swl);color:var(--swt)}
+.q-slot.wrong{border-color:var(--red);background:var(--redl);color:var(--redt)}
+.slot-label{font-size:9px;font-weight:600;letter-spacing:.5px;text-transform:uppercase;margin-bottom:2px;text-align:center}
+.slot-label.dat{color:var(--datt)}
+.slot-label.akk{color:var(--akkt)}
+.slot-group{display:flex;flex-direction:column;align-items:center;gap:2px}
+/* Arabic hint */
+.q-ar{font-size:13px;color:var(--muted);margin-top:10px;direction:rtl;text-align:right}
+/* Choices */
+.choices-lbl{width:100%;max-width:560px;padding:12px 20px 0;font-size:11px;font-weight:600;letter-spacing:1px;text-transform:uppercase;color:var(--hint)}
+.choices{width:100%;max-width:560px;padding:8px 20px 0;display:flex;flex-wrap:wrap;gap:10px;justify-content:center}
+.choice{background:var(--surface);border:1.5px solid var(--bm);border-radius:20px;padding:8px 16px;font-family:'DM Sans',sans-serif;font-size:14px;font-weight:600;color:var(--text);cursor:pointer;box-shadow:var(--sh);transition:all .15s;-webkit-tap-highlight-color:transparent}
+.choice:active{transform:scale(.96)}
+.choice.selected{background:var(--text);color:var(--bg);border-color:var(--text)}
+.choice.used{opacity:.3;pointer-events:none}
+/* Feedback */
+.fbrow{width:100%;max-width:560px;padding:12px 20px 0;display:flex;align-items:center;justify-content:space-between;gap:12px;min-height:48px}
+.fbmsg{font-size:14px;font-weight:500;color:var(--muted);flex:1;line-height:1.5}
+.fbmsg.ok{color:var(--swt)}
+.fbmsg.no{color:var(--redt)}
+.nxt{padding:10px 22px;border-radius:var(--rs);background:var(--text);color:var(--bg);border:none;font-family:'DM Sans',sans-serif;font-size:14px;font-weight:500;cursor:pointer;white-space:nowrap}
+/* Done */
+.done-scr{width:100%;max-width:560px;padding:40px 20px;display:flex;flex-direction:column;align-items:center;text-align:center;gap:12px}
+.done-scr h2{font-family:'DM Serif Display',serif;font-size:30px}
+.dgrid{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;width:100%;margin-top:8px}
+.dg{background:var(--surface);border:1px solid var(--border);border-radius:var(--rs);padding:14px 8px;text-align:center;box-shadow:var(--sh)}
+.dg-n{font-family:'DM Serif Display',serif;font-size:26px;line-height:1}
+.dg-l{font-size:10px;font-weight:600;text-transform:uppercase;letter-spacing:.5px;color:var(--hint);margin-top:4px}
+.restart{padding:13px 32px;border-radius:var(--rs);background:var(--text);color:var(--bg);font-family:'DM Sans',sans-serif;font-size:15px;font-weight:500;border:none;cursor:pointer;margin-top:4px}
+.footer{padding:20px 0 8px;font-size:11px;font-weight:600;letter-spacing:2px;text-transform:uppercase;color:var(--hint);text-align:center;width:100%}
+</style>
+</head>
+<body>
+<div class="hdr">
+  <div class="title">Dativ &amp; Akkusativ Quiz</div>
+  <div class="subtitle">Wem? und Was? — wähle die richtigen Objekte</div>
+</div>
+<div class="prog-wrap">
+  <div class="prog-meta"><span id="counter">Frage 1 / 20</span><span id="pct">0%</span></div>
+  <div class="prog-bar"><div class="prog-fill" id="prog" style="width:0%"></div></div>
+</div>
+<div class="scores">
+  <div class="sc"><div class="sc-n" id="sc-c" style="color:var(--sw)">0</div><div class="sc-l">Richtig</div></div>
+  <div class="sc"><div class="sc-n" id="sc-w" style="color:var(--red)">0</div><div class="sc-l">Falsch</div></div>
+  <div class="sc"><div class="sc-n" id="sc-s" style="color:var(--dat)">0</div><div class="sc-l">Streak</div></div>
+</div>
+<div class="qwrap">
+  <div class="qcard" id="qcard">
+    <div class="q-label">Ergänze den Satz:</div>
+    <div class="q-sentence" id="qsentence"></div>
+    <div class="q-ar" id="qar"></div>
+  </div>
+</div>
+<div class="choices-lbl">Wähle das richtige Objekt:</div>
+<div class="choices" id="choices"></div>
+<div class="fbrow" id="fbrow"><div class="fbmsg" id="fbmsg"></div></div>
+<div class="footer">by Mostafa Toumi</div>
+<script>
+// Each question: sentence with [DAT] and [AKK] slots, correct answers, distractors
+const QS=[
+  {pre:"Ich gebe",verb:"gebe",mid:"",dat:"meiner Mutter",akk:"ein Buch",ar:"يعطي أمه كتاباً",opts:["meiner Mutter","ein Buch","meinem Bruder","einen Apfel","der Lehrerin","das Heft"]},
+  {pre:"Er zeigt",verb:"zeigt",mid:"",dat:"dem Arzt",akk:"den Befund",ar:"يريـ الطبيب النتيجة",opts:["dem Arzt","den Befund","der Ärztin","einen Brief","dem Chef","das Rezept"]},
+  {pre:"Sie schickt",verb:"schickt",mid:"",dat:"ihrer Freundin",akk:"eine Nachricht",ar:"ترسل لصديقتها رسالة",opts:["ihrer Freundin","eine Nachricht","ihrem Bruder","ein Paket","der Mutter","einen Brief"]},
+  {pre:"Er erklärt",verb:"erklärt",mid:"",dat:"den Schülern",akk:"die Regel",ar:"يشرح للطلاب القاعدة",opts:["den Schülern","die Regel","dem Kind","das Wort","der Klasse","einen Begriff"]},
+  {pre:"Ich bringe",verb:"bringe",mid:"",dat:"dir",akk:"einen Kaffee",ar:"أحضر لك قهوة",opts:["dir","einen Kaffee","ihm","ein Glas","ihr","das Essen"]},
+  {pre:"Sie empfiehlt",verb:"empfiehlt",mid:"",dat:"uns",akk:"das Restaurant",ar:"توصينا بالمطعم",opts:["uns","das Restaurant","mir","ein Hotel","ihm","den Film"]},
+  {pre:"Er schenkt",verb:"schenkt",mid:"",dat:"seiner Tochter",akk:"ein Fahrrad",ar:"يهدي ابنته دراجة",opts:["seiner Tochter","ein Fahrrad","seinem Sohn","einen Ball","der Oma","eine Puppe"]},
+  {pre:"Ich leihe",verb:"leihe",mid:"",dat:"meinem Freund",akk:"mein Auto",ar:"أعير صديقي سيارتي",opts:["meinem Freund","mein Auto","meiner Schwester","das Fahrrad","dem Nachbar","den Schlüssel"]},
+  {pre:"Sie erzählt",verb:"erzählt",mid:"",dat:"den Kindern",akk:"eine Geschichte",ar:"تحكي للأطفال قصة",opts:["den Kindern","eine Geschichte","dem Baby","ein Märchen","dem Sohn","den Witz"]},
+  {pre:"Er verkauft",verb:"verkauft",mid:"",dat:"seinem Bruder",akk:"das alte Auto",ar:"يبيع أخاه السيارة القديمة",opts:["seinem Bruder","das alte Auto","dem Freund","ein Motorrad","der Schwester","den Laptop"]},
+  {pre:"Ich koche",verb:"koche",mid:"",dat:"meiner Familie",akk:"ein Abendessen",ar:"أطبخ لعائلتي عشاءً",opts:["meiner Familie","ein Abendessen","meinem Vater","die Suppe","den Gästen","einen Kuchen"]},
+  {pre:"Sie sagt",verb:"sagt",mid:"",dat:"ihm",akk:"die Wahrheit",ar:"تقول له الحقيقة",opts:["ihm","die Wahrheit","ihr","eine Lüge","uns","das Geheimnis"]},
+  {pre:"Er bringt",verb:"bringt",mid:"",dat:"der Oma",akk:"Blumen",ar:"يحضر للجدة زهوراً",opts:["der Oma","Blumen","dem Opa","ein Geschenk","dem Kind","Früchte"]},
+  {pre:"Ich zeige",verb:"zeige",mid:"",dat:"meinem Chef",akk:"den Bericht",ar:"أريـ رئيسي التقرير",opts:["meinem Chef","den Bericht","meiner Kollegin","die Präsentation","dem Team","das Ergebnis"]},
+  {pre:"Sie schreibt",verb:"schreibt",mid:"",dat:"ihrer Mutter",akk:"einen Brief",ar:"تكتب لأمها رسالة",opts:["ihrer Mutter","einen Brief","ihrem Vater","eine E-Mail","der Schwester","das Gedicht"]},
+  {pre:"Er bietet",verb:"bietet",mid:"an",dat:"den Gästen",akk:"einen Platz",ar:"يعرض على الضيوف مقعداً",opts:["den Gästen","einen Platz","dem Besucher","ein Getränk","der Dame","die Hilfe"]},
+  {pre:"Sie stellt",verb:"stellt",mid:"vor",dat:"ihren Eltern",akk:"ihren Freund",ar:"تقدم لوالديها صديقها",opts:["ihren Eltern","ihren Freund","der Klasse","einen Kollegen","dem Chef","die neue Mitarbeiterin"]},
+  {pre:"Er gibt",verb:"gibt",mid:"zurück",dat:"ihr",akk:"das Buch",ar:"يرد لها الكتاب",opts:["ihr","das Buch","ihm","den Schlüssel","uns","die Tasche"]},
+  {pre:"Ich bringe",verb:"bringe",mid:"bei",dat:"dem Kind",akk:"das Lesen",ar:"أعلم الطفل القراءة",opts:["dem Kind","das Lesen","der Schülerin","das Rechnen","den Schülern","die Sprache"]},
+  {pre:"Sie liest",verb:"liest",mid:"vor",dat:"dem Baby",akk:"ein Buch",ar:"تقرأ للرضيع كتاباً",opts:["dem Baby","ein Buch","dem Kind","ein Gedicht","den Kindern","die Geschichte"]},
+];
+
+function shuffle(a){return[...a].sort(()=>Math.random()-.5)}
+let qs=[],qi=0,correct=0,wrong=0,streak=0,answered=false;
+let selectedSlot=null,filledDat=null,filledAkk=null;
+
+function init(){qs=shuffle(QS);qi=0;correct=0;wrong=0;streak=0;answered=false;showQ();}
+
+function showQ(){
+  if(qi>=qs.length){showDone();return;}
+  answered=false;selectedSlot=null;filledDat=null;filledAkk=null;
+  const q=qs[qi];
+  document.getElementById('counter').textContent='Frage '+(qi+1)+' / '+qs.length;
+  document.getElementById('pct').textContent=Math.round(qi/qs.length*100)+'%';
+  document.getElementById('prog').style.width=(qi/qs.length*100)+'%';
+  document.getElementById('fbmsg').textContent='';
+  document.getElementById('fbmsg').className='fbmsg';
+  const oldnxt=document.getElementById('nxt-btn');if(oldnxt)oldnxt.remove();
+
+  // Build sentence with slots
+  const sent=document.getElementById('qsentence');
+  sent.innerHTML='';
+  const addTxt=t=>{const s=document.createElement('span');s.textContent=t+' ';sent.appendChild(s);};
+  addTxt(q.pre);
+  // DAT slot
+  const datGrp=document.createElement('div');datGrp.className='slot-group';
+  const datLbl=document.createElement('div');datLbl.className='slot-label dat';datLbl.textContent='Wem?';
+  const datSlot=document.createElement('div');datSlot.className='q-slot dat';datSlot.id='slot-dat';datSlot.textContent='???';
+  datSlot.onclick=()=>selectSlot('dat');
+  datGrp.appendChild(datLbl);datGrp.appendChild(datSlot);sent.appendChild(datGrp);
+  // mid (e.g. "an", "vor", etc)
+  if(q.mid){addTxt(q.mid);}
+  // AKK slot
+  const akkGrp=document.createElement('div');akkGrp.className='slot-group';
+  const akkLbl=document.createElement('div');akkLbl.className='slot-label akk';akkLbl.textContent='Was?';
+  const akkSlot=document.createElement('div');akkSlot.className='q-slot akk';akkSlot.id='slot-akk';akkSlot.textContent='???';
+  akkSlot.onclick=()=>selectSlot('akk');
+  akkGrp.appendChild(akkLbl);akkGrp.appendChild(akkSlot);sent.appendChild(akkGrp);
+  addTxt('.');
+
+  document.getElementById('qar').textContent=q.ar;
+
+  // Build choices
+  const choicesEl=document.getElementById('choices');choicesEl.innerHTML='';
+  shuffle(q.opts.slice(0,6)).forEach(opt=>{
+    const b=document.createElement('button');b.className='choice';b.textContent=opt;
+    b.onclick=()=>pickChoice(opt,q);
+    choicesEl.appendChild(b);
+  });
+}
+
+function selectSlot(type){
+  if(answered)return;
+  selectedSlot=type;
+  document.querySelectorAll('.q-slot').forEach(s=>s.style.outline='none');
+  const sl=document.getElementById('slot-'+type);
+  sl.style.outline='2px solid '+( type==='dat'?'var(--dat)':'var(--akk)');
+}
+
+function pickChoice(val,q){
+  if(answered)return;
+  if(!selectedSlot){
+    // auto-assign: if dat empty, fill dat; else fill akk
+    if(!filledDat)selectedSlot='dat';
+    else if(!filledAkk)selectedSlot='akk';
+    else return;
+  }
+  // fill slot
+  const sl=document.getElementById('slot-'+selectedSlot);
+  sl.textContent=val;sl.style.outline='none';sl.classList.add('filled');
+  if(selectedSlot==='dat')filledDat=val;
+  else filledAkk=val;
+  // mark choice used
+  document.querySelectorAll('.choice').forEach(b=>{if(b.textContent===val)b.classList.add('used');});
+  selectedSlot=null;
+
+  // Check if both slots filled
+  if(filledDat && filledAkk){
+    answered=true;
+    const datOk=filledDat===q.dat;
+    const akkOk=filledAkk===q.akk;
+    const allOk=datOk&&akkOk;
+    // Color slots
+    document.getElementById('slot-dat').classList.add(datOk?'correct':'wrong');
+    document.getElementById('slot-akk').classList.add(akkOk?'correct':'wrong');
+    document.querySelectorAll('.choice').forEach(b=>b.style.pointerEvents='none');
+    const fb=document.getElementById('fbmsg');
+    if(allOk){
+      correct++;streak++;
+      fb.textContent='✓ Richtig!'+(streak>=3?' 🔥 '+streak+'er Streak!':'');
+      fb.className='fbmsg ok';
+    }else{
+      wrong++;streak=0;
+      fb.textContent='✗ Dativ: '+q.dat+' · Akkusativ: '+q.akk;
+      fb.className='fbmsg no';
+      // show correct
+      if(!datOk){const s=document.getElementById('slot-dat');s.textContent=q.dat;}
+      if(!akkOk){const s=document.getElementById('slot-akk');s.textContent=q.akk;}
+    }
+    document.getElementById('sc-c').textContent=correct;
+    document.getElementById('sc-w').textContent=wrong;
+    document.getElementById('sc-s').textContent=streak;
+    const nb=document.createElement('button');nb.className='nxt';nb.id='nxt-btn';
+    nb.textContent=qi+1<qs.length?'Weiter →':'Ergebnis →';
+    nb.onclick=()=>{qi++;showQ();};
+    document.getElementById('fbrow').appendChild(nb);
+  }
+}
+
+function showDone(){
+  const total=correct+wrong,pct=Math.round(correct/total*100)||0;
+  document.querySelector('.qwrap').style.display='none';
+  document.querySelector('.choices-lbl').style.display='none';
+  document.getElementById('choices').style.display='none';
+  document.getElementById('fbrow').style.display='none';
+  const d=document.createElement('div');d.className='done-scr';
+  d.innerHTML=`<div style="font-size:52px">${pct>=90?'🏆':pct>=70?'🎉':pct>=50?'💪':'📚'}</div>
+  <h2>Quiz beendet!</h2>
+  <div style="font-family:'DM Serif Display',serif;font-size:60px;line-height:1">${pct}%</div>
+  <div class="dgrid">
+    <div class="dg"><div class="dg-n" style="color:var(--sw)">${correct}</div><div class="dg-l">Richtig</div></div>
+    <div class="dg"><div class="dg-n" style="color:var(--red)">${wrong}</div><div class="dg-l">Falsch</div></div>
+    <div class="dg"><div class="dg-n">${total}</div><div class="dg-l">Gesamt</div></div>
+  </div>
+  <button class="restart" onclick="location.reload()">Nochmal ↺</button>`;
+  document.querySelector('.footer').before(d);
+}
+init();
+</script>
+</body>
+</html>
