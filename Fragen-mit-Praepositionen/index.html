@@ -1,0 +1,719 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Fragen mit Präpositionen — Übersicht & Regeln</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=DM+Sans:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --bg:#F7F4EF;--surface:#fff;--text:#1C1917;--muted:#78716C;--hint:#A8A29E;
+  --c:#D85A30;--cl:#FAECE7;--ct:#7C2D12;--cb:#FDBA74;
+  --wo:#185FA5;--wol:#E6F1FB;--wot:#0C447C;--wob:#B5D4F4;
+  --wor:#7C3AED;--worl:#EDE9FE;--wort:#5B21B6;--worb:#C4B5FD;
+  --da:#1D9E75;--dal:#E1F5EE;--dat:#0F6E56;--dab:#9FE1CB;
+  --dar:#0891B2;--darl:#E0F2FE;--dart:#0C4A6E;--darb:#7DD3FC;
+  --green:#1D9E75;--greenl:#E1F5EE;--greent:#0F6E56;
+  --border:rgba(28,25,23,0.1);--bm:rgba(28,25,23,0.15);
+  --r:16px;--rs:12px;--sh:0 2px 12px rgba(28,25,23,0.07);--shc:0 8px 32px rgba(28,25,23,0.10)
+}
+html,body{min-height:100%;background:var(--bg);font-family:'DM Sans',sans-serif;color:var(--text);-webkit-font-smoothing:antialiased}
+body{display:flex;flex-direction:column;align-items:center;padding-bottom:60px}
+
+.hero{width:100%;max-width:740px;padding:clamp(32px,8vw,60px) 24px 0;text-align:center}
+.tag{display:inline-block;font-size:11px;font-weight:600;letter-spacing:2px;text-transform:uppercase;color:var(--ct);background:var(--cl);border:1px solid var(--cb);border-radius:20px;padding:4px 14px;margin-bottom:16px}
+.h1{font-family:'DM Serif Display',serif;font-size:clamp(26px,6.5vw,46px);letter-spacing:-.5px;line-height:1.1}
+.h1 em{font-style:italic;color:var(--c)}
+.sub{font-size:14px;color:var(--muted);margin:10px auto 0;line-height:1.6;max-width:500px}
+
+/* sticky nav */
+.snav{position:sticky;top:0;z-index:100;width:100%;background:rgba(247,244,239,.94);backdrop-filter:blur(12px);-webkit-backdrop-filter:blur(12px);border-bottom:1px solid var(--border)}
+.snav-i{max-width:740px;margin:0 auto;display:flex;overflow-x:auto;scrollbar-width:none;-ms-overflow-style:none}
+.snav-i::-webkit-scrollbar{display:none}
+.snb{flex-shrink:0;padding:12px 15px;font-family:'DM Sans',sans-serif;font-size:12px;font-weight:600;color:var(--muted);background:transparent;border:none;border-bottom:2px solid transparent;cursor:pointer;white-space:nowrap;text-decoration:none;display:inline-block;transition:color .15s,border-color .15s;-webkit-tap-highlight-color:transparent}
+.snb:hover{color:var(--text)}
+.snb.active{color:var(--ct);border-bottom-color:var(--c)}
+
+/* section header */
+.sh{width:100%;max-width:740px;padding:clamp(28px,6vw,44px) 24px 0;display:flex;align-items:center;gap:12px;scroll-margin-top:52px}
+.sh-dot{width:10px;height:10px;border-radius:50%;flex-shrink:0}
+.sh-title{font-family:'DM Serif Display',serif;font-size:clamp(20px,5vw,28px)}
+.sh-line{flex:1;height:1px;background:var(--border)}
+
+/* intro / rule boxes */
+.bwrap{width:100%;max-width:740px;padding:clamp(18px,4vw,28px) 24px 0}
+.intro-box{background:var(--cl);border:1px solid var(--cb);border-radius:var(--r);padding:22px 24px}
+.ib-title{font-family:'DM Serif Display',serif;font-size:20px;color:var(--ct);margin-bottom:12px}
+.ib-body{font-size:14px;color:var(--ct);line-height:1.85}
+.ib-body strong{font-weight:600}
+.ib-body code{font-family:monospace;font-size:13px;background:rgba(216,90,48,.12);padding:1px 6px;border-radius:4px}
+
+/* The big rule vizualisation */
+.rule-visual{width:100%;max-width:740px;padding:12px 24px 0}
+.rv-box{background:var(--surface);border:1px solid var(--border);border-radius:var(--r);padding:22px 24px;box-shadow:var(--sh)}
+.rv-title{font-family:'DM Serif Display',serif;font-size:18px;margin-bottom:18px}
+
+/* Person vs Sache grid */
+.ps-grid{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-bottom:20px}
+@media(max-width:500px){.ps-grid{grid-template-columns:1fr}}
+.ps-card{border-radius:var(--rs);padding:16px 18px;border:1px solid}
+.ps-card.person{background:var(--worl);border-color:var(--worb)}
+.ps-card.sache{background:var(--darl);border-color:var(--darb)}
+.ps-top{display:flex;align-items:center;gap:8px;margin-bottom:10px}
+.ps-icon{font-size:22px}
+.ps-name{font-family:'DM Serif Display',serif;font-size:17px}
+.ps-card.person .ps-name{color:var(--wort)}
+.ps-card.sache .ps-name{color:var(--dart)}
+.ps-rule{font-size:13px;line-height:1.65}
+.ps-card.person .ps-rule{color:var(--wort)}
+.ps-card.sache .ps-rule{color:var(--dart)}
+.ps-formula{font-family:monospace;font-size:14px;font-weight:700;padding:6px 12px;border-radius:var(--rs);display:inline-block;margin:8px 0}
+.person .ps-formula{background:rgba(124,58,237,.1);color:var(--wort)}
+.sache .ps-formula{background:rgba(8,145,178,.1);color:var(--dart)}
+.ps-ex{font-size:13px;font-style:italic;margin-top:6px;line-height:1.5}
+.ps-card.person .ps-ex{color:var(--wort)}
+.ps-card.sache .ps-ex{color:var(--dart)}
+.ps-ar{font-size:12px;direction:rtl;opacity:.8;margin-top:3px}
+
+/* Transformation arrows diagram */
+.arrow-diagram{background:var(--bg);border-radius:var(--rs);padding:14px 16px}
+.ad-title{font-size:12px;font-weight:600;letter-spacing:.8px;text-transform:uppercase;color:var(--hint);margin-bottom:12px}
+.ad-row{display:flex;align-items:center;gap:8px;flex-wrap:wrap;margin-bottom:10px;font-size:14px}
+.ad-row:last-child{margin-bottom:0}
+.ad-verb{font-weight:600;color:var(--text);min-width:90px}
+.ad-arrow{color:var(--hint)}
+.ad-wo{font-family:'DM Serif Display',serif;font-size:16px;color:var(--wort);background:var(--worl);border:1px solid var(--worb);border-radius:20px;padding:3px 12px}
+.ad-wor{font-family:'DM Serif Display',serif;font-size:16px;color:var(--dart);background:var(--darl);border:1px solid var(--darb);border-radius:20px;padding:3px 12px}
+.ad-ex{font-size:13px;color:var(--muted);font-style:italic}
+
+/* Main table */
+.tbl-wrap{width:100%;max-width:740px;padding:12px 24px 0}
+.tbl-filter{display:flex;gap:7px;flex-wrap:wrap;margin-bottom:12px;overflow-x:auto;scrollbar-width:none}
+.tbl-filter::-webkit-scrollbar{display:none}
+.tf{padding:5px 13px;border-radius:20px;border:1px solid var(--bm);font-family:'DM Sans',sans-serif;font-size:12px;font-weight:500;cursor:pointer;background:var(--surface);color:var(--muted);transition:all .15s;white-space:nowrap}
+.tf.active{background:var(--text);color:var(--bg);border-color:var(--text)}
+.tbl-box{background:var(--surface);border:1px solid var(--border);border-radius:var(--r);overflow:hidden;box-shadow:var(--sh)}
+.ftbl{width:100%;border-collapse:collapse;font-size:13px}
+.ftbl th{padding:8px 12px;text-align:left;font-size:11px;font-weight:600;letter-spacing:.5px;text-transform:uppercase;color:var(--hint);border-bottom:1px solid var(--border);background:var(--bg)}
+.ftbl td{padding:8px 12px;border-bottom:1px solid var(--border);color:var(--muted);vertical-align:middle;line-height:1.4}
+.ftbl tr:last-child td{border-bottom:none}
+.ftbl tr:hover td{background:var(--bg)}
+.ftbl td:first-child{font-weight:600;color:var(--text);width:120px}
+.wo-badge{display:inline-block;padding:2px 9px;border-radius:20px;font-size:12px;font-weight:700;white-space:nowrap}
+.wob1{background:var(--worl);color:var(--wort)}
+.wob2{background:var(--darl);color:var(--dart)}
+.ar{direction:rtl;text-align:right;font-size:12px}
+
+/* color-coded verb groups */
+.vg-wrap{width:100%;max-width:740px;padding:12px 24px 0;display:flex;flex-direction:column;gap:14px}
+.vg-card{border-radius:var(--r);overflow:hidden;box-shadow:var(--sh)}
+.vg-hdr{padding:12px 18px;display:flex;align-items:center;gap:10px}
+.vg-prep{font-family:'DM Serif Display',serif;font-size:22px}
+.vg-meta{display:flex;flex-direction:column;gap:2px}
+.vg-q{font-size:12px;font-weight:600}
+.vg-ar{font-size:12px;direction:rtl;color:var(--muted)}
+.vg-body{background:var(--surface);border:1px solid var(--border);border-top:none}
+.vg-verbs{display:flex;flex-wrap:wrap;gap:8px;padding:12px 18px}
+.v-pill{padding:6px 14px;border-radius:20px;font-size:13px;font-weight:600;display:flex;flex-direction:column;gap:2px;min-width:110px}
+.v-pill-name{font-size:13px;font-weight:600}
+.v-pill-ar{font-size:11px;direction:rtl;font-weight:400;opacity:.8}
+
+/* examples section */
+.examples-grid{width:100%;max-width:740px;padding:12px 24px 0;display:grid;grid-template-columns:repeat(auto-fit,minmax(320px,1fr));gap:12px}
+.ex-card{background:var(--surface);border:1px solid var(--border);border-radius:var(--r);padding:18px 20px;box-shadow:var(--sh)}
+.ex-verb-title{font-family:'DM Serif Display',serif;font-size:17px;margin-bottom:12px;display:flex;align-items:center;gap:8px}
+.ex-item{margin-bottom:10px;padding-bottom:10px;border-bottom:1px solid var(--border)}
+.ex-item:last-child{margin-bottom:0;padding-bottom:0;border-bottom:none}
+.ex-q{font-size:14px;font-weight:600;color:var(--text);line-height:1.4}
+.ex-q .hl-wo{color:var(--wort);font-style:italic}
+.ex-q .hl-wor{color:var(--dart);font-style:italic}
+.ex-a{font-size:14px;color:var(--muted);margin-top:4px;line-height:1.4}
+.ex-a .hl-da{color:var(--dat);font-weight:600}
+.ex-a .hl-dar{color:var(--dart);font-weight:600}
+.ex-ar{font-size:12px;color:var(--hint);direction:rtl;margin-top:3px}
+
+/* tips */
+.tips-grid{width:100%;max-width:740px;padding:12px 24px 0;display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:12px}
+.tip-box{background:var(--surface);border:1px solid var(--border);border-radius:var(--r);padding:18px 20px;box-shadow:var(--sh)}
+.tip-icon{font-size:20px;margin-bottom:8px;display:block}
+.tip-title{font-family:'DM Serif Display',serif;font-size:16px;margin-bottom:8px}
+.tip-body{font-size:13px;color:var(--muted);line-height:1.75}
+.tip-body strong{color:var(--text);font-weight:600}
+.tip-body code{font-family:monospace;font-size:12px;background:var(--bg);padding:1px 5px;border-radius:4px;border:1px solid var(--border)}
+
+.footer{width:100%;max-width:740px;padding:clamp(36px,8vw,56px) 24px 32px;display:flex;flex-direction:column;align-items:center;gap:6px;text-align:center;border-top:1px solid var(--border);margin-top:clamp(36px,8vw,56px)}
+.footer-brand{font-family:'DM Serif Display',serif;font-size:16px}
+.footer-credit{font-size:11px;font-weight:600;letter-spacing:2px;text-transform:uppercase;color:var(--hint);margin-top:2px}
+@media(max-width:500px){.ftbl td:nth-child(3),.ftbl th:nth-child(3){display:none}}
+</style>
+</head>
+<body>
+
+<div class="hero">
+  <div class="tag">Grammatik Übersicht · A2–B1</div>
+  <h1 class="h1">Fragen mit <em>Präpositionen</em></h1>
+  <p class="sub">Wie fragt man nach Personen und Sachen bei Verben mit fester Präposition? <strong>wo(r)+Präp.</strong> oder <strong>Präp.+wen/wem?</strong> — komplett erklärt mit arabischen Bedeutungen.</p>
+</div>
+
+<nav class="snav">
+  <div class="snav-i">
+    <a class="snb active" href="#was">Grundregel</a>
+    <a class="snb" href="#system">Das System</a>
+    <a class="snb" href="#wofuer">wofür</a>
+    <a class="snb" href="#worauf">worauf</a>
+    <a class="snb" href="#worueber">worüber</a>
+    <a class="snb" href="#womit">womit</a>
+    <a class="snb" href="#wovon">wovon</a>
+    <a class="snb" href="#wovor">wovor</a>
+    <a class="snb" href="#worum">worum</a>
+    <a class="snb" href="#alle">Alle Fragen</a>
+    <a class="snb" href="#examples">Beispiele</a>
+    <a class="snb" href="#tipps">Tipps</a>
+  </div>
+</nav>
+
+<!-- GRUNDREGEL -->
+<div class="sh" id="was">
+  <div class="sh-dot" style="background:var(--c)"></div>
+  <div class="sh-title">Die Grundregel — القاعدة الأساسية</div>
+  <div class="sh-line"></div>
+</div>
+<div class="bwrap">
+  <div class="intro-box">
+    <div class="ib-title">Person oder Sache? — شخص أم شيء؟</div>
+    <div class="ib-body">
+      Wenn ein Verb eine feste Präposition hat (z.B. <code>warten auf</code>), gibt es zwei verschiedene Wege zu fragen — abhängig davon, ob das Objekt eine <strong>Person</strong> oder eine <strong>Sache/Idee</strong> ist.<br><br>
+      <strong>Sache/Idee</strong> → Fragewort: <strong>wo(r) + Präposition</strong> = <em>worauf? wofür? womit?</em><br>
+      <strong>Person</strong> → normal: <strong>Präposition + wen / wem?</strong> = <em>auf wen? für wen? mit wem?</em>
+    </div>
+  </div>
+</div>
+
+<!-- THE SYSTEM -->
+<div class="sh" id="system">
+  <div class="sh-dot" style="background:var(--text)"></div>
+  <div class="sh-title">Das System verstehen</div>
+  <div class="sh-line"></div>
+</div>
+<div class="rule-visual">
+  <div class="rv-box">
+    <div class="rv-title">Person vs. Sache — auf einen Blick</div>
+    <div class="ps-grid">
+      <!-- Person -->
+      <div class="ps-card person">
+        <div class="ps-top"><span class="ps-icon">👤</span><div class="ps-name" style="color:var(--wort)">Person</div></div>
+        <div class="ps-rule" style="color:var(--wort)">
+          Frage mit: <strong>Präposition + wen (Akk) / wem (Dat)</strong>
+        </div>
+        <div class="ps-formula">Präp. + wen? / wem?</div>
+        <div class="ps-ex" style="color:var(--wort)">
+          <em>Auf <strong>wen</strong> wartest du?</em><br>
+          → Auf <strong>meinen Freund</strong>.
+        </div>
+        <div class="ps-ar" style="color:var(--wort)">على من تنتظر؟ — على صديقي</div>
+      </div>
+      <!-- Sache -->
+      <div class="ps-card sache">
+        <div class="ps-top"><span class="ps-icon">💡</span><div class="ps-name" style="color:var(--dart)">Sache / Idee</div></div>
+        <div class="ps-rule" style="color:var(--dart)">
+          Frage mit: <strong>wo(r) + Präposition</strong><br>
+          Beginnt die Präp. mit Vokal → <strong>wor</strong>- (worauf, worüber)<br>
+          Beginnt mit Konsonant → <strong>wo</strong>- (womit, wofür)
+        </div>
+        <div class="ps-formula">wo(r) + Präposition</div>
+        <div class="ps-ex" style="color:var(--dart)">
+          <em><strong>Worauf</strong> wartest du?</em><br>
+          → Auf den <strong>Bus</strong>.
+        </div>
+        <div class="ps-ar" style="color:var(--dart)">على ماذا تنتظر؟ — على الحافلة</div>
+      </div>
+    </div>
+
+    <!-- wor vs wo rule -->
+    <div class="arrow-diagram">
+      <div class="ad-title">wo- oder wor-? — Die Regel</div>
+      <div class="ad-row">
+        <span class="ad-verb">auf / über / aus / an</span>
+        <span class="ad-arrow">→ Vokal → </span>
+        <span class="ad-wor">wor + auf = worauf</span>
+        <span class="ad-ex">Worauf wartest du?</span>
+      </div>
+      <div class="ad-row">
+        <span class="ad-verb">mit / für / von / vor / zu / um</span>
+        <span class="ad-arrow">→ Konsonant → </span>
+        <span class="ad-wo">wo + mit = womit</span>
+        <span class="ad-ex">Womit fährst du?</span>
+      </div>
+    </div>
+
+    <!-- Antwort: da(r)- -->
+    <div style="margin-top:14px;background:var(--dal);border-radius:var(--rs);padding:14px 16px;border:1px solid var(--dab)">
+      <div style="font-size:12px;font-weight:600;letter-spacing:.8px;text-transform:uppercase;color:var(--dat);margin-bottom:10px">Antwort auf Sachen → da(r) + Präposition</div>
+      <div class="ad-row" style="margin-bottom:8px">
+        <span class="ad-arrow" style="color:var(--dat)">Worauf wartest du?</span>
+        <span class="ad-arrow">→</span>
+        <span style="font-family:'DM Serif Display',serif;font-size:16px;color:var(--dat);background:var(--greenl);border:1px solid var(--dab);border-radius:20px;padding:3px 12px">Darauf.</span>
+        <span class="ad-ex">(auf den Bus)</span>
+      </div>
+      <div class="ad-row">
+        <span class="ad-arrow" style="color:var(--dat)">Wofür interessierst du dich?</span>
+        <span class="ad-arrow">→</span>
+        <span style="font-family:'DM Serif Display',serif;font-size:16px;color:var(--dat);background:var(--greenl);border:1px solid var(--dab);border-radius:20px;padding:3px 12px">Dafür.</span>
+        <span class="ad-ex">(für Musik)</span>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- VERB GROUPS BY PREP -->
+
+<!-- WOFÜR -->
+<div class="sh" id="wofuer">
+  <div class="sh-dot" style="background:#7C3AED"></div>
+  <div class="sh-title">wofür? — für + Akk</div>
+  <div class="sh-line"></div>
+</div>
+<div class="vg-wrap">
+  <div class="vg-card">
+    <div class="vg-hdr" style="background:#EDE9FE;border:1px solid #C4B5FD;border-bottom:none">
+      <div class="vg-prep" style="color:#5B21B6">wofür?</div>
+      <div class="vg-meta">
+        <span class="vg-q" style="color:#5B21B6">Frage nach Sache + für</span>
+        <span class="vg-ar">لماذا / من أجل ماذا؟</span>
+      </div>
+    </div>
+    <div class="vg-body">
+      <div style="padding:10px 18px 4px;font-size:13px;color:var(--muted)">
+        <strong style="color:var(--text)">Sache:</strong> <em style="color:#5B21B6">Wofür interessierst du dich?</em> — <em>Für Musik.</em><br>
+        <strong style="color:var(--text)">Person:</strong> <em style="color:#7C3AED">Für wen kaufst du das?</em> — <em>Für meine Mutter.</em>
+      </div>
+      <div class="vg-verbs">
+        <div class="v-pill" style="background:#EDE9FE;color:#5B21B6"><span class="v-pill-name">sich interessieren für</span><span class="v-pill-ar">يهتم بـ</span></div>
+        <div class="v-pill" style="background:#EDE9FE;color:#5B21B6"><span class="v-pill-name">danken für</span><span class="v-pill-ar">يشكر على</span></div>
+        <div class="v-pill" style="background:#EDE9FE;color:#5B21B6"><span class="v-pill-name">sich entscheiden für</span><span class="v-pill-ar">يختار</span></div>
+        <div class="v-pill" style="background:#EDE9FE;color:#5B21B6"><span class="v-pill-name">zahlen für</span><span class="v-pill-ar">يدفع ثمن</span></div>
+        <div class="v-pill" style="background:#EDE9FE;color:#5B21B6"><span class="v-pill-name">sich entschuldigen für</span><span class="v-pill-ar">يعتذر عن</span></div>
+        <div class="v-pill" style="background:#EDE9FE;color:#5B21B6"><span class="v-pill-name">sorgen für</span><span class="v-pill-ar">يعتني بـ</span></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- WORAUF -->
+<div class="sh" id="worauf">
+  <div class="sh-dot" style="background:#D85A30"></div>
+  <div class="sh-title">worauf? — auf + Akk</div>
+  <div class="sh-line"></div>
+</div>
+<div class="vg-wrap">
+  <div class="vg-card">
+    <div class="vg-hdr" style="background:#FAECE7;border:1px solid #FDBA74;border-bottom:none">
+      <div class="vg-prep" style="color:#7C2D12">worauf?</div>
+      <div class="vg-meta">
+        <span class="vg-q" style="color:#7C2D12">Frage nach Sache + auf</span>
+        <span class="vg-ar">على ماذا؟ / بماذا؟</span>
+      </div>
+    </div>
+    <div class="vg-body">
+      <div style="padding:10px 18px 4px;font-size:13px;color:var(--muted)">
+        <strong style="color:var(--text)">Sache:</strong> <em style="color:#7C2D12">Worauf wartest du?</em> — <em>Auf den Bus.</em><br>
+        <strong style="color:var(--text)">Person:</strong> <em style="color:#D85A30">Auf wen wartest du?</em> — <em>Auf meinen Freund.</em>
+      </div>
+      <div class="vg-verbs">
+        <div class="v-pill" style="background:#FAECE7;color:#7C2D12"><span class="v-pill-name">warten auf</span><span class="v-pill-ar">ينتظر</span></div>
+        <div class="v-pill" style="background:#FAECE7;color:#7C2D12"><span class="v-pill-name">hoffen auf</span><span class="v-pill-ar">يأمل في</span></div>
+        <div class="v-pill" style="background:#FAECE7;color:#7C2D12"><span class="v-pill-name">sich freuen auf</span><span class="v-pill-ar">يتطلع إلى</span></div>
+        <div class="v-pill" style="background:#FAECE7;color:#7C2D12"><span class="v-pill-name">achten auf</span><span class="v-pill-ar">ينتبه إلى</span></div>
+        <div class="v-pill" style="background:#FAECE7;color:#7C2D12"><span class="v-pill-name">sich vorbereiten auf</span><span class="v-pill-ar">يستعد لـ</span></div>
+        <div class="v-pill" style="background:#FAECE7;color:#7C2D12"><span class="v-pill-name">reagieren auf</span><span class="v-pill-ar">يرد على</span></div>
+        <div class="v-pill" style="background:#FAECE7;color:#7C2D12"><span class="v-pill-name">antworten auf</span><span class="v-pill-ar">يجيب على</span></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- WORÜBER -->
+<div class="sh" id="worueber">
+  <div class="sh-dot" style="background:#B45309"></div>
+  <div class="sh-title">worüber? — über + Akk</div>
+  <div class="sh-line"></div>
+</div>
+<div class="vg-wrap">
+  <div class="vg-card">
+    <div class="vg-hdr" style="background:#FEF3C7;border:1px solid #FDE68A;border-bottom:none">
+      <div class="vg-prep" style="color:#92400E">worüber?</div>
+      <div class="vg-meta">
+        <span class="vg-q" style="color:#92400E">Frage nach Sache + über</span>
+        <span class="vg-ar">عن ماذا؟ / بسبب ماذا؟</span>
+      </div>
+    </div>
+    <div class="vg-body">
+      <div style="padding:10px 18px 4px;font-size:13px;color:var(--muted)">
+        <strong style="color:var(--text)">Sache:</strong> <em style="color:#92400E">Worüber sprecht ihr?</em> — <em>Über das Projekt.</em><br>
+        <strong style="color:var(--text)">Person:</strong> <em style="color:#B45309">Über wen sprecht ihr?</em> — <em>Über Maria.</em>
+      </div>
+      <div class="vg-verbs">
+        <div class="v-pill" style="background:#FEF3C7;color:#92400E"><span class="v-pill-name">sprechen über</span><span class="v-pill-ar">يتحدث عن</span></div>
+        <div class="v-pill" style="background:#FEF3C7;color:#92400E"><span class="v-pill-name">nachdenken über</span><span class="v-pill-ar">يفكر في</span></div>
+        <div class="v-pill" style="background:#FEF3C7;color:#92400E"><span class="v-pill-name">sich ärgern über</span><span class="v-pill-ar">يغضب من</span></div>
+        <div class="v-pill" style="background:#FEF3C7;color:#92400E"><span class="v-pill-name">sich freuen über</span><span class="v-pill-ar">يفرح بـ</span></div>
+        <div class="v-pill" style="background:#FEF3C7;color:#92400E"><span class="v-pill-name">lachen über</span><span class="v-pill-ar">يضحك على</span></div>
+        <div class="v-pill" style="background:#FEF3C7;color:#92400E"><span class="v-pill-name">sich beschweren über</span><span class="v-pill-ar">يشتكي من</span></div>
+        <div class="v-pill" style="background:#FEF3C7;color:#92400E"><span class="v-pill-name">sich wundern über</span><span class="v-pill-ar">يتعجب من</span></div>
+        <div class="v-pill" style="background:#FEF3C7;color:#92400E"><span class="v-pill-name">sich informieren über</span><span class="v-pill-ar">يستعلم عن</span></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- WOMIT -->
+<div class="sh" id="womit">
+  <div class="sh-dot" style="background:#BE185D"></div>
+  <div class="sh-title">womit? — mit + Dat</div>
+  <div class="sh-line"></div>
+</div>
+<div class="vg-wrap">
+  <div class="vg-card">
+    <div class="vg-hdr" style="background:#FCE7F3;border:1px solid #F9A8D4;border-bottom:none">
+      <div class="vg-prep" style="color:#831843">womit?</div>
+      <div class="vg-meta">
+        <span class="vg-q" style="color:#831843">Frage nach Sache + mit</span>
+        <span class="vg-ar">بماذا / مع ماذا؟</span>
+      </div>
+    </div>
+    <div class="vg-body">
+      <div style="padding:10px 18px 4px;font-size:13px;color:var(--muted)">
+        <strong style="color:var(--text)">Sache:</strong> <em style="color:#831843">Womit fährst du?</em> — <em>Mit dem Bus.</em><br>
+        <strong style="color:var(--text)">Person:</strong> <em style="color:#BE185D">Mit wem fährst du?</em> — <em>Mit meiner Schwester.</em>
+      </div>
+      <div class="vg-verbs">
+        <div class="v-pill" style="background:#FCE7F3;color:#831843"><span class="v-pill-name">sprechen mit</span><span class="v-pill-ar">يتحدث مع</span></div>
+        <div class="v-pill" style="background:#FCE7F3;color:#831843"><span class="v-pill-name">sich beschäftigen mit</span><span class="v-pill-ar">ينشغل بـ</span></div>
+        <div class="v-pill" style="background:#FCE7F3;color:#831843"><span class="v-pill-name">sich streiten mit</span><span class="v-pill-ar">يتشاجر مع</span></div>
+        <div class="v-pill" style="background:#FCE7F3;color:#831843"><span class="v-pill-name">telefonieren mit</span><span class="v-pill-ar">يتحدث هاتفياً</span></div>
+        <div class="v-pill" style="background:#FCE7F3;color:#831843"><span class="v-pill-name">spielen mit</span><span class="v-pill-ar">يلعب مع</span></div>
+        <div class="v-pill" style="background:#FCE7F3;color:#831843"><span class="v-pill-name">zufrieden sein mit</span><span class="v-pill-ar">راضٍ عن</span></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- WOVON -->
+<div class="sh" id="wovon">
+  <div class="sh-dot" style="background:#4B5563"></div>
+  <div class="sh-title">wovon? — von + Dat</div>
+  <div class="sh-line"></div>
+</div>
+<div class="vg-wrap">
+  <div class="vg-card">
+    <div class="vg-hdr" style="background:#F3F4F6;border:1px solid #D1D5DB;border-bottom:none">
+      <div class="vg-prep" style="color:#1F2937">wovon?</div>
+      <div class="vg-meta">
+        <span class="vg-q" style="color:#1F2937">Frage nach Sache + von</span>
+        <span class="vg-ar">عن ماذا / من ماذا؟</span>
+      </div>
+    </div>
+    <div class="vg-body">
+      <div style="padding:10px 18px 4px;font-size:13px;color:var(--muted)">
+        <strong style="color:var(--text)">Sache:</strong> <em style="color:#1F2937">Wovon träumst du?</em> — <em>Von einer Reise.</em><br>
+        <strong style="color:var(--text)">Person:</strong> <em style="color:#4B5563">Von wem träumst du?</em> — <em>Von ihr.</em>
+      </div>
+      <div class="vg-verbs">
+        <div class="v-pill" style="background:#F3F4F6;color:#1F2937"><span class="v-pill-name">träumen von</span><span class="v-pill-ar">يحلم بـ</span></div>
+        <div class="v-pill" style="background:#F3F4F6;color:#1F2937"><span class="v-pill-name">erzählen von</span><span class="v-pill-ar">يحكي عن</span></div>
+        <div class="v-pill" style="background:#F3F4F6;color:#1F2937"><span class="v-pill-name">abhängen von</span><span class="v-pill-ar">يتوقف على</span></div>
+        <div class="v-pill" style="background:#F3F4F6;color:#1F2937"><span class="v-pill-name">sich trennen von</span><span class="v-pill-ar">ينفصل عن</span></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- WOVOR -->
+<div class="sh" id="wovor">
+  <div class="sh-dot" style="background:#DC2626"></div>
+  <div class="sh-title">wovor? — vor + Dat</div>
+  <div class="sh-line"></div>
+</div>
+<div class="vg-wrap">
+  <div class="vg-card">
+    <div class="vg-hdr" style="background:#FEF2F2;border:1px solid #FCA5A5;border-bottom:none">
+      <div class="vg-prep" style="color:#7F1D1D">wovor?</div>
+      <div class="vg-meta">
+        <span class="vg-q" style="color:#7F1D1D">Frage nach Sache + vor</span>
+        <span class="vg-ar">من ماذا تخاف؟</span>
+      </div>
+    </div>
+    <div class="vg-body">
+      <div style="padding:10px 18px 4px;font-size:13px;color:var(--muted)">
+        <strong style="color:var(--text)">Sache:</strong> <em style="color:#7F1D1D">Wovor fürchtest du dich?</em> — <em>Vor dem Examen.</em><br>
+        <strong style="color:var(--text)">Person:</strong> <em style="color:#DC2626">Vor wem fürchtest du dich?</em> — <em>Vor ihm.</em>
+      </div>
+      <div class="vg-verbs">
+        <div class="v-pill" style="background:#FEF2F2;color:#7F1D1D"><span class="v-pill-name">sich fürchten vor</span><span class="v-pill-ar">يخاف من</span></div>
+        <div class="v-pill" style="background:#FEF2F2;color:#7F1D1D"><span class="v-pill-name">warnen vor</span><span class="v-pill-ar">يحذر من</span></div>
+        <div class="v-pill" style="background:#FEF2F2;color:#7F1D1D"><span class="v-pill-name">schützen vor</span><span class="v-pill-ar">يحمي من</span></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- WORUM -->
+<div class="sh" id="worum">
+  <div class="sh-dot" style="background:#0F6E56"></div>
+  <div class="sh-title">worum? — um + Akk</div>
+  <div class="sh-line"></div>
+</div>
+<div class="vg-wrap">
+  <div class="vg-card">
+    <div class="vg-hdr" style="background:#E1F5EE;border:1px solid #9FE1CB;border-bottom:none">
+      <div class="vg-prep" style="color:#0F6E56">worum?</div>
+      <div class="vg-meta">
+        <span class="vg-q" style="color:#0F6E56">Frage nach Sache + um</span>
+        <span class="vg-ar">عن ماذا يدور / ماذا يطلب؟</span>
+      </div>
+    </div>
+    <div class="vg-body">
+      <div style="padding:10px 18px 4px;font-size:13px;color:var(--muted)">
+        <strong style="color:var(--text)">Sache:</strong> <em style="color:#0F6E56">Worum geht es?</em> — <em>Um das Geld.</em><br>
+        <strong style="color:var(--text)">Person:</strong> <em style="color:#1D9E75">Um wen sorgt er sich?</em> — <em>Um seine Tochter.</em>
+      </div>
+      <div class="vg-verbs">
+        <div class="v-pill" style="background:#E1F5EE;color:#0F6E56"><span class="v-pill-name">es geht um</span><span class="v-pill-ar">يتعلق بـ</span></div>
+        <div class="v-pill" style="background:#E1F5EE;color:#0F6E56"><span class="v-pill-name">bitten um</span><span class="v-pill-ar">يطلب</span></div>
+        <div class="v-pill" style="background:#E1F5EE;color:#0F6E56"><span class="v-pill-name">sich kümmern um</span><span class="v-pill-ar">يعتني بـ</span></div>
+        <div class="v-pill" style="background:#E1F5EE;color:#0F6E56"><span class="v-pill-name">sich bewerben um</span><span class="v-pill-ar">يتقدم لـ</span></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ALLE FRAGEN TABELLE -->
+<div class="sh" id="alle">
+  <div class="sh-dot" style="background:var(--c)"></div>
+  <div class="sh-title">Alle Fragewörter auf einen Blick</div>
+  <div class="sh-line"></div>
+</div>
+<div class="tbl-wrap">
+  <div class="tbl-filter">
+    <button class="tf active" onclick="filterTbl('all',this)">Alle</button>
+    <button class="tf" onclick="filterTbl('person',this)">Person</button>
+    <button class="tf" onclick="filterTbl('sache',this)">Sache</button>
+  </div>
+  <div class="tbl-box">
+    <table class="ftbl">
+      <thead><tr><th>Verb + Präp.</th><th style="width:110px">Sache (wo(r)-)</th><th style="width:110px">Person (Präp. + wen/wem)</th><th>Arabisch</th></tr></thead>
+      <tbody id="tbl-body"></tbody>
+    </table>
+  </div>
+</div>
+
+<!-- BEISPIEL-DIALOGE -->
+<div class="sh" id="examples">
+  <div class="sh-dot" style="background:var(--c)"></div>
+  <div class="sh-title">Beispiele im Dialog</div>
+  <div class="sh-line"></div>
+</div>
+<div class="examples-grid">
+  <div class="ex-card">
+    <div class="ex-verb-title"><span style="background:#FAECE7;color:#7C2D12;border-radius:20px;padding:3px 12px;font-size:14px">warten auf</span></div>
+    <div class="ex-item">
+      <div class="ex-q"><span class="hl-wor">Worauf</span> wartest du? <span style="font-size:12px;color:var(--hint)">(Sache)</span></div>
+      <div class="ex-a">→ Auf <span class="hl-dar">den Bus</span>. / <span class="hl-dar">Darauf</span>.</div>
+      <div class="ex-ar">على ماذا تنتظر؟ — على الحافلة</div>
+    </div>
+    <div class="ex-item">
+      <div class="ex-q"><span class="hl-wo">Auf wen</span> wartest du? <span style="font-size:12px;color:var(--hint)">(Person)</span></div>
+      <div class="ex-a">→ Auf <span class="hl-da">meinen Freund</span>. / Auf <span class="hl-da">ihn</span>.</div>
+      <div class="ex-ar">على من تنتظر؟ — على صديقي</div>
+    </div>
+  </div>
+  <div class="ex-card">
+    <div class="ex-verb-title"><span style="background:#EDE9FE;color:#5B21B6;border-radius:20px;padding:3px 12px;font-size:14px">sich interessieren für</span></div>
+    <div class="ex-item">
+      <div class="ex-q"><span class="hl-wor">Wofür</span> interessierst du dich? <span style="font-size:12px;color:var(--hint)">(Sache)</span></div>
+      <div class="ex-a">→ Für <span class="hl-dar">Musik</span>. / <span class="hl-dar">Dafür</span>.</div>
+      <div class="ex-ar">بماذا تهتم؟ — بالموسيقى</div>
+    </div>
+    <div class="ex-item">
+      <div class="ex-q"><span class="hl-wo">Für wen</span> interessierst du dich? <span style="font-size:12px;color:var(--hint)">(Person)</span></div>
+      <div class="ex-a">→ Für <span class="hl-da">ihn</span>.</div>
+      <div class="ex-ar">من تهتم به؟ — به</div>
+    </div>
+  </div>
+  <div class="ex-card">
+    <div class="ex-verb-title"><span style="background:#FEF3C7;color:#92400E;border-radius:20px;padding:3px 12px;font-size:14px">sprechen über</span></div>
+    <div class="ex-item">
+      <div class="ex-q"><span class="hl-wor">Worüber</span> sprecht ihr? <span style="font-size:12px;color:var(--hint)">(Sache)</span></div>
+      <div class="ex-a">→ Über <span class="hl-dar">das Problem</span>. / <span class="hl-dar">Darüber</span>.</div>
+      <div class="ex-ar">عن ماذا تتحدثون؟ — عن المشكلة</div>
+    </div>
+    <div class="ex-item">
+      <div class="ex-q"><span class="hl-wo">Über wen</span> sprecht ihr? <span style="font-size:12px;color:var(--hint)">(Person)</span></div>
+      <div class="ex-a">→ Über <span class="hl-da">Maria</span>.</div>
+      <div class="ex-ar">عن من تتحدثون؟ — عن ماريا</div>
+    </div>
+  </div>
+  <div class="ex-card">
+    <div class="ex-verb-title"><span style="background:#FCE7F3;color:#831843;border-radius:20px;padding:3px 12px;font-size:14px">sich beschäftigen mit</span></div>
+    <div class="ex-item">
+      <div class="ex-q"><span class="hl-wor">Womit</span> beschäftigst du dich? <span style="font-size:12px;color:var(--hint)">(Sache)</span></div>
+      <div class="ex-a">→ Mit <span class="hl-dar">Musik</span>. / <span class="hl-dar">Damit</span>.</div>
+      <div class="ex-ar">بماذا تنشغل؟ — بالموسيقى</div>
+    </div>
+    <div class="ex-item">
+      <div class="ex-q"><span class="hl-wo">Mit wem</span> beschäftigst du dich? <span style="font-size:12px;color:var(--hint)">(Person)</span></div>
+      <div class="ex-a">→ Mit <span class="hl-da">meinem Kollegen</span>.</div>
+      <div class="ex-ar">مع من تنشغل؟ — مع زميلي</div>
+    </div>
+  </div>
+  <div class="ex-card">
+    <div class="ex-verb-title"><span style="background:#FEF2F2;color:#7F1D1D;border-radius:20px;padding:3px 12px;font-size:14px">sich fürchten vor</span></div>
+    <div class="ex-item">
+      <div class="ex-q"><span class="hl-wor">Wovor</span> fürchtest du dich? <span style="font-size:12px;color:var(--hint)">(Sache)</span></div>
+      <div class="ex-a">→ Vor <span class="hl-dar">dem Examen</span>. / <span class="hl-dar">Davor</span>.</div>
+      <div class="ex-ar">من ماذا تخاف؟ — من الامتحان</div>
+    </div>
+    <div class="ex-item">
+      <div class="ex-q"><span class="hl-wo">Vor wem</span> fürchtest du dich? <span style="font-size:12px;color:var(--hint)">(Person)</span></div>
+      <div class="ex-a">→ Vor <span class="hl-da">ihm</span>.</div>
+      <div class="ex-ar">من تخاف؟ — منه</div>
+    </div>
+  </div>
+  <div class="ex-card">
+    <div class="ex-verb-title"><span style="background:#E1F5EE;color:#0F6E56;border-radius:20px;padding:3px 12px;font-size:14px">es geht um</span></div>
+    <div class="ex-item">
+      <div class="ex-q"><span class="hl-wor">Worum</span> geht es? <span style="font-size:12px;color:var(--hint)">(Sache)</span></div>
+      <div class="ex-a">→ Um <span class="hl-dar">das Geld</span>. / <span class="hl-dar">Darum</span>.</div>
+      <div class="ex-ar">عم يدور الحديث؟ — عن المال</div>
+    </div>
+    <div class="ex-item">
+      <div class="ex-q"><span class="hl-wo">Um wen</span> geht es? <span style="font-size:12px;color:var(--hint)">(Person)</span></div>
+      <div class="ex-a">→ Um <span class="hl-da">meinen Bruder</span>.</div>
+      <div class="ex-ar">عمَّن يدور الحديث؟ — عن أخي</div>
+    </div>
+  </div>
+</div>
+
+<!-- TIPPS -->
+<div class="sh" id="tipps">
+  <div class="sh-dot" style="background:var(--text)"></div>
+  <div class="sh-title">Lerntipps</div>
+  <div class="sh-line"></div>
+</div>
+<div class="tips-grid">
+  <div class="tip-box">
+    <span class="tip-icon">👤💡</span>
+    <div class="tip-title">Person oder Sache?</div>
+    <div class="tip-body"><strong>Person → Präp. + wen/wem</strong><br><em>Auf wen wartest du? — Auf ihn.</em><br><br><strong>Sache → wo(r) + Präp.</strong><br><em>Worauf wartest du? — Auf den Bus.</em></div>
+  </div>
+  <div class="tip-box">
+    <span class="tip-icon">🔤</span>
+    <div class="tip-title">wor- oder wo-?</div>
+    <div class="tip-body"><strong>Vokal</strong> (auf/über/aus/an) → <code>wor+</code>: <em>wor<strong>auf</strong>, wor<strong>über</strong></em><br><br><strong>Konsonant</strong> (mit/für/von) → <code>wo+</code>: <em>wo<strong>mit</strong>, wo<strong>für</strong></em></div>
+  </div>
+  <div class="tip-box">
+    <span class="tip-icon">🔄</span>
+    <div class="tip-title">Antwort: da(r)- + Präp.</div>
+    <div class="tip-body"><em>Worauf wartest du?</em> → <strong>Dar</strong>auf.<br><em>Wofür dankt er?</em> → <strong>Da</strong>für.<br><em>Womit fährst du?</em> → <strong>Da</strong>mit.<br><br>Gleiche Regel: Vokal → dar-, Konsonant → da-</div>
+  </div>
+  <div class="tip-box">
+    <span class="tip-icon">📝</span>
+    <div class="tip-title">Immer im Paar lernen</div>
+    <div class="tip-body">Lerne die Frage immer in beiden Versionen:<br><br><code>warten auf</code><br>→ <strong>Worauf</strong> wartest du? (Sache)<br>→ <strong>Auf wen</strong> wartest du? (Person)</div>
+  </div>
+</div>
+
+<div class="footer">
+  <div class="footer-brand">Spiel Deutsch</div>
+  <div class="footer-credit">by ❤️ Mostafa Toumi</div>
+</div>
+
+<script>
+const VERBS=[
+  {v:"warten auf",      sache:"worauf?",   person:"auf wen?",  ar:"ينتظر"},
+  {v:"hoffen auf",      sache:"worauf?",   person:"auf wen?",  ar:"يأمل في"},
+  {v:"sich freuen auf", sache:"worauf?",   person:"auf wen?",  ar:"يتطلع إلى"},
+  {v:"achten auf",      sache:"worauf?",   person:"auf wen?",  ar:"ينتبه إلى"},
+  {v:"reagieren auf",   sache:"worauf?",   person:"auf wen?",  ar:"يرد على"},
+  {v:"antworten auf",   sache:"worauf?",   person:"auf wen?",  ar:"يجيب على"},
+  {v:"denken an",       sache:"woran?",    person:"an wen?",   ar:"يفكر في"},
+  {v:"sich erinnern an",sache:"woran?",    person:"an wen?",   ar:"يتذكر"},
+  {v:"sich gewöhnen an",sache:"woran?",    person:"an wen?",   ar:"يعتاد على"},
+  {v:"glauben an",      sache:"woran?",    person:"an wen?",   ar:"يؤمن بـ"},
+  {v:"sprechen über",   sache:"worüber?",  person:"über wen?", ar:"يتحدث عن"},
+  {v:"nachdenken über", sache:"worüber?",  person:"über wen?", ar:"يفكر في"},
+  {v:"sich ärgern über",sache:"worüber?",  person:"über wen?", ar:"يغضب من"},
+  {v:"sich freuen über",sache:"worüber?",  person:"über wen?", ar:"يفرح بـ"},
+  {v:"lachen über",     sache:"worüber?",  person:"über wen?", ar:"يضحك على"},
+  {v:"sich wundern über",sache:"worüber?", person:"über wen?", ar:"يتعجب من"},
+  {v:"sich interessieren für",sache:"wofür?",person:"für wen?",ar:"يهتم بـ"},
+  {v:"danken für",      sache:"wofür?",    person:"für wen?",  ar:"يشكر على"},
+  {v:"sich entschuldigen für",sache:"wofür?",person:"für wen?",ar:"يعتذر عن"},
+  {v:"sich entscheiden für",sache:"wofür?",person:"für wen?",  ar:"يقرر"},
+  {v:"zahlen für",      sache:"wofür?",    person:"für wen?",  ar:"يدفع ثمن"},
+  {v:"sprechen mit",    sache:"womit?",    person:"mit wem?",  ar:"يتحدث مع"},
+  {v:"telefonieren mit",sache:"womit?",    person:"mit wem?",  ar:"يتحدث هاتفياً"},
+  {v:"sich beschäftigen mit",sache:"womit?",person:"mit wem?", ar:"ينشغل بـ"},
+  {v:"sich streiten mit",sache:"womit?",   person:"mit wem?",  ar:"يتشاجر مع"},
+  {v:"träumen von",     sache:"wovon?",    person:"von wem?",  ar:"يحلم بـ"},
+  {v:"erzählen von",    sache:"wovon?",    person:"von wem?",  ar:"يحكي عن"},
+  {v:"abhängen von",    sache:"wovon?",    person:"von wem?",  ar:"يتوقف على"},
+  {v:"sich trennen von",sache:"wovon?",    person:"von wem?",  ar:"ينفصل عن"},
+  {v:"sich fürchten vor",sache:"wovor?",   person:"vor wem?",  ar:"يخاف من"},
+  {v:"warnen vor",      sache:"wovor?",    person:"vor wem?",  ar:"يحذر من"},
+  {v:"schützen vor",    sache:"wovor?",    person:"vor wem?",  ar:"يحمي من"},
+  {v:"bitten um",       sache:"worum?",    person:"um wen?",   ar:"يطلب"},
+  {v:"sich kümmern um", sache:"worum?",    person:"um wen?",   ar:"يعتني بـ"},
+  {v:"es geht um",      sache:"worum?",    person:"um wen?",   ar:"يتعلق بـ"},
+];
+
+const SACHE_COLORS={
+  "worauf?":"#FAECE7","woran?":"#E0F2FE","worüber?":"#FEF3C7",
+  "wofür?":"#EDE9FE","womit?":"#FCE7F3","wovon?":"#F3F4F6",
+  "wovor?":"#FEF2F2","worum?":"#E1F5EE",
+};
+const SACHE_TEXT={
+  "worauf?":"#7C2D12","woran?":"#0C4A6E","worüber?":"#92400E",
+  "wofür?":"#5B21B6","womit?":"#831843","wovon?":"#1F2937",
+  "wovor?":"#7F1D1D","worum?":"#0F6E56",
+};
+const PERSON_COLORS={
+  "auf wen?":"#E6F1FB","an wen?":"#E6F1FB","über wen?":"#FEF3C7",
+  "für wen?":"#EDE9FE","mit wem?":"#FCE7F3","von wem?":"#F3F4F6",
+  "vor wem?":"#FEF2F2","um wen?":"#E1F5EE",
+};
+
+function buildRows(list){
+  return list.map((x,i)=>{
+    const sb=SACHE_COLORS[x.sache]||'#F3F4F6';const st=SACHE_TEXT[x.sache]||'#374151';
+    const pb=PERSON_COLORS[x.person]||'#F3F4F6';
+    return`<tr>
+      <td>${x.v}</td>
+      <td><span class="wo-badge wob2" style="background:${sb};color:${st}">${x.sache}</span></td>
+      <td><span class="wo-badge wob1" style="background:${pb};color:#3730A3">${x.person}</span></td>
+      <td class="ar">${x.ar}</td>
+    </tr>`;
+  }).join('');
+}
+
+function filterTbl(f,btn){
+  document.querySelectorAll('.tf').forEach(b=>b.classList.remove('active'));
+  btn.classList.add('active');
+  document.getElementById('tbl-body').innerHTML=buildRows(VERBS);
+}
+document.getElementById('tbl-body').innerHTML=buildRows(VERBS);
+
+// sticky nav
+const IDS=['was','system','wofuer','worauf','worueber','womit','wovon','wovor','worum','alle','examples','tipps'];
+const btns=document.querySelectorAll('.snb');
+function upd(){
+  let a=IDS[0];
+  IDS.forEach(id=>{const el=document.getElementById(id);if(el&&el.getBoundingClientRect().top<=80)a=id;});
+  btns.forEach(b=>b.classList.toggle('active',b.getAttribute('href')==='#'+a));
+}
+window.addEventListener('scroll',upd,{passive:true});upd();
+</script>
+</body>
+</html>

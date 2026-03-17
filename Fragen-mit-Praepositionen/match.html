@@ -1,0 +1,294 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<title>Fragen mit Präpositionen — Match</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=DM+Sans:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --bg:#F7F4EF;--surface:#fff;--text:#1C1917;--muted:#78716C;--hint:#A8A29E;
+  --c:#D85A30;--cl:#FAECE7;--ct:#7C2D12;--cb:#FDBA74;
+  --green:#1D9E75;--greenl:#E1F5EE;--greent:#0F6E56;
+  --red:#D85A30;--redl:#FAECE7;
+  --border:rgba(28,25,23,0.1);--bm:rgba(28,25,23,0.15);
+  --r:16px;--rs:12px;--sh:0 2px 12px rgba(28,25,23,0.07);--shc:0 4px 20px rgba(28,25,23,0.10)
+}
+html,body{min-height:100%;background:var(--bg);font-family:'DM Sans',sans-serif;color:var(--text);-webkit-font-smoothing:antialiased}
+body{display:flex;flex-direction:column;align-items:center;padding-bottom:32px}
+
+.hdr{width:100%;max-width:660px;padding:20px 20px 0;display:flex;justify-content:space-between;align-items:flex-start}
+.title{font-family:'DM Serif Display',serif;font-size:clamp(18px,5vw,24px)}
+.subtitle{font-size:12px;color:var(--muted);margin-top:3px}
+.meta{font-size:12px;color:var(--muted);text-align:right}
+
+.prog-wrap{width:100%;max-width:660px;padding:10px 20px 0}
+.prog-bar{height:4px;background:var(--border);border-radius:4px;overflow:hidden}
+.prog-fill{height:100%;background:var(--c);border-radius:4px;transition:width .4s}
+
+.scores{width:100%;max-width:660px;padding:10px 20px 0;display:flex;gap:10px}
+.sp{flex:1;background:var(--surface);border:1px solid var(--border);border-radius:var(--rs);padding:10px 8px;text-align:center;box-shadow:var(--sh)}
+.sp-n{font-family:'DM Serif Display',serif;font-size:20px;line-height:1}
+.sp-l{font-size:10px;font-weight:600;letter-spacing:.5px;text-transform:uppercase;color:var(--hint);margin-top:3px}
+
+/* mode toggle */
+.mode-row{width:100%;max-width:660px;padding:10px 20px 0;display:flex;gap:8px}
+.mode-btn{flex:1;padding:9px;border-radius:var(--rs);border:1.5px solid var(--bm);background:var(--surface);font-family:'DM Sans',sans-serif;font-size:13px;font-weight:500;cursor:pointer;text-align:center;color:var(--muted);transition:all .15s}
+.mode-btn.active{background:var(--text);color:var(--bg);border-color:var(--text)}
+
+/* pair rows */
+.pairs-lbl{width:100%;max-width:660px;padding:10px 20px 4px;font-size:11px;font-weight:600;letter-spacing:1px;text-transform:uppercase;color:var(--hint)}
+.pairs-area{width:100%;max-width:660px;padding:0 20px;display:flex;flex-direction:column;gap:10px}
+.pair-row{display:grid;grid-template-columns:1fr auto;gap:10px;align-items:center}
+.verb-box{background:var(--surface);border:1.5px solid var(--bm);border-radius:var(--rs);padding:10px 14px;box-shadow:var(--sh)}
+.vb-name{font-family:'DM Serif Display',serif;font-size:clamp(15px,4vw,18px);color:var(--text)}
+.vb-ar{font-size:11px;color:var(--hint);direction:rtl;margin-top:2px}
+.drop-slot{min-width:110px;min-height:44px;border-radius:var(--rs);border:2px dashed var(--bm);background:var(--bg);display:flex;align-items:center;justify-content:center;font-size:12px;color:var(--hint);transition:all .2s;-webkit-tap-highlight-color:transparent;text-align:center;padding:4px 8px}
+.drop-slot.over{border-color:var(--c);background:var(--cl);transform:scale(1.04)}
+.drop-slot.ok{border-style:solid;border-color:var(--green);background:var(--greenl)}
+.drop-slot.no{border-style:solid;border-color:var(--red);background:var(--redl)}
+.slot-txt{font-family:'DM Serif Display',serif;font-size:14px}
+.slot-txt.ok{color:var(--greent)}
+.slot-txt.no{color:var(--redt);text-decoration:line-through}
+.slot-correct{font-size:11px;color:var(--greent);font-weight:600;margin-top:2px}
+
+/* Fragewort pool */
+.pool-lbl{width:100%;max-width:660px;padding:12px 20px 4px;font-size:11px;font-weight:600;letter-spacing:1px;text-transform:uppercase;color:var(--hint)}
+.pool{width:100%;max-width:660px;padding:0 20px;display:flex;flex-wrap:wrap;gap:8px;min-height:52px}
+.chip{padding:9px 16px;border-radius:20px;font-family:'DM Serif Display',serif;font-size:16px;cursor:grab;user-select:none;box-shadow:var(--sh);border:1.5px solid;transition:transform .15s,box-shadow .15s;-webkit-tap-highlight-color:transparent}
+.chip:active{cursor:grabbing;transform:scale(1.07);box-shadow:var(--shc)}
+.chip.selected{outline:3px solid var(--text);outline-offset:1px;transform:scale(1.07)}
+.chip.dragging{opacity:.35}
+
+/* color pool chips */
+.wc-worauf{background:#FAECE7;color:#7C2D12;border-color:#FDBA74}
+.wc-woran{background:#E0F2FE;color:#0C4A6E;border-color:#7DD3FC}
+.wc-worüber{background:#FEF3C7;color:#92400E;border-color:#FDE68A}
+.wc-wofür{background:#EDE9FE;color:#5B21B6;border-color:#C4B5FD}
+.wc-womit{background:#FCE7F3;color:#831843;border-color:#F9A8D4}
+.wc-wovon{background:#F3F4F6;color:#1F2937;border-color:#D1D5DB}
+.wc-wovor{background:#FEF2F2;color:#7F1D1D;border-color:#FCA5A5}
+.wc-worum{background:#E1F5EE;color:#0F6E56;border-color:#9FE1CB}
+
+/* person mode chips */
+.wc-auf-wen{background:#FAECE7;color:#7C2D12;border-color:#FDBA74}
+.wc-an-wen{background:#E0F2FE;color:#0C4A6E;border-color:#7DD3FC}
+.wc-über-wen{background:#FEF3C7;color:#92400E;border-color:#FDE68A}
+.wc-für-wen{background:#EDE9FE;color:#5B21B6;border-color:#C4B5FD}
+.wc-mit-wem{background:#FCE7F3;color:#831843;border-color:#F9A8D4}
+.wc-von-wem{background:#F3F4F6;color:#1F2937;border-color:#D1D5DB}
+.wc-vor-wem{background:#FEF2F2;color:#7F1D1D;border-color:#FCA5A5}
+.wc-um-wen{background:#E1F5EE;color:#0F6E56;border-color:#9FE1CB}
+
+.toast{position:fixed;bottom:80px;left:50%;transform:translateX(-50%) translateY(20px);padding:10px 20px;border-radius:20px;font-size:14px;font-weight:600;opacity:0;transition:opacity .2s,transform .2s;pointer-events:none;z-index:100}
+.toast.show{opacity:1;transform:translateX(-50%) translateY(0)}
+.toast.ok{background:var(--greenl);color:var(--greent);border:1px solid var(--green)}
+.toast.fail{background:var(--redl);color:var(--red);border:1px solid var(--red)}
+
+.done{width:100%;max-width:660px;padding:40px 20px;display:flex;flex-direction:column;align-items:center;text-align:center;gap:12px}
+.done h2{font-family:'DM Serif Display',serif;font-size:28px}
+.dgrid{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;width:100%;margin-top:8px}
+.dg{background:var(--surface);border:1px solid var(--border);border-radius:var(--rs);padding:14px 8px;text-align:center;box-shadow:var(--sh)}
+.dg-n{font-family:'DM Serif Display',serif;font-size:26px;line-height:1}
+.dg-l{font-size:10px;font-weight:600;text-transform:uppercase;letter-spacing:.5px;color:var(--hint);margin-top:4px}
+.restart{padding:13px 32px;border-radius:var(--rs);background:var(--text);color:var(--bg);font-family:'DM Sans',sans-serif;font-size:15px;font-weight:500;border:none;cursor:pointer;margin-top:4px}
+.footer{padding:20px 0 8px;font-size:11px;font-weight:600;letter-spacing:2px;text-transform:uppercase;color:var(--hint);text-align:center;width:100%}
+</style>
+</head>
+<body>
+<div class="hdr">
+  <div><div class="title">Fragen — Match</div><div class="subtitle">Ziehe das richtige Fragewort zum Verb</div></div>
+  <div class="meta" id="meta">Runde 1 / 5</div>
+</div>
+<div class="prog-wrap"><div class="prog-bar"><div class="prog-fill" id="prog" style="width:0%"></div></div></div>
+<div class="scores">
+  <div class="sp"><div class="sp-n" id="sc-ok" style="color:var(--green)">0</div><div class="sp-l">Richtig</div></div>
+  <div class="sp"><div class="sp-n" id="sc-no" style="color:var(--red)">0</div><div class="sp-l">Falsch</div></div>
+  <div class="sp"><div class="sp-n" id="sc-pt" style="color:var(--ct)">0</div><div class="sp-l">Punkte</div></div>
+</div>
+<div class="mode-row">
+  <button class="mode-btn active" id="btn-sache" onclick="setMode('sache')">💡 Sache (wo(r)-)</button>
+  <button class="mode-btn" id="btn-person" onclick="setMode('person')">👤 Person (wen/wem)</button>
+</div>
+<div class="pairs-lbl">Verben:</div>
+<div class="pairs-area" id="pairs-area"></div>
+<div class="pool-lbl" id="pool-lbl">Fragewörter — ziehe sie zum richtigen Verb:</div>
+<div class="pool" id="pool"></div>
+<div class="toast" id="toast"></div>
+<div class="footer">by ❤️ Mostafa Toumi</div>
+<script>
+// Data: verb → sache question word + person question word
+const ALL=[
+  {v:"warten auf",    ar:"ينتظر",     sw:"worauf",   sw_c:"wc-worauf",  pw:"auf wen",   pw_c:"wc-auf-wen"},
+  {v:"hoffen auf",    ar:"يأمل في",   sw:"worauf",   sw_c:"wc-worauf",  pw:"auf wen",   pw_c:"wc-auf-wen"},
+  {v:"sich freuen auf",ar:"يتطلع إلى",sw:"worauf",   sw_c:"wc-worauf",  pw:"auf wen",   pw_c:"wc-auf-wen"},
+  {v:"achten auf",    ar:"ينتبه إلى", sw:"worauf",   sw_c:"wc-worauf",  pw:"auf wen",   pw_c:"wc-auf-wen"},
+  {v:"reagieren auf", ar:"يرد على",   sw:"worauf",   sw_c:"wc-worauf",  pw:"auf wen",   pw_c:"wc-auf-wen"},
+  {v:"denken an",     ar:"يفكر في",   sw:"woran",    sw_c:"wc-woran",   pw:"an wen",    pw_c:"wc-an-wen"},
+  {v:"sich erinnern an",ar:"يتذكر",   sw:"woran",    sw_c:"wc-woran",   pw:"an wen",    pw_c:"wc-an-wen"},
+  {v:"sich gewöhnen an",ar:"يعتاد على",sw:"woran",   sw_c:"wc-woran",   pw:"an wen",    pw_c:"wc-an-wen"},
+  {v:"glauben an",    ar:"يؤمن بـ",   sw:"woran",    sw_c:"wc-woran",   pw:"an wen",    pw_c:"wc-an-wen"},
+  {v:"sprechen über", ar:"يتحدث عن",  sw:"worüber",  sw_c:"wc-worüber", pw:"über wen",  pw_c:"wc-über-wen"},
+  {v:"sich ärgern über",ar:"يغضب من",sw:"worüber",  sw_c:"wc-worüber", pw:"über wen",  pw_c:"wc-über-wen"},
+  {v:"sich freuen über",ar:"يفرح بـ", sw:"worüber",  sw_c:"wc-worüber", pw:"über wen",  pw_c:"wc-über-wen"},
+  {v:"lachen über",   ar:"يضحك على",  sw:"worüber",  sw_c:"wc-worüber", pw:"über wen",  pw_c:"wc-über-wen"},
+  {v:"nachdenken über",ar:"يفكر في",  sw:"worüber",  sw_c:"wc-worüber", pw:"über wen",  pw_c:"wc-über-wen"},
+  {v:"sich interessieren für",ar:"يهتم بـ",sw:"wofür",sw_c:"wc-wofür",pw:"für wen",   pw_c:"wc-für-wen"},
+  {v:"danken für",    ar:"يشكر على",  sw:"wofür",    sw_c:"wc-wofür",   pw:"für wen",   pw_c:"wc-für-wen"},
+  {v:"sich entscheiden für",ar:"يختار",sw:"wofür",   sw_c:"wc-wofür",   pw:"für wen",   pw_c:"wc-für-wen"},
+  {v:"zahlen für",    ar:"يدفع ثمن",  sw:"wofür",    sw_c:"wc-wofür",   pw:"für wen",   pw_c:"wc-für-wen"},
+  {v:"sprechen mit",  ar:"يتحدث مع",  sw:"womit",    sw_c:"wc-womit",   pw:"mit wem",   pw_c:"wc-mit-wem"},
+  {v:"sich beschäftigen mit",ar:"ينشغل بـ",sw:"womit",sw_c:"wc-womit",  pw:"mit wem",   pw_c:"wc-mit-wem"},
+  {v:"telefonieren mit",ar:"يتحدث هاتفياً",sw:"womit",sw_c:"wc-womit", pw:"mit wem",   pw_c:"wc-mit-wem"},
+  {v:"träumen von",   ar:"يحلم بـ",   sw:"wovon",    sw_c:"wc-wovon",   pw:"von wem",   pw_c:"wc-von-wem"},
+  {v:"erzählen von",  ar:"يحكي عن",   sw:"wovon",    sw_c:"wc-wovon",   pw:"von wem",   pw_c:"wc-von-wem"},
+  {v:"abhängen von",  ar:"يتوقف على", sw:"wovon",    sw_c:"wc-wovon",   pw:"von wem",   pw_c:"wc-von-wem"},
+  {v:"sich trennen von",ar:"ينفصل عن",sw:"wovon",    sw_c:"wc-wovon",   pw:"von wem",   pw_c:"wc-von-wem"},
+  {v:"sich fürchten vor",ar:"يخاف من",sw:"wovor",    sw_c:"wc-wovor",   pw:"vor wem",   pw_c:"wc-vor-wem"},
+  {v:"warnen vor",    ar:"يحذر من",   sw:"wovor",    sw_c:"wc-wovor",   pw:"vor wem",   pw_c:"wc-vor-wem"},
+  {v:"schützen vor",  ar:"يحمي من",   sw:"wovor",    sw_c:"wc-wovor",   pw:"vor wem",   pw_c:"wc-vor-wem"},
+  {v:"bitten um",     ar:"يطلب",      sw:"worum",    sw_c:"wc-worum",   pw:"um wen",    pw_c:"wc-um-wen"},
+  {v:"es geht um",    ar:"يتعلق بـ",  sw:"worum",    sw_c:"wc-worum",   pw:"um wen",    pw_c:"wc-um-wen"},
+  {v:"sich kümmern um",ar:"يعتني بـ", sw:"worum",    sw_c:"wc-worum",   pw:"um wen",    pw_c:"wc-um-wen"},
+];
+
+const PER_ROUND=7;
+let rounds=[],rIdx=0,correct=0,wrong=0,points=0,mode='sache';
+let dragItem=null,selectedChip=null;
+
+function shuffle(a){return[...a].sort(()=>Math.random()-.5)}
+
+function setMode(m){
+  mode=m;
+  document.getElementById('btn-sache').classList.toggle('active',m==='sache');
+  document.getElementById('btn-person').classList.toggle('active',m==='person');
+  document.getElementById('pool-lbl').textContent=
+    m==='sache'?'wo(r)+Präp. — ziehe es zum richtigen Verb:':'Präp.+wen/wem — ziehe es zum richtigen Verb:';
+  restart();
+}
+
+function restart(){
+  const sh=shuffle(ALL);rounds=[];
+  for(let i=0;i<sh.length;i+=PER_ROUND)rounds.push(sh.slice(i,i+PER_ROUND));
+  rIdx=0;correct=0;wrong=0;points=0;
+  document.getElementById('sc-ok').textContent=0;
+  document.getElementById('sc-no').textContent=0;
+  document.getElementById('sc-pt').textContent=0;
+  loadRound();
+}
+
+function loadRound(){
+  if(rIdx>=rounds.length){showDone();return;}
+  selectedChip=null;dragItem=null;
+  const items=rounds[rIdx];
+  document.getElementById('meta').textContent='Runde '+(rIdx+1)+' / '+rounds.length;
+  document.getElementById('prog').style.width=(rIdx/rounds.length*100)+'%';
+
+  // Build pair rows
+  const pa=document.getElementById('pairs-area');pa.innerHTML='';
+  items.forEach((item,i)=>{
+    const row=document.createElement('div');row.className='pair-row';
+    const vb=document.createElement('div');vb.className='verb-box';
+    vb.innerHTML=`<div class="vb-name">${item.v}</div><div class="vb-ar">${item.ar}</div>`;
+    const slot=document.createElement('div');
+    slot.className='drop-slot';slot.dataset.idx=i;
+    slot.textContent='hier ablegen';
+    slot.addEventListener('dragover',e=>{e.preventDefault();slot.classList.add('over');});
+    slot.addEventListener('dragleave',()=>slot.classList.remove('over'));
+    slot.addEventListener('drop',e=>{e.preventDefault();slot.classList.remove('over');if(dragItem)doPlace(dragItem,slot,item);});
+    slot.addEventListener('click',()=>{if(selectedChip)doPlace(selectedChip,slot,item);});
+    row.appendChild(vb);row.appendChild(slot);
+    pa.appendChild(row);
+  });
+
+  // Build chip pool — correct answers + distractors
+  const correctWords=[...new Set(items.map(x=>mode==='sache'?x.sw:x.pw))];
+  const allWords=[...new Set(ALL.map(x=>mode==='sache'?x.sw:x.pw))];
+  const distractors=shuffle(allWords.filter(w=>!correctWords.includes(w))).slice(0,2);
+  // supply correct words × count needed + distractors
+  const chipWords=shuffle([...correctWords,...correctWords,...distractors]).slice(0,items.length+3);
+
+  const pool=document.getElementById('pool');pool.innerHTML='';
+  chipWords.forEach(w=>{
+    const cls=mode==='sache'?
+      (ALL.find(x=>x.sw===w)||{sw_c:'wc-worauf'}).sw_c:
+      (ALL.find(x=>x.pw===w)||{pw_c:'wc-für-wen'}).pw_c;
+    const chip=document.createElement('div');
+    chip.className='chip '+cls;chip.textContent=w;chip.dataset.word=w;
+    chip.draggable=true;
+    chip.addEventListener('dragstart',e=>{dragItem=chip;chip.classList.add('dragging');e.dataTransfer.effectAllowed='move';});
+    chip.addEventListener('dragend',()=>{chip.classList.remove('dragging');dragItem=null;});
+    chip.addEventListener('click',()=>selectChip(chip));
+    pool.appendChild(chip);
+  });
+}
+
+function selectChip(chip){
+  if(selectedChip===chip){chip.classList.remove('selected');selectedChip=null;return;}
+  if(selectedChip)selectedChip.classList.remove('selected');
+  chip.classList.add('selected');selectedChip=chip;
+}
+
+function doPlace(chip,slot,item){
+  if(slot.dataset.filled==='1')return;
+  slot.dataset.filled='1';
+  chip.classList.remove('selected');selectedChip=null;
+  chip.remove();
+
+  const guess=chip.dataset.word;
+  const answer=mode==='sache'?item.sw:item.pw;
+  const ok=guess===answer;
+
+  if(ok){correct++;points+=2;}else{wrong++;points=Math.max(0,points-1);}
+  document.getElementById('sc-ok').textContent=correct;
+  document.getElementById('sc-no').textContent=wrong;
+  document.getElementById('sc-pt').textContent=points;
+
+  slot.classList.add(ok?'ok':'no');
+  slot.innerHTML='';
+  const t=document.createElement('div');t.className='slot-txt '+(ok?'ok':'no');t.textContent=guess;slot.appendChild(t);
+  if(!ok){
+    const h=document.createElement('div');h.className='slot-correct';h.textContent='✓ '+answer;slot.appendChild(h);
+    showToast('✗ Richtig: '+answer,'fail');
+  }else{
+    showToast('✓ '+guess,'ok');
+  }
+
+  const allSlots=document.querySelectorAll('.drop-slot');
+  if([...allSlots].every(s=>s.dataset.filled==='1'))setTimeout(()=>{rIdx++;loadRound();},750);
+}
+
+let toastT;
+function showToast(msg,type){
+  const t=document.getElementById('toast');clearTimeout(toastT);
+  t.textContent=msg;t.className='toast show '+type;
+  toastT=setTimeout(()=>t.classList.remove('show'),1200);
+}
+
+function showDone(){
+  document.getElementById('pairs-area').style.display='none';
+  document.querySelector('.pairs-lbl').style.display='none';
+  document.querySelector('.pool-lbl').style.display='none';
+  document.getElementById('pool').style.display='none';
+  document.querySelector('.mode-row').style.display='none';
+  document.getElementById('prog').style.width='100%';
+  const total=correct+wrong,pct=Math.round(correct/total*100)||0;
+  const d=document.createElement('div');d.className='done';
+  d.innerHTML=`<div style="font-size:48px">${pct>=90?'🏆':pct>=70?'🎉':pct>=50?'💪':'📚'}</div>
+  <h2>Fertig!</h2>
+  <div style="font-family:'DM Serif Display',serif;font-size:56px;line-height:1">${pct}%</div>
+  <div class="dgrid">
+    <div class="dg"><div class="dg-n" style="color:var(--green)">${correct}</div><div class="dg-l">Richtig</div></div>
+    <div class="dg"><div class="dg-n" style="color:var(--red)">${wrong}</div><div class="dg-l">Falsch</div></div>
+    <div class="dg"><div class="dg-n" style="color:var(--ct)">${points}</div><div class="dg-l">Punkte</div></div>
+  </div>
+  <button class="restart" onclick="location.reload()">Nochmal ↺</button>`;
+  document.querySelector('.footer').before(d);
+}
+
+restart();
+</script>
+</body>
+</html>

@@ -1,0 +1,356 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<title>Fragen mit Präpositionen — Lernkarten</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=DM+Sans:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --bg:#F7F4EF;--surface:#fff;--text:#1C1917;--muted:#78716C;--hint:#A8A29E;
+  --c:#D85A30;--cl:#FAECE7;--ct:#7C2D12;
+  --green:#1D9E75;--greenl:#E1F5EE;--greent:#0F6E56;
+  --red:#D85A30;--redl:#FAECE7;--redt:#993C1D;
+  --person:#7C3AED;--personl:#EDE9FE;--persont:#5B21B6;--personb:#C4B5FD;
+  --sache:#0891B2;--sachel:#E0F2FE;--sachet:#0C4A6E;--sacheb:#7DD3FC;
+  --border:rgba(28,25,23,0.1);--bm:rgba(28,25,23,0.15);
+  --r:16px;--rs:12px;--sh:0 2px 12px rgba(28,25,23,0.07);--shc:0 8px 32px rgba(28,25,23,0.12)
+}
+html,body{min-height:100%;background:var(--bg);font-family:'DM Sans',sans-serif;color:var(--text);-webkit-font-smoothing:antialiased}
+body{display:flex;flex-direction:column;align-items:center;padding-bottom:32px}
+
+.hdr{width:100%;max-width:560px;padding:20px 20px 0;display:flex;justify-content:space-between;align-items:flex-start}
+.title{font-family:'DM Serif Display',serif;font-size:clamp(18px,5vw,24px)}
+.subtitle{font-size:12px;color:var(--muted);margin-top:3px}
+.counter{font-size:13px;color:var(--muted);margin-top:4px;white-space:nowrap}
+
+.prog-wrap{width:100%;max-width:560px;padding:10px 20px 0}
+.prog-bar{height:4px;background:var(--border);border-radius:4px;overflow:hidden}
+.prog-fill{height:100%;background:var(--c);border-radius:4px;transition:width .4s}
+
+/* filters */
+.filters{width:100%;max-width:560px;padding:10px 20px 0;overflow-x:auto;scrollbar-width:none}
+.filters::-webkit-scrollbar{display:none}
+.filter-row{display:flex;gap:7px;width:max-content}
+.fb{padding:5px 13px;border-radius:20px;border:1px solid var(--bm);font-family:'DM Sans',sans-serif;font-size:12px;font-weight:500;cursor:pointer;background:var(--surface);color:var(--muted);transition:all .15s;-webkit-tap-highlight-color:transparent;white-space:nowrap}
+.fb.all.active{background:var(--text);color:var(--bg);border-color:var(--text)}
+.fb.sache.active{background:var(--sachel);color:var(--sachet);border-color:var(--sache)}
+.fb.person.active{background:var(--personl);color:var(--persont);border-color:var(--person)}
+
+/* card */
+.card-area{width:100%;max-width:560px;padding:12px 20px 0;display:flex;flex-direction:column}
+.card-wrap{perspective:1000px;height:clamp(250px,55vw,310px);cursor:pointer;-webkit-tap-highlight-color:transparent;user-select:none}
+.card{width:100%;height:100%;position:relative;transform-style:preserve-3d;transition:transform .52s cubic-bezier(.4,0,.2,1)}
+.card.flipped{transform:rotateY(180deg)}
+.face{position:absolute;inset:0;backface-visibility:hidden;-webkit-backface-visibility:hidden;border-radius:var(--r);background:var(--surface);box-shadow:var(--shc);display:flex;flex-direction:column;align-items:center;justify-content:center;padding:20px 24px;gap:8px;border:1px solid var(--border)}
+.back{transform:rotateY(180deg)}
+
+/* FRONT */
+.f-label{font-size:10px;font-weight:600;letter-spacing:1.2px;text-transform:uppercase;color:var(--hint)}
+.f-verb{font-family:'DM Serif Display',serif;font-size:clamp(22px,6vw,32px);color:var(--text);line-height:1.2;text-align:center}
+.f-prep-badge{padding:6px 16px;border-radius:20px;font-family:'DM Serif Display',serif;font-size:16px}
+.f-ar{font-size:13px;color:var(--muted);direction:rtl;text-align:center}
+.f-hint{font-size:11px;color:var(--hint);margin-top:2px;text-align:center}
+
+/* BACK */
+.back-grid{width:100%;display:flex;flex-direction:column;gap:10px}
+.back-row{border-radius:var(--rs);padding:10px 14px;display:flex;flex-direction:column;gap:4px;border:1px solid}
+.back-row.sache-row{background:var(--sachel);border-color:var(--sacheb)}
+.back-row.person-row{background:var(--personl);border-color:var(--personb)}
+.br-label{font-size:10px;font-weight:600;letter-spacing:.8px;text-transform:uppercase;display:flex;align-items:center;gap:5px}
+.sache-row .br-label{color:var(--sachet)}
+.person-row .br-label{color:var(--persont)}
+.br-frage{font-family:'DM Serif Display',serif;font-size:clamp(16px,4.5vw,20px)}
+.sache-row .br-frage{color:var(--sachet)}
+.person-row .br-frage{color:var(--persont)}
+.br-ex{font-size:12px;font-style:italic}
+.sache-row .br-ex{color:var(--sachet)}
+.person-row .br-ex{color:var(--persont)}
+.br-dar{font-size:11px;font-weight:600;padding:2px 8px;border-radius:20px;display:inline-block;margin-top:2px}
+.sache-row .br-dar{background:rgba(8,145,178,.15);color:var(--sachet)}
+.person-row .br-dar{background:rgba(124,58,237,.15);color:var(--persont)}
+
+.btns{display:flex;gap:10px;margin-top:12px}
+.btn{flex:1;padding:13px;border-radius:var(--rs);border:1px solid var(--bm);background:var(--surface);color:var(--text);font-family:'DM Sans',sans-serif;font-size:14px;font-weight:500;cursor:pointer;transition:all .15s;-webkit-tap-highlight-color:transparent;box-shadow:var(--sh)}
+.btn:active{transform:scale(.97)}
+.btn.wrong{border-color:var(--red);color:var(--redt);background:var(--redl)}
+.btn.correct{border-color:var(--green);color:var(--greent);background:var(--greenl)}
+.btn.flip{background:var(--text);color:var(--bg);border-color:var(--text)}
+
+.stats{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin-top:12px}
+.stat{background:var(--surface);border:1px solid var(--border);border-radius:var(--rs);padding:12px 8px;text-align:center;box-shadow:var(--sh)}
+.stat-n{font-family:'DM Serif Display',serif;font-size:24px;line-height:1}
+.stat-l{font-size:10px;font-weight:600;letter-spacing:.5px;text-transform:uppercase;color:var(--hint);margin-top:3px}
+
+.done{text-align:center;padding:40px 20px;display:flex;flex-direction:column;align-items:center;gap:12px}
+.done h2{font-family:'DM Serif Display',serif;font-size:28px}
+.restart{padding:13px 32px;border-radius:var(--rs);background:var(--text);color:var(--bg);font-family:'DM Sans',sans-serif;font-size:15px;font-weight:500;border:none;cursor:pointer}
+.footer{padding:20px 0 8px;font-size:11px;font-weight:600;letter-spacing:2px;text-transform:uppercase;color:var(--hint);text-align:center;width:100%}
+</style>
+</head>
+<body>
+<div class="hdr">
+  <div><div class="title">Fragen mit Präpositionen</div><div class="subtitle">Verb → Fragewort (Sache & Person)</div></div>
+  <span class="counter" id="counter">1 / 35</span>
+</div>
+<div class="prog-wrap">
+  <div class="prog-bar"><div class="prog-fill" id="prog" style="width:0%"></div></div>
+</div>
+<div class="filters">
+  <div class="filter-row">
+    <button class="fb all active" onclick="setFilter('all',this)">Alle</button>
+    <button class="fb sache" onclick="setFilter('sache',this)">💡 Sache (wo(r)-)</button>
+    <button class="fb person" onclick="setFilter('person',this)">👤 Person (wen/wem)</button>
+  </div>
+</div>
+<div class="card-area" id="card-area">
+  <div class="card-wrap" onclick="flipCard()">
+    <div class="card" id="card">
+      <div class="face front">
+        <div class="f-label">Verb + Präposition</div>
+        <div class="f-verb" id="f-verb">warten auf</div>
+        <div class="f-prep-badge" id="f-badge">auf + Akk</div>
+        <div class="f-ar" id="f-ar">ينتظر</div>
+        <div class="f-hint">Wie fragt man nach Person & Sache?</div>
+      </div>
+      <div class="face back">
+        <div class="back-grid" id="back-grid"></div>
+      </div>
+    </div>
+  </div>
+  <div class="btns" id="btns" style="display:none">
+    <button class="btn wrong" onclick="answer(false)">✗ nochmal</button>
+    <button class="btn correct" onclick="answer(true)">✓ gewusst</button>
+  </div>
+  <div class="btns" id="flipbtn">
+    <button class="btn flip" onclick="flipCard()">Antwort zeigen ↩</button>
+  </div>
+  <div class="stats">
+    <div class="stat"><div class="stat-n" id="s-c" style="color:var(--green)">0</div><div class="stat-l">Gewusst</div></div>
+    <div class="stat"><div class="stat-n" id="s-w" style="color:var(--red)">0</div><div class="stat-l">Nochmal</div></div>
+    <div class="stat"><div class="stat-n" id="s-l">35</div><div class="stat-l">Verbleibend</div></div>
+  </div>
+</div>
+<div class="footer">by ❤️ Mostafa Toumi</div>
+<script>
+const PREP_STYLE={
+  auf:   {bg:"#FAECE7",color:"#7C2D12",label:"auf + Akk"},
+  an:    {bg:"#E0F2FE",color:"#0C4A6E",label:"an + Akk/Dat"},
+  über:  {bg:"#FEF3C7",color:"#92400E",label:"über + Akk"},
+  für:   {bg:"#EDE9FE",color:"#5B21B6",label:"für + Akk"},
+  mit:   {bg:"#FCE7F3",color:"#831843",label:"mit + Dat"},
+  von:   {bg:"#F3F4F6",color:"#1F2937",label:"von + Dat"},
+  vor:   {bg:"#FEF2F2",color:"#7F1D1D",label:"vor + Dat"},
+  um:    {bg:"#E1F5EE",color:"#0F6E56",label:"um + Akk"},
+};
+
+// Each card = one verb. Back shows BOTH sache and person questions + dar- answer.
+const ALL=[
+  {v:"warten auf",       p:"auf", ar:"ينتظر",
+   sQ:"Worauf wartest du?",     sA:"→ Darauf. (auf den Bus)",      sAr:"على ماذا تنتظر؟",
+   pQ:"Auf wen wartest du?",    pA:"→ Auf ihn / meinen Freund.",   pAr:"على من تنتظر؟"},
+  {v:"hoffen auf",       p:"auf", ar:"يأمل في",
+   sQ:"Worauf hoffst du?",      sA:"→ Darauf. (auf gutes Wetter)", sAr:"على ماذا تأمل؟",
+   pQ:"Auf wen hoffst du?",     pA:"→ Auf meinen Chef.",           pAr:"على من تأمل؟"},
+  {v:"sich freuen auf",  p:"auf", ar:"يتطلع إلى",
+   sQ:"Worauf freust du dich?", sA:"→ Darauf. (auf den Urlaub)",   sAr:"على ماذا تتطلع؟",
+   pQ:"Auf wen freust du dich?",pA:"→ Auf ihn.",                   pAr:"على من تتطلع؟"},
+  {v:"achten auf",       p:"auf", ar:"ينتبه إلى",
+   sQ:"Worauf achtest du?",     sA:"→ Darauf. (auf die Qualität)", sAr:"على ماذا تنتبه؟",
+   pQ:"Auf wen achtest du?",    pA:"→ Auf die Kinder.",            pAr:"على من تنتبه؟"},
+  {v:"sich vorbereiten auf",p:"auf",ar:"يستعد لـ",
+   sQ:"Worauf bereitest du dich vor?",sA:"→ Darauf. (auf die Prüfung)",sAr:"على ماذا تستعد؟",
+   pQ:"Auf wen bereitest du dich vor?",pA:"→ (selten, kontextabhängig)",pAr:"—"},
+  {v:"reagieren auf",    p:"auf", ar:"يرد على",
+   sQ:"Worauf reagierst du?",   sA:"→ Darauf. (auf seine Aussage)",sAr:"على ماذا تتفاعل؟",
+   pQ:"Auf wen reagierst du?",  pA:"→ Auf ihn.",                   pAr:"على من تتفاعل؟"},
+  {v:"antworten auf",    p:"auf", ar:"يجيب على",
+   sQ:"Worauf antwortest du?",  sA:"→ Darauf. (auf die Frage)",    sAr:"على ماذا تجيب؟",
+   pQ:"Auf wen antwortest du?", pA:"→ Auf ihn.",                   pAr:"على من تجيب؟"},
+  {v:"denken an",        p:"an",  ar:"يفكر في",
+   sQ:"Woran denkst du?",       sA:"→ Daran. (an die Arbeit)",     sAr:"في ماذا تفكر؟",
+   pQ:"An wen denkst du?",      pA:"→ An ihn / meine Familie.",    pAr:"في من تفكر؟"},
+  {v:"sich erinnern an", p:"an",  ar:"يتذكر",
+   sQ:"Woran erinnerst du dich?",sA:"→ Daran. (an den Urlaub)",    sAr:"بماذا تتذكر؟",
+   pQ:"An wen erinnerst du dich?",pA:"→ An ihn.",                  pAr:"من تتذكر؟"},
+  {v:"sich gewöhnen an", p:"an",  ar:"يعتاد على",
+   sQ:"Woran gewöhnst du dich?",sA:"→ Daran. (an das Klima)",      sAr:"على ماذا تعتاد؟",
+   pQ:"An wen gewöhnst du dich?",pA:"→ An ihn.",                   pAr:"على من تعتاد؟"},
+  {v:"glauben an",       p:"an",  ar:"يؤمن بـ",
+   sQ:"Woran glaubst du?",      sA:"→ Daran. (an den Erfolg)",     sAr:"بماذا تؤمن؟",
+   pQ:"An wen glaubst du?",     pA:"→ An ihn / an Gott.",          pAr:"بمن تؤمن؟"},
+  {v:"teilnehmen an",    p:"an",  ar:"يشارك في",
+   sQ:"Woran nimmst du teil?",  sA:"→ Daran. (am Kurs)",           sAr:"في ماذا تشارك؟",
+   pQ:"—",                      pA:"(meistens Sache)",             pAr:"—"},
+  {v:"zweifeln an",      p:"an",  ar:"يشك في",
+   sQ:"Woran zweifelst du?",    sA:"→ Daran. (an der Entscheidung)",sAr:"في ماذا تشك؟",
+   pQ:"An wem zweifelst du?",   pA:"→ An ihm.",                    pAr:"في من تشك؟"},
+  {v:"sprechen über",    p:"über",ar:"يتحدث عن",
+   sQ:"Worüber sprecht ihr?",   sA:"→ Darüber. (über das Projekt)",sAr:"عن ماذا تتحدثون؟",
+   pQ:"Über wen sprecht ihr?",  pA:"→ Über ihn / Maria.",          pAr:"عن من تتحدثون؟"},
+  {v:"nachdenken über",  p:"über",ar:"يفكر بعمق في",
+   sQ:"Worüber denkst du nach?",sA:"→ Darüber. (über die Zukunft)",sAr:"في ماذا تفكر؟",
+   pQ:"Über wen denkst du nach?",pA:"→ Über ihn.",                 pAr:"في من تفكر؟"},
+  {v:"sich ärgern über", p:"über",ar:"يغضب من",
+   sQ:"Worüber ärgerst du dich?",sA:"→ Darüber. (über den Fehler)",sAr:"من ماذا تغضب؟",
+   pQ:"Über wen ärgerst du dich?",pA:"→ Über ihn.",                pAr:"على من تغضب؟"},
+  {v:"sich freuen über", p:"über",ar:"يفرح بـ",
+   sQ:"Worüber freust du dich?",sA:"→ Darüber. (über das Geschenk)",sAr:"بماذا تفرح؟",
+   pQ:"Über wen freust du dich?",pA:"→ Über ihn.",                 pAr:"على من تفرح؟"},
+  {v:"lachen über",      p:"über",ar:"يضحك على",
+   sQ:"Worüber lacht ihr?",     sA:"→ Darüber. (über den Witz)",   sAr:"على ماذا تضحكون؟",
+   pQ:"Über wen lacht ihr?",    pA:"→ Über ihn.",                  pAr:"على من تضحكون؟"},
+  {v:"sich beschweren über",p:"über",ar:"يشتكي من",
+   sQ:"Worüber beschwert sie sich?",sA:"→ Darüber. (über den Service)",sAr:"من ماذا تشتكي؟",
+   pQ:"Über wen beschwert sie sich?",pA:"→ Über ihn.",             pAr:"على من تشتكي؟"},
+  {v:"sich interessieren für",p:"für",ar:"يهتم بـ",
+   sQ:"Wofür interessierst du dich?",sA:"→ Dafür. (für Musik)",    sAr:"بماذا تهتم؟",
+   pQ:"Für wen interessierst du dich?",pA:"→ Für ihn.",             pAr:"بمن تهتم؟"},
+  {v:"danken für",       p:"für", ar:"يشكر على",
+   sQ:"Wofür dankst du ihm?",   sA:"→ Dafür. (für die Hilfe)",     sAr:"على ماذا تشكره؟",
+   pQ:"Für wen kaufst du das?", pA:"→ Für meine Mutter.",           pAr:"لمن تشتري ذلك؟"},
+  {v:"sich entscheiden für",p:"für",ar:"يختار / يقرر",
+   sQ:"Wofür entscheidest du dich?",sA:"→ Dafür. (für den Job)",   sAr:"ماذا تختار؟",
+   pQ:"Für wen entscheidest du dich?",pA:"→ Für ihn.",             pAr:"لمن تقرر؟"},
+  {v:"zahlen für",       p:"für", ar:"يدفع ثمن",
+   sQ:"Wofür zahlst du?",       sA:"→ Dafür. (für das Essen)",     sAr:"ثمن ماذا تدفع؟",
+   pQ:"Für wen zahlst du?",     pA:"→ Für ihn.",                   pAr:"لمن تدفع؟"},
+  {v:"sprechen mit",     p:"mit", ar:"يتحدث مع",
+   sQ:"Womit fährst du? (Mittel)",sA:"→ Damit. (mit dem Bus)",      sAr:"بماذا تسافر؟",
+   pQ:"Mit wem sprichst du?",   pA:"→ Mit ihm / meinem Chef.",      pAr:"مع من تتحدث؟"},
+  {v:"sich beschäftigen mit",p:"mit",ar:"ينشغل بـ",
+   sQ:"Womit beschäftigst du dich?",sA:"→ Damit. (mit Musik)",      sAr:"بماذا تنشغل؟",
+   pQ:"Mit wem beschäftigst du dich?",pA:"→ Mit ihm.",              pAr:"مع من تنشغل؟"},
+  {v:"sich streiten mit",p:"mit", ar:"يتشاجر مع",
+   sQ:"Womit streitet er sich? (Mittel)",sA:"→ Damit.",             sAr:"بماذا يتشاجر؟",
+   pQ:"Mit wem streitet er sich?",pA:"→ Mit ihr.",                  pAr:"مع من يتشاجر؟"},
+  {v:"telefonieren mit", p:"mit", ar:"يتحدث هاتفياً مع",
+   sQ:"Womit telefonierst du? (Gerät)",sA:"→ Damit. (mit dem Handy)",sAr:"بماذا تتحدث؟",
+   pQ:"Mit wem telefonierst du?",pA:"→ Mit meiner Mutter.",         pAr:"مع من تتحدث هاتفياً؟"},
+  {v:"träumen von",      p:"von", ar:"يحلم بـ",
+   sQ:"Wovon träumst du?",      sA:"→ Davon. (von einer Reise)",    sAr:"بماذا تحلم؟",
+   pQ:"Von wem träumst du?",    pA:"→ Von ihr.",                    pAr:"عمَّن تحلم؟"},
+  {v:"erzählen von",     p:"von", ar:"يحكي عن",
+   sQ:"Wovon erzählt sie?",     sA:"→ Davon. (von der Reise)",      sAr:"عن ماذا تحكي؟",
+   pQ:"Von wem erzählt sie?",   pA:"→ Von ihm.",                    pAr:"عمَّن تحكي؟"},
+  {v:"abhängen von",     p:"von", ar:"يتوقف على",
+   sQ:"Wovon hängt das ab?",    sA:"→ Davon. (von der Zeit)",       sAr:"على ماذا يتوقف؟",
+   pQ:"Von wem hängt das ab?",  pA:"→ Von ihm.",                    pAr:"على من يتوقف؟"},
+  {v:"sich fürchten vor",p:"vor", ar:"يخاف من",
+   sQ:"Wovor fürchtest du dich?",sA:"→ Davor. (vor dem Examen)",    sAr:"من ماذا تخاف؟",
+   pQ:"Vor wem fürchtest du dich?",pA:"→ Vor ihm.",                 pAr:"من تخاف؟"},
+  {v:"warnen vor",       p:"vor", ar:"يحذر من",
+   sQ:"Wovor warnt er uns?",    sA:"→ Davor. (vor der Gefahr)",     sAr:"من ماذا يحذرنا؟",
+   pQ:"Vor wem warnt er uns?",  pA:"→ Vor ihm.",                    pAr:"من يحذرنا؟"},
+  {v:"bitten um",        p:"um",  ar:"يطلب",
+   sQ:"Worum bittet er?",       sA:"→ Darum. (um Hilfe)",           sAr:"ماذا يطلب؟",
+   pQ:"Um wen bittet er sich?", pA:"→ Um wen = für wen er kämpft", pAr:"—"},
+  {v:"es geht um",       p:"um",  ar:"يتعلق بـ",
+   sQ:"Worum geht es?",         sA:"→ Darum. (um das Geld)",        sAr:"عمَّ يدور الحديث؟",
+   pQ:"Um wen geht es?",        pA:"→ Um meinen Bruder.",           pAr:"عمَّن يدور الحديث؟"},
+  {v:"sich kümmern um",  p:"um",  ar:"يعتني بـ",
+   sQ:"Worum kümmert er sich?", sA:"→ Darum. (um das Problem)",     sAr:"بماذا يعتني؟",
+   pQ:"Um wen kümmert er sich?",pA:"→ Um die Kinder.",              pAr:"بمن يعتني؟"},
+];
+
+let deck=[],idx=0,correct=0,wrong=0,flipped=false,filter='all';
+
+function setFilter(f,btn){
+  filter=f;
+  document.querySelectorAll('.fb').forEach(b=>b.classList.remove('active'));
+  btn.classList.add('active');
+  resetDeck();
+}
+
+function resetDeck(){
+  deck=[...ALL].sort(()=>Math.random()-.5);
+  idx=0;correct=0;wrong=0;flipped=false;
+  document.getElementById('card').classList.remove('flipped');
+  document.getElementById('btns').style.display='none';
+  document.getElementById('flipbtn').style.display='';
+  updateStats();showCard();
+}
+
+function showCard(){
+  if(idx>=deck.length){showDone();return;}
+  const c=deck[idx];
+  const ps=PREP_STYLE[c.p]||{bg:'#F3F4F6',color:'#374151',label:c.p};
+
+  document.getElementById('f-verb').textContent=c.v;
+  document.getElementById('f-badge').textContent=ps.label;
+  document.getElementById('f-badge').style.cssText=`background:${ps.bg};color:${ps.color}`;
+  document.getElementById('f-ar').textContent=c.ar;
+
+  // Build back depending on filter
+  const bg=document.getElementById('back-grid');
+  bg.innerHTML='';
+
+  const showSache = (filter==='all'||filter==='sache');
+  const showPerson = (filter==='all'||filter==='person');
+
+  if(showSache){
+    const sr=document.createElement('div');sr.className='back-row sache-row';
+    sr.innerHTML=`
+      <div class="br-label">💡 Sache — wo(r) + ${c.p}</div>
+      <div class="br-frage">${c.sQ}</div>
+      <div class="br-ex">${c.sA}</div>
+      ${c.sAr!=='—'?`<div class="br-dar">${c.sAr}</div>`:''}`;
+    bg.appendChild(sr);
+  }
+  if(showPerson&&c.pQ!=='—'){
+    const pr=document.createElement('div');pr.className='back-row person-row';
+    pr.innerHTML=`
+      <div class="br-label">👤 Person — ${c.p} + wen/wem</div>
+      <div class="br-frage">${c.pQ}</div>
+      <div class="br-ex">${c.pA}</div>
+      ${c.pAr!=='—'?`<div class="br-dar">${c.pAr}</div>`:''}`;
+    bg.appendChild(pr);
+  }
+
+  const total=deck.length;
+  document.getElementById('counter').textContent=(idx+1)+' / '+total;
+  document.getElementById('prog').style.width=(idx/total*100)+'%';
+  flipped=false;
+  document.getElementById('card').classList.remove('flipped');
+  document.getElementById('btns').style.display='none';
+  document.getElementById('flipbtn').style.display='';
+}
+
+function flipCard(){
+  if(flipped)return;flipped=true;
+  document.getElementById('card').classList.add('flipped');
+  setTimeout(()=>{
+    document.getElementById('btns').style.display='';
+    document.getElementById('flipbtn').style.display='none';
+  },260);
+}
+
+function answer(ok){
+  if(ok)correct++;
+  else{wrong++;deck.push(deck[idx]);}
+  idx++;updateStats();showCard();
+}
+
+function updateStats(){
+  document.getElementById('s-c').textContent=correct;
+  document.getElementById('s-w').textContent=wrong;
+  document.getElementById('s-l').textContent=Math.max(0,deck.length-idx);
+}
+
+function showDone(){
+  const pct=Math.round(correct/(correct+wrong)*100)||0;
+  document.getElementById('card-area').innerHTML=`
+    <div class="done">
+      <div style="font-size:48px">${pct>=80?'🎉':pct>=50?'💪':'📚'}</div>
+      <h2>Geschafft!</h2>
+      <p style="color:var(--muted);font-size:14px">${correct} gewusst · ${wrong} nochmal · ${pct}%</p>
+      <button class="restart" onclick="location.reload()">Nochmal ↺</button>
+    </div>`;
+}
+
+resetDeck();
+</script>
+</body>
+</html>

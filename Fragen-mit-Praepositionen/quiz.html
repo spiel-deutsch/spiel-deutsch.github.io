@@ -1,0 +1,289 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<title>Fragen mit Präpositionen — Lückentext</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=DM+Sans:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --bg:#F7F4EF;--surface:#fff;--text:#1C1917;--muted:#78716C;--hint:#A8A29E;
+  --c:#D85A30;--cl:#FAECE7;--ct:#7C2D12;--cb:#FDBA74;
+  --green:#1D9E75;--greenl:#E1F5EE;--greent:#0F6E56;
+  --red:#D85A30;--redl:#FAECE7;--redt:#7C2D12;
+  --amber:#B45309;--amberl:#FEF3C7;
+  --border:rgba(28,25,23,0.1);--bm:rgba(28,25,23,0.15);
+  --r:16px;--rs:12px;--sh:0 2px 12px rgba(28,25,23,0.07);--shc:0 8px 32px rgba(28,25,23,0.12)
+}
+html,body{min-height:100%;background:var(--bg);font-family:'DM Sans',sans-serif;color:var(--text);-webkit-font-smoothing:antialiased}
+body{display:flex;flex-direction:column;align-items:center;padding-bottom:32px}
+.hdr{width:100%;max-width:600px;padding:20px 20px 0}
+.title{font-family:'DM Serif Display',serif;font-size:clamp(18px,5vw,24px)}
+.subtitle{font-size:12px;color:var(--muted);margin-top:3px}
+.prog-wrap{width:100%;max-width:600px;padding:12px 20px 0}
+.prog-meta{display:flex;justify-content:space-between;font-size:12px;color:var(--muted);margin-bottom:6px}
+.prog-bar{height:4px;background:var(--border);border-radius:4px;overflow:hidden}
+.prog-fill{height:100%;background:var(--c);border-radius:4px;transition:width .4s}
+.scores{width:100%;max-width:600px;padding:10px 20px 0;display:flex;gap:10px}
+.sc{flex:1;background:var(--surface);border:1px solid var(--border);border-radius:var(--rs);padding:10px 8px;text-align:center;box-shadow:var(--sh)}
+.sc-n{font-family:'DM Serif Display',serif;font-size:22px;line-height:1}
+.sc-l{font-size:10px;font-weight:600;letter-spacing:.5px;text-transform:uppercase;color:var(--hint);margin-top:3px}
+
+/* Question card */
+.qwrap{width:100%;max-width:600px;padding:12px 20px 0}
+.qcard{background:var(--surface);border:1px solid var(--border);border-radius:var(--r);box-shadow:var(--shc);padding:clamp(18px,5vw,26px) 22px;display:flex;flex-direction:column;gap:12px;position:relative;overflow:hidden}
+.qcard::after{content:'';position:absolute;inset:0;border-radius:var(--r);opacity:0;pointer-events:none}
+.qcard.fok::after{background:var(--greenl);animation:fl .35s ease forwards}
+.qcard.fno::after{background:var(--redl);animation:fl .35s ease forwards}
+@keyframes fl{0%{opacity:.7}100%{opacity:0}}
+.qcard.shake{animation:sk .4s cubic-bezier(.36,.07,.19,.97)}
+@keyframes sk{10%,90%{transform:translateX(-3px)}20%,80%{transform:translateX(4px)}30%,50%,70%{transform:translateX(-5px)}40%,60%{transform:translateX(5px)}}
+.q-label{font-size:10px;font-weight:600;letter-spacing:1.2px;text-transform:uppercase;color:var(--hint)}
+/* Verb badge */
+.verb-badge{display:inline-flex;align-items:center;gap:6px;padding:5px 14px;border-radius:20px;font-family:'DM Serif Display',serif;font-size:15px;font-weight:400;margin-bottom:2px}
+/* Context label: Person or Sache */
+.ctx-badge{display:inline-flex;align-items:center;gap:5px;padding:3px 10px;border-radius:20px;font-size:11px;font-weight:600;letter-spacing:.5px;text-transform:uppercase}
+.ctx-badge.person{background:#E6F1FB;color:#0C447C}
+.ctx-badge.sache{background:#E0F2FE;color:#0C4A6E}
+/* Sentence with blank */
+.sentence-area{font-family:'DM Serif Display',serif;font-size:clamp(20px,5.5vw,28px);color:var(--text);line-height:1.5;display:flex;flex-wrap:wrap;align-items:center;gap:6px}
+.q-blank{display:inline-block;min-width:110px;border-bottom:3px solid var(--c);text-align:center;padding:0 6px;color:var(--ct);transition:all .2s}
+.q-blank.filled-ok{border-radius:8px;padding:2px 10px;background:var(--greenl);border-color:var(--green);color:var(--greent)}
+.q-blank.filled-no{border-radius:8px;padding:2px 10px;background:var(--redl);border-color:var(--red);color:var(--redt)}
+.q-ar{font-size:13px;color:var(--muted);direction:rtl}
+/* Options grid */
+.opts-lbl{width:100%;max-width:600px;padding:10px 20px 4px;font-size:11px;font-weight:600;letter-spacing:1px;text-transform:uppercase;color:var(--hint)}
+.opts{width:100%;max-width:600px;padding:0 20px;display:grid;grid-template-columns:repeat(2,1fr);gap:9px}
+.opt{background:var(--surface);border:1.5px solid var(--bm);border-radius:var(--rs);padding:clamp(11px,3vw,15px) 10px;font-family:'DM Serif Display',serif;font-size:clamp(15px,4.5vw,20px);color:var(--text);cursor:pointer;text-align:center;transition:all .12s;box-shadow:var(--sh);-webkit-tap-highlight-color:transparent}
+.opt:active:not([disabled]){transform:scale(.96)}
+.opt.ok{background:var(--greenl);border-color:var(--green);color:var(--greent)}
+.opt.no{background:var(--redl);border-color:var(--red);color:var(--redt)}
+.opt.dim{opacity:.28}
+.opt[disabled]{cursor:default}
+/* Feedback */
+.rule-hint{width:100%;max-width:600px;padding:6px 20px 0;min-height:36px}
+.rh-box{background:var(--bg);border:1px solid var(--border);border-radius:var(--rs);padding:10px 16px;font-size:13px;color:var(--muted);line-height:1.5}
+.rh-box strong{color:var(--text);font-weight:600}
+.fbrow{width:100%;max-width:600px;padding:8px 20px 0;display:flex;align-items:center;justify-content:space-between;gap:12px;min-height:48px}
+.fbmsg{font-size:14px;font-weight:500;color:var(--muted);flex:1;line-height:1.5}
+.fbmsg.ok{color:var(--greent)}
+.fbmsg.no{color:var(--redt)}
+.nxt{padding:10px 22px;border-radius:var(--rs);background:var(--text);color:var(--bg);border:none;font-family:'DM Sans',sans-serif;font-size:14px;font-weight:500;cursor:pointer;white-space:nowrap}
+/* Done */
+.done-scr{width:100%;max-width:600px;padding:40px 20px;display:flex;flex-direction:column;align-items:center;text-align:center;gap:12px}
+.done-scr h2{font-family:'DM Serif Display',serif;font-size:30px}
+.dgrid{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;width:100%;margin-top:8px}
+.dg{background:var(--surface);border:1px solid var(--border);border-radius:var(--rs);padding:14px 8px;text-align:center;box-shadow:var(--sh)}
+.dg-n{font-family:'DM Serif Display',serif;font-size:26px;line-height:1}
+.dg-l{font-size:10px;font-weight:600;text-transform:uppercase;letter-spacing:.5px;color:var(--hint);margin-top:4px}
+.restart{padding:13px 32px;border-radius:var(--rs);background:var(--text);color:var(--bg);font-family:'DM Sans',sans-serif;font-size:15px;font-weight:500;border:none;cursor:pointer;margin-top:4px}
+.footer{padding:20px 0 8px;font-size:11px;font-weight:600;letter-spacing:2px;text-transform:uppercase;color:var(--hint);text-align:center;width:100%}
+</style>
+</head>
+<body>
+<div class="hdr">
+  <div class="title">Fragen mit Präpositionen</div>
+  <div class="subtitle">Wähle das richtige Fragewort für den Lückentext</div>
+</div>
+<div class="prog-wrap">
+  <div class="prog-meta"><span id="counter">Frage 1 / 40</span><span id="pct">0%</span></div>
+  <div class="prog-bar"><div class="prog-fill" id="prog" style="width:0%"></div></div>
+</div>
+<div class="scores">
+  <div class="sc"><div class="sc-n" id="sc-c" style="color:var(--green)">0</div><div class="sc-l">Richtig</div></div>
+  <div class="sc"><div class="sc-n" id="sc-w" style="color:var(--red)">0</div><div class="sc-l">Falsch</div></div>
+  <div class="sc"><div class="sc-n" id="sc-s" style="color:var(--amber)">0</div><div class="sc-l">Streak</div></div>
+</div>
+<div class="qwrap">
+  <div class="qcard" id="qcard">
+    <div class="q-label">Ergänze das Fragewort</div>
+    <div style="display:flex;gap:8px;flex-wrap:wrap;align-items:center">
+      <span class="verb-badge" id="verb-badge">warten auf</span>
+      <span class="ctx-badge" id="ctx-badge">Sache</span>
+    </div>
+    <div class="sentence-area" id="qsentence"></div>
+    <div class="q-ar" id="qar"></div>
+  </div>
+</div>
+<div class="opts-lbl">Fragewort wählen:</div>
+<div class="opts" id="opts"></div>
+<div class="rule-hint" id="rule-hint"></div>
+<div class="fbrow" id="fbrow"><div class="fbmsg" id="fbmsg"></div></div>
+<div class="footer">by ❤️ Mostafa Toumi</div>
+<script>
+const PREP_COLORS={
+  "warten auf":    {bg:"#FAECE7",color:"#7C2D12"},
+  "hoffen auf":    {bg:"#FAECE7",color:"#7C2D12"},
+  "sich freuen auf":{bg:"#FAECE7",color:"#7C2D12"},
+  "achten auf":    {bg:"#FAECE7",color:"#7C2D12"},
+  "denken an":     {bg:"#E0F2FE",color:"#0C4A6E"},
+  "sich erinnern an":{bg:"#E0F2FE",color:"#0C4A6E"},
+  "sich gewöhnen an":{bg:"#E0F2FE",color:"#0C4A6E"},
+  "sprechen über": {bg:"#FEF3C7",color:"#92400E"},
+  "sich ärgern über":{bg:"#FEF3C7",color:"#92400E"},
+  "sich freuen über":{bg:"#FEF3C7",color:"#92400E"},
+  "lachen über":   {bg:"#FEF3C7",color:"#92400E"},
+  "sich interessieren für":{bg:"#EDE9FE",color:"#5B21B6"},
+  "danken für":    {bg:"#EDE9FE",color:"#5B21B6"},
+  "zahlen für":    {bg:"#EDE9FE",color:"#5B21B6"},
+  "sprechen mit":  {bg:"#FCE7F3",color:"#831843"},
+  "telefonieren mit":{bg:"#FCE7F3",color:"#831843"},
+  "sich beschäftigen mit":{bg:"#FCE7F3",color:"#831843"},
+  "träumen von":   {bg:"#F3F4F6",color:"#1F2937"},
+  "erzählen von":  {bg:"#F3F4F6",color:"#1F2937"},
+  "abhängen von":  {bg:"#F3F4F6",color:"#1F2937"},
+  "sich fürchten vor":{bg:"#FEF2F2",color:"#7F1D1D"},
+  "warnen vor":    {bg:"#FEF2F2",color:"#7F1D1D"},
+  "bitten um":     {bg:"#E1F5EE",color:"#0F6E56"},
+  "es geht um":    {bg:"#E1F5EE",color:"#0F6E56"},
+  "sich kümmern um":{bg:"#E1F5EE",color:"#0F6E56"},
+};
+// {verb, ctx: 'sache'|'person', sentence (with ___), correct, wrong[3], ar, hint}
+const QS=[
+  // WORAUF
+  {verb:"warten auf",ctx:"sache",s:"___ wartest du?",correct:"Worauf",ar:"على ماذا تنتظر؟",wrong:["Auf wen","Wofür","Womit"],hint:"Sache + auf → worauf?"},
+  {verb:"warten auf",ctx:"person",s:"___ wartest du?",correct:"Auf wen",ar:"على من تنتظر؟",wrong:["Worauf","Wofür","Womit"],hint:"Person + auf → auf wen?"},
+  {verb:"hoffen auf",ctx:"sache",s:"___ hofft er?",correct:"Worauf",ar:"على ماذا يأمل؟",wrong:["Auf wen","Warum","Wovon"],hint:"Sache + auf → worauf?"},
+  {verb:"sich freuen auf",ctx:"sache",s:"___ freust du dich?",correct:"Worauf",ar:"على ماذا تتطلع؟",wrong:["Worüber","Auf wen","Wofür"],hint:"sich freuen auf (Zukunft) → worauf?"},
+  {verb:"sich vorbereiten auf",ctx:"sache",s:"___ bereitest du dich vor?",correct:"Worauf",ar:"لماذا تستعد؟",wrong:["Wofür","Womit","Woran"],hint:"sich vorbereiten auf → worauf?"},
+  // WORÜBER
+  {verb:"sprechen über",ctx:"sache",s:"___ sprecht ihr?",correct:"Worüber",ar:"عن ماذا تتحدثون؟",wrong:["Über wen","Wofür","Wovon"],hint:"Sache + über → worüber?"},
+  {verb:"sprechen über",ctx:"person",s:"___ sprecht ihr?",correct:"Über wen",ar:"عن من تتحدثون؟",wrong:["Worüber","Wofür","Wovon"],hint:"Person + über → über wen?"},
+  {verb:"sich ärgern über",ctx:"sache",s:"___ ärgerst du dich?",correct:"Worüber",ar:"من ماذا تغضب؟",wrong:["Über wen","Woran","Womit"],hint:"Sache + über → worüber?"},
+  {verb:"sich freuen über",ctx:"sache",s:"___ freust du dich?",correct:"Worüber",ar:"بماذا تفرح؟",wrong:["Worauf","Wofür","Über wen"],hint:"sich freuen über (Vergangenheit) → worüber?"},
+  {verb:"lachen über",ctx:"sache",s:"___ lacht ihr?",correct:"Worüber",ar:"على ماذا تضحكون؟",wrong:["Über wen","Wofür","Wovon"],hint:"Sache + über → worüber?"},
+  {verb:"sich wundern über",ctx:"sache",s:"___ wunderst du dich?",correct:"Worüber",ar:"من ماذا تتعجب؟",wrong:["Über wen","Woran","Womit"],hint:"Sache + über → worüber?"},
+  // WOFÜR
+  {verb:"sich interessieren für",ctx:"sache",s:"___ interessierst du dich?",correct:"Wofür",ar:"بماذا تهتم؟",wrong:["Für wen","Worauf","Womit"],hint:"Sache + für → wofür?"},
+  {verb:"sich interessieren für",ctx:"person",s:"___ interessierst du dich?",correct:"Für wen",ar:"من تهتم به؟",wrong:["Wofür","Worauf","Womit"],hint:"Person + für → für wen?"},
+  {verb:"danken für",ctx:"sache",s:"___ dankst du ihm?",correct:"Wofür",ar:"على ماذا تشكره؟",wrong:["Für wen","Worüber","Woran"],hint:"Sache + für → wofür?"},
+  {verb:"zahlen für",ctx:"sache",s:"___ zahlst du?",correct:"Wofür",ar:"ثمن ماذا تدفع؟",wrong:["Für wen","Womit","Worauf"],hint:"Sache + für → wofür?"},
+  {verb:"sich entscheiden für",ctx:"sache",s:"___ entscheidest du dich?",correct:"Wofür",ar:"ماذا تختار؟",wrong:["Für wen","Womit","Woran"],hint:"Sache + für → wofür?"},
+  // WOMIT
+  {verb:"sich beschäftigen mit",ctx:"sache",s:"___ beschäftigst du dich?",correct:"Womit",ar:"بماذا تنشغل؟",wrong:["Mit wem","Wofür","Worüber"],hint:"Sache + mit → womit?"},
+  {verb:"sich beschäftigen mit",ctx:"person",s:"___ beschäftigst du dich?",correct:"Mit wem",ar:"مع من تنشغل؟",wrong:["Womit","Wofür","Worüber"],hint:"Person + mit → mit wem?"},
+  {verb:"telefonieren mit",ctx:"person",s:"___ telefoniert sie?",correct:"Mit wem",ar:"مع من تتحدث هاتفياً؟",wrong:["Womit","Wofür","Worüber"],hint:"Person + mit → mit wem?"},
+  {verb:"sprechen mit",ctx:"person",s:"___ spricht er?",correct:"Mit wem",ar:"مع من يتحدث؟",wrong:["Womit","Worüber","Wofür"],hint:"Person + mit → mit wem?"},
+  // WORAN
+  {verb:"denken an",ctx:"sache",s:"___ denkst du?",correct:"Woran",ar:"في ماذا تفكر؟",wrong:["An wen","Worauf","Wofür"],hint:"Sache + an → woran?"},
+  {verb:"denken an",ctx:"person",s:"___ denkst du?",correct:"An wen",ar:"في من تفكر؟",wrong:["Woran","Worauf","Wofür"],hint:"Person + an → an wen?"},
+  {verb:"sich erinnern an",ctx:"sache",s:"___ erinnerst du dich?",correct:"Woran",ar:"بماذا تتذكر؟",wrong:["An wen","Worüber","Wofür"],hint:"Sache + an → woran?"},
+  {verb:"sich erinnern an",ctx:"person",s:"___ erinnerst du dich?",correct:"An wen",ar:"من تتذكر؟",wrong:["Woran","Worüber","Wofür"],hint:"Person + an → an wen?"},
+  {verb:"sich gewöhnen an",ctx:"sache",s:"___ gewöhnst du dich?",correct:"Woran",ar:"على ماذا تعتاد؟",wrong:["An wen","Worauf","Womit"],hint:"Sache + an → woran?"},
+  // WOVON
+  {verb:"träumen von",ctx:"sache",s:"___ träumst du?",correct:"Wovon",ar:"بماذا تحلم؟",wrong:["Von wem","Worüber","Woran"],hint:"Sache + von → wovon?"},
+  {verb:"träumen von",ctx:"person",s:"___ träumst du?",correct:"Von wem",ar:"عمَّن تحلم؟",wrong:["Wovon","Worüber","Woran"],hint:"Person + von → von wem?"},
+  {verb:"erzählen von",ctx:"sache",s:"___ erzählt sie?",correct:"Wovon",ar:"عن ماذا تحكي؟",wrong:["Von wem","Womit","Worüber"],hint:"Sache + von → wovon?"},
+  {verb:"abhängen von",ctx:"sache",s:"___ hängt das ab?",correct:"Wovon",ar:"على ماذا يتوقف؟",wrong:["Von wem","Womit","Woran"],hint:"Sache + von → wovon?"},
+  // WOVOR
+  {verb:"sich fürchten vor",ctx:"sache",s:"___ fürchtest du dich?",correct:"Wovor",ar:"من ماذا تخاف؟",wrong:["Vor wem","Wofür","Worüber"],hint:"Sache + vor → wovor?"},
+  {verb:"sich fürchten vor",ctx:"person",s:"___ fürchtest du dich?",correct:"Vor wem",ar:"من تخاف؟",wrong:["Wovor","Wofür","Worüber"],hint:"Person + vor → vor wem?"},
+  {verb:"warnen vor",ctx:"sache",s:"___ warnt er uns?",correct:"Wovor",ar:"من ماذا يحذرنا؟",wrong:["Vor wem","Wofür","Womit"],hint:"Sache + vor → wovor?"},
+  // WORUM
+  {verb:"es geht um",ctx:"sache",s:"___ geht es?",correct:"Worum",ar:"عمَّ يدور الحديث؟",wrong:["Um wen","Worüber","Wofür"],hint:"Sache + um → worum?"},
+  {verb:"es geht um",ctx:"person",s:"___ geht es?",correct:"Um wen",ar:"عمَّن يدور الحديث؟",wrong:["Worum","Worüber","Wofür"],hint:"Person + um → um wen?"},
+  {verb:"bitten um",ctx:"sache",s:"___ bittet er?",correct:"Worum",ar:"ماذا يطلب؟",wrong:["Um wen","Worüber","Wofür"],hint:"Sache + um → worum?"},
+  {verb:"sich kümmern um",ctx:"sache",s:"___ kümmert sie sich?",correct:"Worum",ar:"بماذا تعتني؟",wrong:["Um wen","Worüber","Wofür"],hint:"Sache + um → worum?"},
+  {verb:"sich kümmern um",ctx:"person",s:"___ kümmert sie sich?",correct:"Um wen",ar:"بمن تعتني؟",wrong:["Worum","Worüber","Wofür"],hint:"Person + um → um wen?"},
+  // bonus mixed
+  {verb:"antworten auf",ctx:"sache",s:"___ antwortet er?",correct:"Worauf",ar:"على ماذا يجيب؟",wrong:["Auf wen","Wofür","Woran"],hint:"Sache + auf → worauf?"},
+  {verb:"sich beschweren über",ctx:"sache",s:"___ beschwert sie sich?",correct:"Worüber",ar:"من ماذا تشتكي؟",wrong:["Über wen","Wofür","Wovon"],hint:"Sache + über → worüber?"},
+  {verb:"sich trennen von",ctx:"person",s:"___ trennt er sich?",correct:"Von wem",ar:"عمَّن ينفصل؟",wrong:["Wovon","Womit","Wovor"],hint:"Person + von → von wem?"},
+];
+
+function shuffle(a){return[...a].sort(()=>Math.random()-.5)}
+let qs=[],qi=0,correct=0,wrong=0,streak=0,answered=false;
+function init(){qs=shuffle(QS);qi=0;correct=0;wrong=0;streak=0;answered=false;showQ();}
+
+function showQ(){
+  if(qi>=qs.length){showDone();return;}
+  answered=false;
+  const q=qs[qi];
+  const pc=PREP_COLORS[q.verb]||{bg:'#FAECE7',color:'#7C2D12'};
+  document.getElementById('counter').textContent='Frage '+(qi+1)+' / '+qs.length;
+  document.getElementById('pct').textContent=Math.round(qi/qs.length*100)+'%';
+  document.getElementById('prog').style.width=(qi/qs.length*100)+'%';
+  document.getElementById('fbmsg').textContent='';document.getElementById('fbmsg').className='fbmsg';
+  document.getElementById('rule-hint').innerHTML='';
+  const oldnxt=document.getElementById('nxt-btn');if(oldnxt)oldnxt.remove();
+
+  const vb=document.getElementById('verb-badge');
+  vb.textContent=q.verb;vb.style.cssText=`background:${pc.bg};color:${pc.color}`;
+  const cb=document.getElementById('ctx-badge');
+  cb.textContent=q.ctx==='sache'?'💡 Sache':'👤 Person';
+  cb.className='ctx-badge '+(q.ctx==='sache'?'sache':'person');
+
+  const sent=document.getElementById('qsentence');sent.innerHTML='';
+  const parts=q.s.split('___');
+  if(parts[0]){const s=document.createElement('span');s.textContent=parts[0];sent.appendChild(s);}
+  const blank=document.createElement('span');blank.className='q-blank';blank.id='q-blank';blank.textContent='___';sent.appendChild(blank);
+  if(parts[1]){const s=document.createElement('span');s.textContent=parts[1];sent.appendChild(s);}
+  document.getElementById('qar').textContent=q.ar;
+
+  const choices=shuffle([q.correct,...q.wrong.slice(0,3)]);
+  const opts=document.getElementById('opts');opts.innerHTML='';
+  choices.forEach(ch=>{
+    const b=document.createElement('button');b.className='opt';b.textContent=ch;
+    b.onclick=()=>pick(b,ch,q);opts.appendChild(b);
+  });
+}
+
+function pick(btn,val,q){
+  if(answered)return;answered=true;
+  const ok=val===q.correct;
+  const blank=document.getElementById('q-blank');
+  blank.textContent=val;blank.classList.add(ok?'filled-ok':'filled-no');
+  document.querySelectorAll('.opt').forEach(b=>{
+    b.disabled=true;
+    if(b.textContent===q.correct)b.classList.add('ok');
+    else if(b===btn&&!ok)b.classList.add('no');
+    else b.classList.add('dim');
+  });
+  const qcard=document.getElementById('qcard');
+  const fb=document.getElementById('fbmsg');
+  if(ok){
+    correct++;streak++;
+    fb.textContent='✓ Richtig!'+(streak>=3?' 🔥 '+streak+'er Streak!':'');
+    fb.className='fbmsg ok';
+    qcard.classList.add('fok');setTimeout(()=>qcard.classList.remove('fok'),350);
+  } else {
+    wrong++;streak=0;
+    fb.textContent='✗ Richtig: '+q.correct;
+    fb.className='fbmsg no';
+    document.getElementById('rule-hint').innerHTML=`<div class="rh-box"><strong>Regel:</strong> ${q.hint}</div>`;
+    qcard.classList.add('fno','shake');setTimeout(()=>qcard.classList.remove('fno','shake'),400);
+  }
+  document.getElementById('sc-c').textContent=correct;
+  document.getElementById('sc-w').textContent=wrong;
+  document.getElementById('sc-s').textContent=streak;
+  const nb=document.createElement('button');nb.className='nxt';nb.id='nxt-btn';
+  nb.textContent=qi+1<qs.length?'Weiter →':'Ergebnis →';
+  nb.onclick=()=>{qi++;showQ();};
+  document.getElementById('fbrow').appendChild(nb);
+}
+
+function showDone(){
+  const total=correct+wrong,pct=Math.round(correct/total*100)||0;
+  document.querySelector('.qwrap').style.display='none';
+  document.querySelector('.opts-lbl').style.display='none';
+  document.getElementById('opts').style.display='none';
+  document.getElementById('fbrow').style.display='none';
+  document.getElementById('rule-hint').style.display='none';
+  const d=document.createElement('div');d.className='done-scr';
+  d.innerHTML=`<div style="font-size:52px">${pct>=90?'🏆':pct>=70?'🎉':pct>=50?'💪':'📚'}</div>
+  <h2>Quiz beendet!</h2>
+  <div style="font-family:'DM Serif Display',serif;font-size:60px;line-height:1">${pct}%</div>
+  <div class="dgrid">
+    <div class="dg"><div class="dg-n" style="color:var(--green)">${correct}</div><div class="dg-l">Richtig</div></div>
+    <div class="dg"><div class="dg-n" style="color:var(--red)">${wrong}</div><div class="dg-l">Falsch</div></div>
+    <div class="dg"><div class="dg-n">${total}</div><div class="dg-l">Gesamt</div></div>
+  </div>
+  <button class="restart" onclick="location.reload()">Nochmal ↺</button>`;
+  document.querySelector('.footer').before(d);
+}
+init();
+</script>
+</body>
+</html>
