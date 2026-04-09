@@ -1,0 +1,245 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<title>Infinitiv mit zu — Quiz</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=DM+Sans:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --bg:#F7F4EF;--surface:#fff;--text:#1C1917;--muted:#78716C;--hint:#A8A29E;
+  --c:#0891B2;--cl:#E0F2FE;--ct:#0C4A6E;--cb:#7DD3FC;
+  --green:#1D9E75;--greenl:#E1F5EE;--greent:#0F6E56;
+  --red:#D85A30;--redl:#FAECE7;--redt:#7C2D12;
+  --amber:#B45309;--amberl:#FEF3C7;
+  --border:rgba(28,25,23,0.1);--bm:rgba(28,25,23,0.15);
+  --r:16px;--rs:12px;--sh:0 2px 12px rgba(28,25,23,0.07);--shc:0 8px 32px rgba(28,25,23,0.12)
+}
+html,body{min-height:100%;background:var(--bg);font-family:'DM Sans',sans-serif;color:var(--text);-webkit-font-smoothing:antialiased}
+body{display:flex;flex-direction:column;align-items:center;padding-bottom:32px}
+.hdr{width:100%;max-width:580px;padding:20px 20px 0}
+.title{font-family:'DM Serif Display',serif;font-size:clamp(18px,5vw,24px)}
+.subtitle{font-size:12px;color:var(--muted);margin-top:3px}
+.prog-wrap{width:100%;max-width:580px;padding:12px 20px 0}
+.prog-meta{display:flex;justify-content:space-between;font-size:12px;color:var(--muted);margin-bottom:6px}
+.prog-bar{height:4px;background:var(--border);border-radius:4px;overflow:hidden}
+.prog-fill{height:100%;background:var(--c);border-radius:4px;transition:width .4s}
+.scores{width:100%;max-width:580px;padding:10px 20px 0;display:flex;gap:10px}
+.sc{flex:1;background:var(--surface);border:1px solid var(--border);border-radius:var(--rs);padding:10px 8px;text-align:center;box-shadow:var(--sh)}
+.sc-n{font-family:'DM Serif Display',serif;font-size:22px;line-height:1}
+.sc-l{font-size:10px;font-weight:600;letter-spacing:.5px;text-transform:uppercase;color:var(--hint);margin-top:3px}
+/* question card */
+.qwrap{width:100%;max-width:580px;padding:12px 20px 0}
+.qcard{background:var(--surface);border:1px solid var(--border);border-radius:var(--r);box-shadow:var(--shc);padding:clamp(16px,5vw,24px) 20px;display:flex;flex-direction:column;gap:10px;position:relative;overflow:hidden}
+.qcard::after{content:'';position:absolute;inset:0;border-radius:var(--r);opacity:0;pointer-events:none}
+.qcard.fok::after{background:var(--greenl);animation:fl .35s ease forwards}
+.qcard.fno::after{background:var(--redl);animation:fl .35s ease forwards}
+@keyframes fl{0%{opacity:.7}100%{opacity:0}}
+.qcard.shake{animation:sk .4s cubic-bezier(.36,.07,.19,.97)}
+@keyframes sk{10%,90%{transform:translateX(-3px)}20%,80%{transform:translateX(4px)}30%,50%,70%{transform:translateX(-5px)}40%,60%{transform:translateX(5px)}}
+.q-label{font-size:10px;font-weight:600;letter-spacing:1.2px;text-transform:uppercase;color:var(--hint)}
+/* Sentence built dynamically */
+.q-sentence{font-family:'DM Serif Display',serif;font-size:clamp(16px,4.5vw,22px);line-height:1.7;color:var(--text);display:flex;flex-wrap:wrap;align-items:center;gap:4px}
+.q-blank{display:inline-block;min-width:90px;border-bottom:3px solid var(--c);text-align:center;padding:0 4px;color:var(--ct);transition:all .2s;white-space:nowrap}
+.q-blank.ok{border-radius:8px;padding:2px 8px;background:var(--greenl);border-color:var(--green);color:var(--greent)}
+.q-blank.no{border-radius:8px;padding:2px 8px;background:var(--redl);border-color:var(--red);color:var(--redt)}
+.q-ar{font-size:13px;color:var(--muted);direction:rtl}
+/* options */
+.opts-lbl{width:100%;max-width:580px;padding:8px 20px 2px;font-size:11px;font-weight:600;letter-spacing:1px;text-transform:uppercase;color:var(--hint)}
+.opts{width:100%;max-width:580px;padding:0 20px;display:grid;grid-template-columns:repeat(2,1fr);gap:9px}
+.opt{background:var(--surface);border:1.5px solid var(--bm);border-radius:var(--rs);padding:clamp(11px,3vw,15px) 10px;font-family:'DM Serif Display',serif;font-size:clamp(15px,4.5vw,19px);color:var(--text);cursor:pointer;text-align:center;transition:all .12s;box-shadow:var(--sh);-webkit-tap-highlight-color:transparent;line-height:1.3}
+.opt:active:not([disabled]){transform:scale(.96)}
+.opt.ok{background:var(--greenl);border-color:var(--green);color:var(--greent)}
+.opt.no{background:var(--redl);border-color:var(--red);color:var(--redt)}
+.opt.dim{opacity:.28}
+.opt[disabled]{cursor:default}
+.rule-hint{width:100%;max-width:580px;padding:6px 20px 0;min-height:36px}
+.rh-box{background:var(--bg);border:1px solid var(--border);border-radius:var(--rs);padding:10px 14px;font-size:13px;color:var(--muted);line-height:1.5}
+.rh-box strong{color:var(--text);font-weight:600}
+.fbrow{width:100%;max-width:580px;padding:8px 20px 0;display:flex;align-items:center;justify-content:space-between;gap:12px;min-height:48px}
+.fbmsg{font-size:14px;font-weight:500;color:var(--muted);flex:1;line-height:1.5}
+.fbmsg.ok{color:var(--greent)}
+.fbmsg.no{color:var(--redt)}
+.nxt{padding:10px 22px;border-radius:var(--rs);background:var(--text);color:var(--bg);border:none;font-family:'DM Sans',sans-serif;font-size:14px;font-weight:500;cursor:pointer;white-space:nowrap}
+.done-scr{width:100%;max-width:580px;padding:40px 20px;display:flex;flex-direction:column;align-items:center;text-align:center;gap:12px}
+.done-scr h2{font-family:'DM Serif Display',serif;font-size:30px}
+.dgrid{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;width:100%;margin-top:8px}
+.dg{background:var(--surface);border:1px solid var(--border);border-radius:var(--rs);padding:14px 8px;text-align:center;box-shadow:var(--sh)}
+.dg-n{font-family:'DM Serif Display',serif;font-size:26px;line-height:1}
+.dg-l{font-size:10px;font-weight:600;text-transform:uppercase;letter-spacing:.5px;color:var(--hint);margin-top:4px}
+.restart{padding:13px 32px;border-radius:var(--rs);background:var(--text);color:var(--bg);font-family:'DM Sans',sans-serif;font-size:15px;font-weight:500;border:none;cursor:pointer;margin-top:4px}
+.footer{padding:20px 0 8px;font-size:11px;font-weight:600;letter-spacing:2px;text-transform:uppercase;color:var(--hint);text-align:center;width:100%}
+</style>
+</head>
+<body>
+<div class="hdr"><div class="title">Infinitiv mit zu</div><div class="subtitle">Ergänze die richtige Form</div></div>
+<div class="prog-wrap">
+  <div class="prog-meta"><span id="counter">Frage 1 / 50</span><span id="pct">0%</span></div>
+  <div class="prog-bar"><div class="prog-fill" id="prog" style="width:0%"></div></div>
+</div>
+<div class="scores">
+  <div class="sc"><div class="sc-n" id="sc-c" style="color:var(--green)">0</div><div class="sc-l">Richtig</div></div>
+  <div class="sc"><div class="sc-n" id="sc-w" style="color:var(--red)">0</div><div class="sc-l">Falsch</div></div>
+  <div class="sc"><div class="sc-n" id="sc-s" style="color:var(--amber)">0</div><div class="sc-l">Streak</div></div>
+</div>
+<div class="qwrap"><div class="qcard" id="qcard">
+  <div class="q-label">Ergänze das Blank</div>
+  <div class="q-sentence" id="qsentence"></div>
+  <div class="q-ar" id="qar"></div>
+</div></div>
+<div class="opts-lbl">Wähle die richtige Form:</div>
+<div class="opts" id="opts"></div>
+<div class="rule-hint" id="rule-hint"></div>
+<div class="fbrow" id="fbrow"><div class="fbmsg" id="fbmsg"></div></div>
+<div class="footer">by ❤️ Mostafa Toumi</div>
+<script>
+// Each question: sentence with ___, correct option, 3 wrong options, arabic, hint
+const QS=[
+  // ── zu+Infinitiv normal ──
+  {s:"Ich versuche, das Problem ___ lösen.",   correct:"zu",      ar:"أحاول حل المشكلة",          wrong:["—","um","dass"],   hint:"versuchen → + zu + Infinitiv"},
+  {s:"Er hofft, dich bald ___ sehen.",         correct:"zu",      ar:"يأمل في رؤيتك قريباً",      wrong:["—","für","um"],    hint:"hoffen → + zu + Infinitiv"},
+  {s:"Ich vergesse oft, das Licht ___.",       correct:"auszumachen",ar:"كثيراً ما أنسى إطفاء الضوء",wrong:["zu machen","ausmachen","machen zu"],hint:"vergessen + Trennbares Verb → ausmachen → auszumachen"},
+  {s:"Sie fängt an, Deutsch ___ lernen.",      correct:"zu",      ar:"بدأت تتعلم الألمانية",       wrong:["—","für","beim"],  hint:"anfangen → + zu + Infinitiv"},
+  {s:"Er verspricht, pünktlich ___ sein.",     correct:"zu",      ar:"يعد بأن يكون في الموعد",     wrong:["—","für","um"],    hint:"versprechen → + zu + Infinitiv"},
+  {s:"Ich beschließe, früher ___.",            correct:"aufzustehen",ar:"قررت الاستيقاظ مبكراً",   wrong:["zu aufstehen","aufstehen zu","stehen auf zu"],hint:"beschließen + aufstehen (trennbar) → auf·zu·stehen"},
+  {s:"Hör auf, so laut ___ sein!",            correct:"zu",      ar:"توقف عن أن تكون صاخباً",     wrong:["—","für","um"],    hint:"aufhören → + zu + Infinitiv"},
+  {s:"Ich bitte dich, mir ___ helfen.",        correct:"zu",      ar:"أطلب منك مساعدتي",          wrong:["—","für","beim"],  hint:"bitten + Objekt → + zu + Infinitiv"},
+  {s:"Sie weigert sich, das ___ tun.",         correct:"zu",      ar:"ترفض فعل ذلك",               wrong:["—","um","für"],    hint:"sich weigern → + zu + Infinitiv"},
+  {s:"Er plant, nach Berlin ___ fahren.",      correct:"zu",      ar:"يخطط للسفر إلى برلين",       wrong:["—","um","für"],    hint:"planen → + zu + Infinitiv"},
+  // ── zu+Infinitiv trennbar ──
+  {s:"Ich versuche, früh ___.",                correct:"aufzustehen",ar:"أحاول الاستيقاظ مبكراً", wrong:["zu aufstehen","aufstehen","aufstehen zu"],hint:"Trennbar: auf + zu + stehen = aufzustehen (1 Wort!)"},
+  {s:"Er verspricht, mich ___.",               correct:"anzurufen",ar:"يعد بالاتصال بي",           wrong:["zu anrufen","anrufen","anrufen zu"],hint:"Trennbar: an + zu + rufen = anzurufen"},
+  {s:"Ich habe Lust, ___.",                    correct:"einzukaufen",ar:"لدي رغبة في التسوق",      wrong:["zu einkaufen","einkaufen","zu kaufen ein"],hint:"Trennbar: ein + zu + kaufen = einzukaufen"},
+  {s:"Vergiss nicht, das Fenster ___!",        correct:"aufzumachen",ar:"لا تنس فتح النافذة",      wrong:["zu aufmachen","aufmachen","aufmachen zu"],hint:"Trennbar: auf + zu + machen = aufzumachen"},
+  {s:"Es ist schwer, schnell ___.",            correct:"einzuschlafen",ar:"من الصعب النوم بسرعة",  wrong:["zu einschlafen","einschlafen","schlafen zu"],hint:"Trennbar: ein + zu + schlafen = einzuschlafen"},
+  {s:"Er plant, das Studium ___.",             correct:"abzuschließen",ar:"يخطط لإتمام الدراسة",   wrong:["zu abschließen","abschließen zu","schließen"],hint:"Trennbar: ab + zu + schließen = abzuschließen"},
+  {s:"Ich vergesse, das Licht ___.",           correct:"auszumachen",ar:"أنسى إطفاء الضوء",        wrong:["zu ausmachen","ausmachen","machen aus"],hint:"Trennbar: aus + zu + machen = auszumachen"},
+  {s:"Sie verspricht, ihr Zimmer ___.",        correct:"aufzuräumen",ar:"تعد بترتيب غرفتها",       wrong:["zu aufräumen","aufräumen zu","zu räumen"],hint:"Trennbar: auf + zu + räumen = aufzuräumen"},
+  // ── KEIN ZU (Modalverben) ──
+  {s:"Ich muss heute noch ___ gehen.",         correct:"(kein zu)",ar:"يجب أن أذهب اليوم",         wrong:["zu","um zu","damit"],hint:"Modalverben (müssen, können, wollen...) → KEIN zu!"},
+  {s:"Er kann gut ___ schwimmen.",             correct:"(kein zu)",ar:"يستطيع السباحة جيداً",       wrong:["zu","um zu","damit zu"],hint:"können ist ein Modalverb → KEIN zu"},
+  {s:"Ich will jetzt ___ schlafen.",           correct:"(kein zu)",ar:"أريد النوم الآن",            wrong:["zu","um zu","damit"],hint:"wollen ist ein Modalverb → KEIN zu"},
+  {s:"Du darfst hier ___ bleiben.",            correct:"(kein zu)",ar:"مسموح لك البقاء هنا",        wrong:["zu","um zu","dass zu"],hint:"dürfen ist ein Modalverb → KEIN zu"},
+  {s:"Ich sehe ihn ___ kommen.",               correct:"(kein zu)",ar:"أراه يأتي",                  wrong:["zu","um zu","dabei"],hint:"sehen/hören + Infinitiv → KEIN zu (Wahrnehmungsverb)"},
+  {s:"Lass mich bitte ___ denken!",            correct:"(kein zu)",ar:"دعني أفكر من فضلك",          wrong:["zu","um zu","dabei zu"],hint:"lassen + Infinitiv → KEIN zu"},
+  {s:"Ich gehe morgen ___ schwimmen.",         correct:"(kein zu)",ar:"سأذهب للسباحة غداً",         wrong:["zu","um zu","dabei zu"],hint:"gehen + Infinitiv (Bewegungsverb) → KEIN zu"},
+  // ── Adjektiv / Nomen + zu ──
+  {s:"Es ist wichtig, pünktlich ___ sein.",    correct:"zu",      ar:"من المهم أن تكون في الموعد", wrong:["—","um","für"],    hint:"Es ist + Adjektiv → + zu + Infinitiv"},
+  {s:"Es ist schön, hier ___ sein.",           correct:"zu",      ar:"من الجميل أن تكون هنا",       wrong:["—","um","für"],    hint:"Es ist + Adjektiv → + zu + Infinitiv"},
+  {s:"Es ist verboten, hier ___ rauchen.",     correct:"zu",      ar:"ممنوع التدخين هنا",           wrong:["—","um","für"],    hint:"Es ist verboten → + zu + Infinitiv"},
+  {s:"Ich habe keine Zeit, ins Kino ___ gehen.",correct:"zu",     ar:"لا وقت لدي للذهاب إلى السينما",wrong:["—","um","für"],  hint:"Zeit haben + zu + Infinitiv"},
+  {s:"Hast du Lust, spazieren ___ gehen?",     correct:"zu",      ar:"هل لديك رغبة في التجول؟",    wrong:["—","um","für"],    hint:"Lust haben → + zu + Infinitiv"},
+  {s:"Er hat Angst, allein ___ sein.",         correct:"zu",      ar:"يخاف من أن يكون وحيداً",      wrong:["—","um","bei"],    hint:"Angst haben → + zu + Infinitiv"},
+  {s:"Es macht Spaß, Deutsch ___ lernen.",     correct:"zu",      ar:"من المتعة تعلم الألمانية",    wrong:["—","beim","für"],  hint:"Spaß machen → + zu + Infinitiv"},
+  {s:"Ich bin bereit, dir ___ helfen.",        correct:"zu",      ar:"أنا مستعد لمساعدتك",          wrong:["—","um","für"],    hint:"bereit sein → + zu + Infinitiv"},
+  {s:"Ich bin froh, dich ___ sehen.",          correct:"zu",      ar:"سعيد برؤيتك",                 wrong:["—","um","bei"],    hint:"froh sein → + zu + Infinitiv"},
+  // ── um…zu (Zweck) ──
+  {s:"Ich lerne Deutsch, ___ in Deutschland zu arbeiten.",correct:"um", ar:"أتعلم الألمانية لأعمل في ألمانيا",wrong:["damit","weil","dass"], hint:"Zweck/Ziel → um … zu + Infinitiv (um+zu = لكي)"},
+  {s:"Sie spart Geld, ___ ein Auto zu kaufen.",correct:"um",      ar:"تدخر المال لشراء سيارة",       wrong:["damit","weil","für"],hint:"um … zu + Infinitiv drückt einen Zweck aus: لكي"},
+  {s:"Er geht früh ins Bett, ___ ausgeruht zu sein.",correct:"um",ar:"يذهب مبكراً لكي يكون مرتاحاً",wrong:["damit","weil","dass"],hint:"um … zu = لأجل أن / لكي"},
+  {s:"Sie übt täglich, ___ besser zu werden.", correct:"um",      ar:"تتدرب يومياً لكي تتحسن",       wrong:["damit","weil","für"],hint:"um … zu = Zweck/Absicht → لكي"},
+  // ── ohne…zu ──
+  {s:"Er ging, ___ sich zu verabschieden.",    correct:"ohne",    ar:"غادر دون أن يودّع",           wrong:["um","statt","damit"],hint:"ohne … zu = دون أن (ohne + zu + Infinitiv)"},
+  {s:"Sie lernt, ___ nachzuschlagen.",         correct:"ohne",    ar:"تتعلم دون الرجوع إلى المعجم", wrong:["um","statt","damit"],hint:"ohne … zu + Infinitiv = دون أن"},
+  // ── statt…zu ──
+  {s:"___ zu lernen, spielt er Videospiele.",  correct:"Statt",   ar:"بدلاً من الدراسة، يلعب ألعاب الفيديو",wrong:["Um","Ohne","Damit"],hint:"statt … zu = بدلاً من + المصدر"},
+  {s:"Sie tanzt, ___ zu arbeiten.",            correct:"statt",   ar:"ترقص بدلاً من العمل",          wrong:["um","ohne","damit"],hint:"statt … zu = anstatt … zu = بدلاً من"},
+  // ── Kombination (zu+Inf. vs dass-Satz) ──
+  {s:"Er hofft, dass er besteht. = Er hofft, ___ bestehen.",correct:"zu",ar:"يأمل أن يجتاز",       wrong:["—","um","dass"],   hint:"Gleiches Subjekt → zu + Infinitiv statt dass-Satz"},
+  {s:"Es ist wichtig, ___ gesund zu bleiben.", correct:"dass / —",ar:"من المهم البقاء بصحة جيدة",  wrong:["um","statt","ohne"],hint:"Es ist + Adjektiv → zu + Infinitiv (kein dass nötig!)"},
+  {s:"Vergiss nicht, ___ anzurufen!",          correct:"mich",    ar:"لا تنس الاتصال بي",           wrong:["du","—","dich"],   hint:"Das Objekt gehört vor den zu-Infinitiv"},
+  {s:"Ich habe vor, morgen früh ___.",         correct:"aufzustehen",ar:"أنوي الاستيقاظ مبكراً غداً",wrong:["zu aufstehen","aufstehen zu","stehen auf"],hint:"vorhaben + Trennbares Verb: auf·zu·stehen"},
+  {s:"Es ist gefährlich, so schnell ___ fahren.",correct:"zu",    ar:"من الخطير القيادة بهذه السرعة",wrong:["—","um","bei"],    hint:"Es ist + Adjektiv → zu + Infinitiv"},
+  {s:"Ich empfehle dir, früh ___.",            correct:"aufzustehen",ar:"أنصحك بالاستيقاظ مبكراً",  wrong:["zu aufstehen","aufstehen","stehen auf"],hint:"empfehlen + Trennbares Verb → aufzustehen"},
+  {s:"Sie beginnt, ___ regnen.",               correct:"zu",      ar:"بدأت تمطر",                    wrong:["—","beim","für"],  hint:"beginnen → + zu + Infinitiv"},
+];
+
+function shuffle(a){return[...a].sort(()=>Math.random()-.5)}
+let qs=[],qi=0,correct=0,wrong=0,streak=0,answered=false;
+function init(){qs=shuffle(QS);qi=0;correct=0;wrong=0;streak=0;answered=false;showQ();}
+
+function showQ(){
+  if(qi>=qs.length){showDone();return;}
+  answered=false;
+  const q=qs[qi];
+  document.getElementById('counter').textContent='Frage '+(qi+1)+' / '+qs.length;
+  document.getElementById('pct').textContent=Math.round(qi/qs.length*100)+'%';
+  document.getElementById('prog').style.width=(qi/qs.length*100)+'%';
+  document.getElementById('fbmsg').textContent='';document.getElementById('fbmsg').className='fbmsg';
+  document.getElementById('rule-hint').innerHTML='';
+  const oldnxt=document.getElementById('nxt-btn');if(oldnxt)oldnxt.remove();
+
+  const sent=document.getElementById('qsentence');sent.innerHTML='';
+  const parts=q.s.split('___');
+  if(parts[0]){const s=document.createElement('span');s.textContent=parts[0];sent.appendChild(s);}
+  const blank=document.createElement('span');blank.className='q-blank';blank.id='q-blank';blank.textContent='___';sent.appendChild(blank);
+  if(parts[1]){const s=document.createElement('span');s.textContent=parts[1];sent.appendChild(s);}
+  document.getElementById('qar').textContent=q.ar;
+
+  const choices=shuffle([q.correct,...q.wrong.slice(0,3)]);
+  const opts=document.getElementById('opts');opts.innerHTML='';
+  choices.forEach(ch=>{
+    const b=document.createElement('button');b.className='opt';b.textContent=ch;
+    b.onclick=()=>pick(b,ch,q);opts.appendChild(b);
+  });
+}
+
+function pick(btn,val,q){
+  if(answered)return;answered=true;
+  const ok=val===q.correct;
+  const blank=document.getElementById('q-blank');
+  blank.textContent=val;blank.classList.add(ok?'ok':'no');
+  document.querySelectorAll('.opt').forEach(b=>{
+    b.disabled=true;
+    if(b.textContent===q.correct)b.classList.add('ok');
+    else if(b===btn&&!ok)b.classList.add('no');
+    else b.classList.add('dim');
+  });
+  const qcard=document.getElementById('qcard');
+  const fb=document.getElementById('fbmsg');
+  if(ok){
+    correct++;streak++;
+    fb.textContent='✓ Richtig!'+(streak>=3?' 🔥 '+streak+'er Streak!':'');
+    fb.className='fbmsg ok';
+    qcard.classList.add('fok');setTimeout(()=>qcard.classList.remove('fok'),350);
+  } else {
+    wrong++;streak=0;
+    fb.textContent='✗ Richtig: '+q.correct;
+    fb.className='fbmsg no';
+    document.getElementById('rule-hint').innerHTML=`<div class="rh-box"><strong>Regel:</strong> ${q.hint}</div>`;
+    qcard.classList.add('fno','shake');setTimeout(()=>qcard.classList.remove('fno','shake'),400);
+  }
+  document.getElementById('sc-c').textContent=correct;
+  document.getElementById('sc-w').textContent=wrong;
+  document.getElementById('sc-s').textContent=streak;
+  const nb=document.createElement('button');nb.className='nxt';nb.id='nxt-btn';
+  nb.textContent=qi+1<qs.length?'Weiter →':'Ergebnis →';
+  nb.onclick=()=>{qi++;showQ();};
+  document.getElementById('fbrow').appendChild(nb);
+}
+
+function showDone(){
+  const total=correct+wrong,pct=Math.round(correct/total*100)||0;
+  document.querySelector('.qwrap').style.display='none';
+  document.querySelector('.opts-lbl').style.display='none';
+  document.getElementById('opts').style.display='none';
+  document.getElementById('fbrow').style.display='none';
+  document.getElementById('rule-hint').style.display='none';
+  const d=document.createElement('div');d.className='done-scr';
+  d.innerHTML=`<div style="font-size:52px">${pct>=90?'🏆':pct>=70?'🎉':pct>=50?'💪':'📚'}</div>
+  <h2>Quiz beendet!</h2>
+  <div style="font-family:'DM Serif Display',serif;font-size:60px;line-height:1">${pct}%</div>
+  <div class="dgrid">
+    <div class="dg"><div class="dg-n" style="color:var(--green)">${correct}</div><div class="dg-l">Richtig</div></div>
+    <div class="dg"><div class="dg-n" style="color:var(--red)">${wrong}</div><div class="dg-l">Falsch</div></div>
+    <div class="dg"><div class="dg-n">${total}</div><div class="dg-l">Gesamt</div></div>
+  </div>
+  <button class="restart" onclick="location.reload()">Nochmal ↺</button>`;
+  document.querySelector('.footer').before(d);
+}
+init();
+</script>
+</body>
+</html>

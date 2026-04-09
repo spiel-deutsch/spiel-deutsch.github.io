@@ -1,0 +1,655 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Infinitiv mit zu — Übersicht & Regeln</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=DM+Sans:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --bg:#F7F4EF;--surface:#fff;--text:#1C1917;--muted:#78716C;--hint:#A8A29E;
+  --c:#0891B2;--cl:#E0F2FE;--ct:#0C4A6E;--cb:#7DD3FC;
+  --v1:#7C3AED;--v1l:#EDE9FE;--v1t:#5B21B6;--v1b:#C4B5FD;
+  --v2:#1D9E75;--v2l:#E1F5EE;--v2t:#0F6E56;--v2b:#9FE1CB;
+  --v3:#D85A30;--v3l:#FAECE7;--v3t:#7C2D12;--v3b:#FDBA74;
+  --v4:#B45309;--v4l:#FEF3C7;--v4t:#92400E;--v4b:#FDE68A;
+  --v5:#BE185D;--v5l:#FCE7F3;--v5t:#831843;--v5b:#F9A8D4;
+  --v6:#185FA5;--v6l:#E6F1FB;--v6t:#0C447C;--v6b:#B5D4F4;
+  --no:#4B5563;--nol:#F9FAFB;--not:#111827;--nob:#D1D5DB;
+  --border:rgba(28,25,23,0.1);--bm:rgba(28,25,23,0.15);
+  --r:16px;--rs:12px;--sh:0 2px 12px rgba(28,25,23,0.07);--shc:0 8px 32px rgba(28,25,23,0.10)
+}
+html,body{min-height:100%;background:var(--bg);font-family:'DM Sans',sans-serif;color:var(--text);-webkit-font-smoothing:antialiased}
+body{display:flex;flex-direction:column;align-items:center;padding-bottom:60px}
+
+/* ── Hero ── */
+.hero{width:100%;max-width:740px;padding:clamp(32px,8vw,56px) 24px 0;text-align:center}
+.tag{display:inline-block;font-size:11px;font-weight:600;letter-spacing:2px;text-transform:uppercase;color:var(--ct);background:var(--cl);border:1px solid var(--cb);border-radius:20px;padding:4px 14px;margin-bottom:14px}
+.h1{font-family:'DM Serif Display',serif;font-size:clamp(28px,7vw,50px);letter-spacing:-.5px;line-height:1.1}
+.h1 em{font-style:italic;color:var(--c)}
+.sub{font-size:14px;color:var(--muted);margin:10px auto 0;line-height:1.6;max-width:500px}
+
+/* ── Sticky nav ── */
+.snav{position:sticky;top:0;z-index:100;width:100%;background:rgba(247,244,239,.95);backdrop-filter:blur(12px);-webkit-backdrop-filter:blur(12px);border-bottom:1px solid var(--border)}
+.snav-i{max-width:740px;margin:0 auto;display:flex;overflow-x:auto;scrollbar-width:none}
+.snav-i::-webkit-scrollbar{display:none}
+.snb{flex-shrink:0;padding:12px 16px;font-family:'DM Sans',sans-serif;font-size:12px;font-weight:600;color:var(--muted);background:none;border:none;border-bottom:2px solid transparent;cursor:pointer;white-space:nowrap;text-decoration:none;display:inline-block;transition:color .15s,border-color .15s}
+.snb:hover{color:var(--text)}
+.snb.active{color:var(--ct);border-bottom-color:var(--c)}
+
+/* ── Section header ── */
+.sh{width:100%;max-width:740px;padding:clamp(28px,6vw,44px) 24px 0;display:flex;align-items:center;gap:12px;scroll-margin-top:52px}
+.sh-dot{width:10px;height:10px;border-radius:50%;flex-shrink:0}
+.sh-title{font-family:'DM Serif Display',serif;font-size:clamp(20px,5vw,26px)}
+.sh-line{flex:1;height:1px;background:var(--border)}
+
+/* ── Intro ── */
+.bwrap{width:100%;max-width:740px;padding:clamp(16px,4vw,24px) 24px 0}
+.intro-box{border-radius:var(--r);padding:22px 24px;border:1px solid var(--cb);background:var(--cl)}
+.ib-title{font-family:'DM Serif Display',serif;font-size:20px;color:var(--ct);margin-bottom:12px}
+.ib-body{font-size:14px;color:var(--ct);line-height:1.85}
+.ib-body strong{font-weight:600}
+.ib-body code{font-family:monospace;font-size:13px;background:rgba(8,145,178,.12);padding:1px 6px;border-radius:4px}
+
+/* ── Formula visualiser ── */
+.formula-wrap{width:100%;max-width:740px;padding:14px 24px 0}
+.formula-box{background:var(--surface);border:1px solid var(--border);border-radius:var(--r);padding:20px 22px;box-shadow:var(--sh)}
+.fb-title{font-family:'DM Serif Display',serif;font-size:18px;margin-bottom:16px}
+.formula-row{display:flex;align-items:flex-end;gap:10px;flex-wrap:wrap;margin-bottom:20px}
+.f-slot{display:flex;flex-direction:column;align-items:center;gap:5px}
+.f-word{padding:9px 16px;border-radius:var(--rs);font-size:15px;font-weight:600;border:1px solid;text-align:center;white-space:nowrap}
+.f-label{font-size:10px;font-weight:600;letter-spacing:.5px;text-transform:uppercase;color:var(--hint)}
+.f-plus{font-size:22px;color:var(--border);align-self:center;padding-bottom:20px}
+.f-main{background:var(--surface);border-color:var(--bm);color:var(--text)}
+.f-zu{background:var(--cl);border-color:var(--cb);color:var(--ct)}
+.f-inf{background:var(--v2l);border-color:var(--v2b);color:var(--v2t)}
+.f-trenn{background:var(--v1l);border-color:var(--v1b);color:var(--v1t)}
+/* Examples below formula */
+.fb-exs{border-top:1px solid var(--border);padding-top:14px;display:flex;flex-direction:column;gap:8px}
+.fb-ex{font-size:14px;display:flex;align-items:baseline;gap:10px;flex-wrap:wrap}
+.fb-de{font-weight:500;color:var(--text)}
+.fb-de .hz{color:var(--ct);font-weight:700}
+.fb-de .hv{color:var(--v2t);font-weight:700;font-style:italic}
+.fb-de .ht{color:var(--v1t);font-weight:700}
+.fb-ar{font-size:12px;color:var(--hint);direction:rtl}
+
+/* ── Rule cards grid ── */
+.rules-grid{width:100%;max-width:740px;padding:14px 24px 0;display:grid;grid-template-columns:repeat(auto-fit,minmax(320px,1fr));gap:12px}
+.rule-card{border-radius:var(--r);padding:18px 20px;border:1px solid;box-shadow:var(--sh)}
+.rc-head{display:flex;align-items:center;gap:10px;margin-bottom:10px}
+.rc-icon{font-size:22px}
+.rc-title{font-family:'DM Serif Display',serif;font-size:17px}
+.rc-body{font-size:13px;line-height:1.75}
+.rc-body strong{font-weight:600}
+.rc-body code{font-family:monospace;font-size:12px;padding:1px 5px;border-radius:4px}
+.rc-exs{margin-top:10px;display:flex;flex-direction:column;gap:6px}
+.rc-ex{font-size:13px;display:flex;gap:8px;align-items:baseline;flex-wrap:wrap}
+.rc-de{font-weight:500;color:var(--text)}
+.rc-de .h{font-weight:700;font-style:italic}
+.rc-ar{font-size:12px;color:var(--hint);direction:rtl}
+
+/* ── Verb group cards ── */
+.vg-wrap{width:100%;max-width:740px;padding:12px 24px 0;display:flex;flex-direction:column;gap:10px}
+.vg-card{border-radius:var(--r);overflow:hidden;box-shadow:var(--sh);border:1px solid var(--border)}
+.vg-hdr{padding:12px 20px;display:flex;align-items:center;gap:12px;cursor:pointer;user-select:none;-webkit-tap-highlight-color:transparent}
+.vg-icon{font-size:20px}
+.vg-info{flex:1}
+.vg-title{font-family:'DM Serif Display',serif;font-size:17px}
+.vg-sub{font-size:12px;color:var(--muted);margin-top:2px;direction:rtl}
+.vg-count{font-size:11px;font-weight:600;padding:3px 10px;border-radius:20px;background:var(--bg);border:1px solid var(--border);color:var(--hint);flex-shrink:0}
+.vg-body{border-top:1px solid var(--border);background:var(--surface);padding:14px 20px;display:none}
+.vg-body.open{display:block}
+.verb-table{width:100%;border-collapse:collapse;font-size:13px}
+.verb-table th{padding:6px 10px;text-align:left;font-size:11px;font-weight:600;letter-spacing:.4px;text-transform:uppercase;color:var(--hint);border-bottom:1px solid var(--border)}
+.verb-table td{padding:7px 10px;border-bottom:1px solid var(--border);color:var(--muted);vertical-align:middle;line-height:1.4}
+.verb-table tr:last-child td{border-bottom:none}
+.verb-table tr:hover td{background:var(--bg)}
+.verb-table td:first-child{font-weight:600;color:var(--text);width:150px}
+.verb-table .ar{direction:rtl;text-align:right;font-size:12px}
+.ex-inline{font-size:12px;font-style:italic;color:var(--muted);margin-top:3px}
+
+/* ── KEIN zu ── */
+.no-zu-grid{width:100%;max-width:740px;padding:12px 24px 0;display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:10px}
+.no-zu-card{border-radius:var(--rs);padding:14px 16px;border:1px solid var(--nob);background:var(--nol)}
+.nz-verb{font-family:'DM Serif Display',serif;font-size:20px;color:var(--not)}
+.nz-ex{font-size:13px;color:var(--no);font-style:italic;margin-top:6px;line-height:1.5}
+.nz-ar{font-size:12px;color:var(--hint);direction:rtl;margin-top:4px}
+
+/* ── Contrast table ── */
+.contrast-wrap{width:100%;max-width:740px;padding:12px 24px 0}
+.contrast-box{background:var(--surface);border:1px solid var(--border);border-radius:var(--r);overflow:hidden;box-shadow:var(--sh)}
+.ctbl{width:100%;border-collapse:collapse;font-size:13px}
+.ctbl th{padding:9px 14px;text-align:left;font-size:11px;font-weight:600;letter-spacing:.5px;text-transform:uppercase;color:var(--hint);background:var(--bg);border-bottom:1px solid var(--border)}
+.ctbl td{padding:9px 14px;border-bottom:1px solid var(--border);color:var(--muted);vertical-align:middle}
+.ctbl tr:last-child td{border-bottom:none}
+.ctbl td:first-child{font-weight:600;color:var(--text);width:120px}
+.ctbl .yes{background:var(--v2l);color:var(--v2t);border-radius:20px;padding:2px 9px;font-size:11px;font-weight:700;white-space:nowrap}
+.ctbl .no{background:#FEF2F2;color:#7F1D1D;border-radius:20px;padding:2px 9px;font-size:11px;font-weight:700;white-space:nowrap}
+.ctbl .ar{direction:rtl;text-align:right;font-size:12px}
+
+/* ── Tips ── */
+.tips-grid{width:100%;max-width:740px;padding:12px 24px 0;display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:12px}
+.tip-box{background:var(--surface);border:1px solid var(--border);border-radius:var(--r);padding:18px 20px;box-shadow:var(--sh)}
+.tip-icon{font-size:22px;margin-bottom:8px;display:block}
+.tip-title{font-family:'DM Serif Display',serif;font-size:16px;margin-bottom:8px}
+.tip-body{font-size:13px;color:var(--muted);line-height:1.75}
+.tip-body strong{color:var(--text);font-weight:600}
+.tip-body code{font-family:monospace;font-size:12px;background:var(--bg);padding:1px 5px;border-radius:4px;border:1px solid var(--border)}
+
+/* ── Footer ── */
+.footer{width:100%;max-width:740px;padding:clamp(36px,8vw,52px) 24px 32px;display:flex;flex-direction:column;align-items:center;gap:6px;text-align:center;border-top:1px solid var(--border);margin-top:clamp(36px,8vw,52px)}
+.footer-brand{font-family:'DM Serif Display',serif;font-size:16px}
+.footer-credit{font-size:11px;font-weight:600;letter-spacing:2px;text-transform:uppercase;color:var(--hint);margin-top:2px}
+</style>
+</head>
+<body>
+
+<div class="hero">
+  <div class="tag">Grammatik · A2–B1</div>
+  <h1 class="h1">Infinitiv <em>mit zu</em></h1>
+  <p class="sub">Wann schreibt man <strong>zu + Infinitiv</strong>? Regeln, Gruppen, trennbare Verben und wann kein zu kommt — mit arabischen Bedeutungen.</p>
+</div>
+
+<nav class="snav">
+  <div class="snav-i">
+    <a class="snb active" href="#was">Was ist das?</a>
+    <a class="snb" href="#formel">Die Formel</a>
+    <a class="snb" href="#regeln">Regeln</a>
+    <a class="snb" href="#vollverben">Vollverben</a>
+    <a class="snb" href="#adjektive">Adjektive</a>
+    <a class="snb" href="#nomen">Nomen</a>
+    <a class="snb" href="#kein-zu">Kein zu!</a>
+    <a class="snb" href="#trennbar">Trennbare</a>
+    <a class="snb" href="#vergleich">Vergleich</a>
+    <a class="snb" href="#tipps">Tipps</a>
+  </div>
+</nav>
+
+<!-- WAS IST DAS -->
+<div class="sh" id="was">
+  <div class="sh-dot" style="background:var(--c)"></div>
+  <div class="sh-title">Was ist „Infinitiv mit zu"?</div>
+  <div class="sh-line"></div>
+</div>
+<div class="bwrap">
+  <div class="intro-box">
+    <div class="ib-title">المصدر مع "zu" — ما هو؟</div>
+    <div class="ib-body">
+      Im Deutschen kann man zwei Sätze mit <strong>zu + Infinitiv</strong> verbinden — ähnlich wie im Arabischen مصدر مؤول.<br><br>
+      Statt zwei Sätze: <code>Ich hoffe. Ich lerne Deutsch.</code><br>
+      Nur ein Satz: <code>Ich hoffe, Deutsch <strong>zu lernen</strong>.</code><br><br>
+      <strong>Wichtig:</strong> zu + Infinitiv hat das <strong>gleiche Subjekt</strong> wie der Hauptsatz — oder das Objekt des Hauptsatzes wird das Subjekt.
+    </div>
+  </div>
+</div>
+
+<!-- DIE FORMEL -->
+<div class="sh" id="formel">
+  <div class="sh-dot" style="background:var(--text)"></div>
+  <div class="sh-title">Die Formel</div>
+  <div class="sh-line"></div>
+</div>
+<div class="formula-wrap">
+  <div class="formula-box">
+    <div class="fb-title">Hauptsatz + Komma + … + zu + Infinitiv (am Ende)</div>
+    <!-- Normal verb -->
+    <div class="formula-row">
+      <div class="f-slot"><div class="f-word f-main">Ich hoffe,</div><div class="f-label">Hauptsatz</div></div>
+      <div class="f-plus">→</div>
+      <div class="f-slot"><div class="f-word f-main">Deutsch</div><div class="f-label">Objekt / Adverb</div></div>
+      <div class="f-plus"> </div>
+      <div class="f-slot"><div class="f-word f-zu">zu</div><div class="f-label">zu</div></div>
+      <div class="f-slot"><div class="f-word f-inf">lernen</div><div class="f-label">Infinitiv (Ende!)</div></div>
+    </div>
+    <!-- Trennbar verb -->
+    <div class="formula-row" style="margin-bottom:0">
+      <div class="f-slot"><div class="f-word f-main">Er versucht,</div><div class="f-label">Hauptsatz</div></div>
+      <div class="f-plus">→</div>
+      <div class="f-slot"><div class="f-word f-trenn">auf</div><div class="f-label">Präfix</div></div>
+      <div class="f-slot"><div class="f-word f-zu">zu</div><div class="f-label">zu (innen!)</div></div>
+      <div class="f-slot"><div class="f-word f-inf">stehen</div><div class="f-label">Stamm (Ende!)</div></div>
+    </div>
+    <div style="font-size:12px;color:var(--hint);margin:6px 0 16px;padding-left:2px">→ Er versucht, <strong style="color:var(--v1t)">auf</strong><strong style="color:var(--ct)">zu</strong><strong style="color:var(--v2t)">stehen</strong>. — Bei trennbaren Verben kommt zu zwischen Präfix und Stamm!</div>
+    <div class="fb-exs">
+      <div class="fb-ex"><span class="fb-de">Ich vergesse oft, das Licht <span class="hz">zu</span> <span class="hv">löschen</span>.</span><span class="fb-ar">كثيراً ما أنسى إطفاء الضوء</span></div>
+      <div class="fb-ex"><span class="fb-de">Sie bittet mich, ihr <span class="hz">zu</span> <span class="hv">helfen</span>.</span><span class="fb-ar">تطلب مني مساعدتها</span></div>
+      <div class="fb-ex"><span class="fb-de">Es ist schön, hier <span class="hz">zu</span> <span class="hv">sein</span>.</span><span class="fb-ar">من الجميل أن تكون هنا</span></div>
+      <div class="fb-ex"><span class="fb-de">Er versucht, früh <span class="ht">auf</span><span class="hz">zu</span><span class="hv">stehen</span>.</span><span class="fb-ar">يحاول الاستيقاظ مبكراً</span></div>
+    </div>
+  </div>
+</div>
+
+<!-- REGELN -->
+<div class="sh" id="regeln">
+  <div class="sh-dot" style="background:var(--text)"></div>
+  <div class="sh-title">Die 4 Hauptregeln</div>
+  <div class="sh-line"></div>
+</div>
+<div class="rules-grid">
+  <div class="rule-card" style="background:var(--v1l);border-color:var(--v1b)">
+    <div class="rc-head"><span class="rc-icon">1️⃣</span><span class="rc-title" style="color:var(--v1t)">Immer Komma</span></div>
+    <div class="rc-body" style="color:var(--v1t)">
+      Vor dem Infinitivsatz mit <strong>zu</strong> steht <strong>immer ein Komma</strong> — außer bei sehr kurzen festen Ausdrücken.<br><br>
+      <code>Ich hoffe<strong>,</strong> bald kommen zu können.</code>
+    </div>
+  </div>
+  <div class="rule-card" style="background:var(--v2l);border-color:var(--v2b)">
+    <div class="rc-head"><span class="rc-icon">2️⃣</span><span class="rc-title" style="color:var(--v2t)">zu + Infinitiv → ans Ende</span></div>
+    <div class="rc-body" style="color:var(--v2t)">
+      Das <strong>zu + Infinitiv</strong> steht immer am <strong>Ende des Nebensatzes</strong>.<br><br>
+      <code>Ich habe keine Zeit, ins Kino <strong>zu gehen</strong>.</code><br>
+      <code>Er hofft, den Job <strong>zu bekommen</strong>.</code>
+    </div>
+  </div>
+  <div class="rule-card" style="background:var(--v3l);border-color:var(--v3b)">
+    <div class="rc-head"><span class="rc-icon">3️⃣</span><span class="rc-title" style="color:var(--v3t)">Gleiches Subjekt</span></div>
+    <div class="rc-body" style="color:var(--v3t)">
+      Meist hat der Infinitivsatz <strong>dasselbe Subjekt</strong> wie der Hauptsatz:<br><br>
+      <code><strong>Ich</strong> versuche, <strong>[Ich]</strong> früh aufzustehen.</code><br><br>
+      Bei manchen Verben (bitten, erlauben, raten...) ist es das <strong>Objekt</strong>:
+      <code>Ich bitte <strong>dich</strong>, mir zu helfen.</code>
+    </div>
+  </div>
+  <div class="rule-card" style="background:var(--v1l);border-color:var(--v1b)">
+    <div class="rc-head"><span class="rc-icon">4️⃣</span><span class="rc-title" style="color:var(--v1t)">Trennbare: Präfix·zu·Stamm</span></div>
+    <div class="rc-body" style="color:var(--v1t)">
+      Bei <strong>trennbaren Verben</strong> kommt <em>zu</em> zwischen Präfix und Stamm — alles zusammengeschrieben!<br><br>
+      <code>aufstehen → auf<strong>zu</strong>stehen</code><br>
+      <code>anrufen → an<strong>zu</strong>rufen</code><br>
+      <code>einkaufen → ein<strong>zu</strong>kaufen</code>
+    </div>
+  </div>
+</div>
+
+<!-- VOLLVERBEN die zu+Inf verlangen -->
+<div class="sh" id="vollverben">
+  <div class="sh-dot" style="background:var(--v2)"></div>
+  <div class="sh-title">Vollverben → verlangen zu + Infinitiv</div>
+  <div class="sh-line"></div>
+</div>
+<div class="vg-wrap">
+  <!-- Gruppe 1: Hoffnung / Wunsch -->
+  <div class="vg-card">
+    <div class="vg-hdr" style="background:var(--v2l)" onclick="toggle(this)">
+      <span class="vg-icon">💫</span>
+      <div class="vg-info">
+        <div class="vg-title" style="color:var(--v2t)">Hoffnung, Wunsch, Plan</div>
+        <div class="vg-sub">أمل، رغبة، خطة</div>
+      </div>
+      <span class="vg-count">8 Verben</span>
+      <span style="font-size:18px;color:var(--v2t);margin-left:4px">▾</span>
+    </div>
+    <div class="vg-body open">
+      <table class="verb-table">
+        <thead><tr><th>Verb + zu+Inf.</th><th>Beispiel</th><th class="ar">Arabisch</th></tr></thead>
+        <tbody>
+          <tr><td>hoffen, … zu</td><td>Ich hoffe, dich bald zu sehen.</td><td class="ar">يأمل أن</td></tr>
+          <tr><td>wünschen, … zu</td><td>Ich wünsche mir, Arzt zu werden.</td><td class="ar">يتمنى أن</td></tr>
+          <tr><td>planen, … zu</td><td>Wir planen, nach Berlin zu fahren.</td><td class="ar">يخطط لـ</td></tr>
+          <tr><td>vorhaben, … zu</td><td>Ich habe vor, früh aufzustehen.</td><td class="ar">يعتزم أن</td></tr>
+          <tr><td>beabsichtigen, … zu</td><td>Er beabsichtigt, das Studium abzuschließen.</td><td class="ar">ينوي أن</td></tr>
+          <tr><td>sich wünschen, … zu</td><td>Sie wünscht sich, glücklich zu sein.</td><td class="ar">يتمنى (بشدة)</td></tr>
+          <tr><td>sich vornehmen, … zu</td><td>Ich nehme mir vor, mehr Sport zu machen.</td><td class="ar">يعزم على</td></tr>
+          <tr><td>sich freuen, … zu</td><td>Ich freue mich, dich zu treffen.</td><td class="ar">يسعد بـ</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <!-- Gruppe 2: Versuch / Fähigkeit -->
+  <div class="vg-card">
+    <div class="vg-hdr" style="background:var(--cl)" onclick="toggle(this)">
+      <span class="vg-icon">💪</span>
+      <div class="vg-info">
+        <div class="vg-title" style="color:var(--ct)">Versuch, Fähigkeit, Anfang / Ende</div>
+        <div class="vg-sub">محاولة، بداية، نهاية</div>
+      </div>
+      <span class="vg-count">9 Verben</span>
+      <span style="font-size:18px;color:var(--ct);margin-left:4px">▾</span>
+    </div>
+    <div class="vg-body open">
+      <table class="verb-table">
+        <thead><tr><th>Verb + zu+Inf.</th><th>Beispiel</th><th class="ar">Arabisch</th></tr></thead>
+        <tbody>
+          <tr><td>versuchen, … zu</td><td>Er versucht, das Problem zu lösen.</td><td class="ar">يحاول أن</td></tr>
+          <tr><td>schaffen, … zu</td><td>Ich schaffe es, pünktlich zu sein.</td><td class="ar">ينجح في</td></tr>
+          <tr><td>beginnen, … zu</td><td>Es beginnt, zu regnen.</td><td class="ar">يبدأ في</td></tr>
+          <tr><td>anfangen, … zu</td><td>Sie fängt an, Deutsch zu lernen.</td><td class="ar">يشرع في</td></tr>
+          <tr><td>aufhören, … zu</td><td>Hör auf, so laut zu sein!</td><td class="ar">يتوقف عن</td></tr>
+          <tr><td>aufgeben, … zu</td><td>Er gibt auf, weiterzumachen.</td><td class="ar">يستسلم / يتخلى عن</td></tr>
+          <tr><td>vergessen, … zu</td><td>Ich vergesse oft, das Licht auszumachen.</td><td class="ar">ينسى أن</td></tr>
+          <tr><td>sich weigern, … zu</td><td>Sie weigert sich, das zu tun.</td><td class="ar">يرفض أن</td></tr>
+          <tr><td>vermeiden, … zu</td><td>Er vermeidet es, Fehler zu machen.</td><td class="ar">يتجنب أن</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <!-- Gruppe 3: Empfehlung / Bitte -->
+  <div class="vg-card">
+    <div class="vg-hdr" style="background:var(--v3l)" onclick="toggle(this)">
+      <span class="vg-icon">🙏</span>
+      <div class="vg-info">
+        <div class="vg-title" style="color:var(--v3t)">Bitte, Erlaubnis, Rat (mit Objekt)</div>
+        <div class="vg-sub">طلب، إذن، نصيحة (مع مفعول به)</div>
+      </div>
+      <span class="vg-count">7 Verben</span>
+      <span style="font-size:18px;color:var(--v3t);margin-left:4px">▾</span>
+    </div>
+    <div class="vg-body">
+      <div style="font-size:13px;color:var(--v3t);background:var(--v3l);padding:10px 14px;border-radius:var(--rs);margin-bottom:10px;border:1px solid var(--v3b)">
+        <strong>Besonderheit:</strong> Diese Verben haben ein Objekt, das das Subjekt des zu-Satzes wird:<br>
+        <em>Ich bitte <strong>dich</strong>, mir zu helfen.</em> → du sollst helfen
+      </div>
+      <table class="verb-table">
+        <thead><tr><th>Verb + zu+Inf.</th><th>Beispiel</th><th class="ar">Arabisch</th></tr></thead>
+        <tbody>
+          <tr><td>bitten, … zu</td><td>Ich bitte dich, pünktlich zu sein.</td><td class="ar">يطلب من (شخص) أن</td></tr>
+          <tr><td>erlauben, … zu</td><td>Sie erlaubt ihm, draußen zu spielen.</td><td class="ar">يسمح لـ (شخص) بأن</td></tr>
+          <tr><td>verbieten, … zu</td><td>Er verbietet ihr, auszugehen.</td><td class="ar">يمنع (شخصاً) من أن</td></tr>
+          <tr><td>empfehlen, … zu</td><td>Ich empfehle dir, früh aufzustehen.</td><td class="ar">ينصح (شخصاً) بأن</td></tr>
+          <tr><td>raten, … zu</td><td>Er rät mir, mehr zu schlafen.</td><td class="ar">ينصح (شخصاً) أن</td></tr>
+          <tr><td>auffordern, … zu</td><td>Sie fordert ihn auf, ruhig zu sein.</td><td class="ar">يطلب من (شخص) أن</td></tr>
+          <tr><td>zwingen, … zu</td><td>Er zwingt mich, es zu tun.</td><td class="ar">يجبر (شخصاً) على أن</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <!-- Gruppe 4: Pflicht / Entscheidung -->
+  <div class="vg-card">
+    <div class="vg-hdr" style="background:var(--v4l)" onclick="toggle(this)">
+      <span class="vg-icon">✅</span>
+      <div class="vg-info">
+        <div class="vg-title" style="color:var(--v4t)">Entscheidung, Pflicht, Versprechen</div>
+        <div class="vg-sub">قرار، التزام، وعد</div>
+      </div>
+      <span class="vg-count">8 Verben</span>
+      <span style="font-size:18px;color:var(--v4t);margin-left:4px">▾</span>
+    </div>
+    <div class="vg-body">
+      <table class="verb-table">
+        <thead><tr><th>Verb + zu+Inf.</th><th>Beispiel</th><th class="ar">Arabisch</th></tr></thead>
+        <tbody>
+          <tr><td>beschließen, … zu</td><td>Ich beschließe, früher aufzustehen.</td><td class="ar">يقرر أن</td></tr>
+          <tr><td>entscheiden, … zu</td><td>Sie entscheidet sich, zu bleiben.</td><td class="ar">يقرر (بعد تفكير)</td></tr>
+          <tr><td>versprechen, … zu</td><td>Er verspricht, pünktlich zu sein.</td><td class="ar">يعد بأن</td></tr>
+          <tr><td>drohen, … zu</td><td>Er droht, die Polizei zu rufen.</td><td class="ar">يهدد بأن</td></tr>
+          <tr><td>wagen, … zu</td><td>Sie wagt es nicht, allein zu fahren.</td><td class="ar">يجرؤ على أن</td></tr>
+          <tr><td>ablehnen, … zu</td><td>Er lehnt es ab, zu unterschreiben.</td><td class="ar">يرفض أن</td></tr>
+          <tr><td>zögern, … zu</td><td>Sie zögert, eine Entscheidung zu treffen.</td><td class="ar">يتردد في أن</td></tr>
+          <tr><td>aufgeben, … zu</td><td>Er gibt es auf, sie zu überzeugen.</td><td class="ar">يتخلى عن محاولة</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>
+
+<!-- ADJEKTIVE -->
+<div class="sh" id="adjektive">
+  <div class="sh-dot" style="background:var(--v5)"></div>
+  <div class="sh-title">Adjektive + zu + Infinitiv</div>
+  <div class="sh-line"></div>
+</div>
+<div class="bwrap">
+  <div class="intro-box" style="background:var(--v5l);border-color:var(--v5b)">
+    <div class="ib-title" style="color:var(--v5t)">es ist + Adjektiv + zu + Infinitiv</div>
+    <div class="ib-body" style="color:var(--v5t)">
+      Das Muster <code>Es ist + Adj. + zu + Inf.</code> ist eine der häufigsten Formen.<br>
+      Bedeutung: <strong>من المهم / من الجيد / من الصعب... أن</strong>
+    </div>
+  </div>
+</div>
+<div class="vg-wrap" style="padding-top:10px">
+  <div class="vg-card">
+    <div class="vg-hdr" style="background:var(--v5l)" onclick="toggle(this)">
+      <span class="vg-icon">🌟</span>
+      <div class="vg-info">
+        <div class="vg-title" style="color:var(--v5t)">Es ist … + zu + Infinitiv</div>
+        <div class="vg-sub">من المهم / الصعب / الجميل أن...</div>
+      </div>
+      <span class="vg-count">12 Adjektive</span>
+      <span style="font-size:18px;color:var(--v5t);margin-left:4px">▾</span>
+    </div>
+    <div class="vg-body open">
+      <table class="verb-table">
+        <thead><tr><th>Ausdruck</th><th>Beispiel</th><th class="ar">Arabisch</th></tr></thead>
+        <tbody>
+          <tr><td>Es ist wichtig, … zu</td><td>Es ist wichtig, pünktlich zu sein.</td><td class="ar">من المهم أن</td></tr>
+          <tr><td>Es ist schön, … zu</td><td>Es ist schön, hier zu sein.</td><td class="ar">من الجميل أن</td></tr>
+          <tr><td>Es ist schwer, … zu</td><td>Es ist schwer, Deutsch zu lernen.</td><td class="ar">من الصعب أن</td></tr>
+          <tr><td>Es ist leicht, … zu</td><td>Es ist leicht, einen Fehler zu machen.</td><td class="ar">من السهل أن</td></tr>
+          <tr><td>Es ist möglich, … zu</td><td>Es ist möglich, das zu ändern.</td><td class="ar">من الممكن أن</td></tr>
+          <tr><td>Es ist unmöglich, … zu</td><td>Es ist unmöglich, alles zu wissen.</td><td class="ar">من المستحيل أن</td></tr>
+          <tr><td>Es ist gefährlich, … zu</td><td>Es ist gefährlich, so schnell zu fahren.</td><td class="ar">من الخطير أن</td></tr>
+          <tr><td>Es ist notwendig, … zu</td><td>Es ist notwendig, das zu erklären.</td><td class="ar">من الضروري أن</td></tr>
+          <tr><td>Es ist erlaubt, … zu</td><td>Es ist nicht erlaubt, hier zu parken.</td><td class="ar">مسموح أن</td></tr>
+          <tr><td>Es ist verboten, … zu</td><td>Es ist verboten, hier zu rauchen.</td><td class="ar">ممنوع أن</td></tr>
+          <tr><td>Ich bin froh, … zu</td><td>Ich bin froh, dich zu sehen.</td><td class="ar">سعيد لأنني</td></tr>
+          <tr><td>Ich bin bereit, … zu</td><td>Ich bin bereit, dir zu helfen.</td><td class="ar">مستعد لأن</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>
+
+<!-- NOMEN -->
+<div class="sh" id="nomen">
+  <div class="sh-dot" style="background:var(--v4)"></div>
+  <div class="sh-title">Nomen + zu + Infinitiv</div>
+  <div class="sh-line"></div>
+</div>
+<div class="vg-wrap" style="padding-top:10px">
+  <div class="vg-card">
+    <div class="vg-hdr" style="background:var(--v4l)" onclick="toggle(this)">
+      <span class="vg-icon">📝</span>
+      <div class="vg-info">
+        <div class="vg-title" style="color:var(--v4t)">Nomen / Ausdrücke + zu + Infinitiv</div>
+        <div class="vg-sub">تعابير اسمية + أن</div>
+      </div>
+      <span class="vg-count">8 Ausdrücke</span>
+      <span style="font-size:18px;color:var(--v4t);margin-left:4px">▾</span>
+    </div>
+    <div class="vg-body">
+      <table class="verb-table">
+        <thead><tr><th>Ausdruck</th><th>Beispiel</th><th class="ar">Arabisch</th></tr></thead>
+        <tbody>
+          <tr><td>Zeit haben, … zu</td><td>Ich habe keine Zeit, ins Kino zu gehen.</td><td class="ar">لديه وقت لـ</td></tr>
+          <tr><td>Lust haben, … zu</td><td>Hast du Lust, spazieren zu gehen?</td><td class="ar">لديه رغبة في</td></tr>
+          <tr><td>Angst haben, … zu</td><td>Er hat Angst, allein zu sein.</td><td class="ar">يخاف من أن</td></tr>
+          <tr><td>Spaß machen, … zu</td><td>Es macht Spaß, Deutsch zu lernen.</td><td class="ar">ممتع أن</td></tr>
+          <tr><td>Mühe geben, … zu</td><td>Ich gebe mir Mühe, besser zu werden.</td><td class="ar">يبذل جهداً لـ</td></tr>
+          <tr><td>Gelegenheit haben, … zu</td><td>Ich hatte die Gelegenheit, ihn zu treffen.</td><td class="ar">لديه فرصة لـ</td></tr>
+          <tr><td>Chance haben, … zu</td><td>Er hat eine Chance, den Job zu bekommen.</td><td class="ar">لديه فرصة لـ</td></tr>
+          <tr><td>kein Problem, … zu</td><td>Es ist kein Problem, das zu erledigen.</td><td class="ar">لا مشكلة في أن</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>
+
+<!-- KEIN ZU -->
+<div class="sh" id="kein-zu">
+  <div class="sh-dot" style="background:var(--no)"></div>
+  <div class="sh-title">Kein zu! — بدون zu</div>
+  <div class="sh-line"></div>
+</div>
+<div class="bwrap">
+  <div class="intro-box" style="background:var(--nol);border-color:var(--nob)">
+    <div class="ib-title" style="color:var(--not)">Diese Verben benutzen kein zu!</div>
+    <div class="ib-body" style="color:var(--not)">
+      Bei <strong>Modalverben</strong>, <strong>Wahrnehmungsverben</strong> und einigen anderen Verben verwendet man den Infinitiv <strong>ohne zu</strong>.
+    </div>
+  </div>
+</div>
+<div class="no-zu-grid">
+  <div class="no-zu-card">
+    <div class="nz-verb" style="color:#7C3AED">müssen</div>
+    <div class="nz-ex">Ich muss <strong>gehen</strong>.<br><em>(kein zu!)</em></div>
+    <div class="nz-ar">يجب أن أذهب</div>
+  </div>
+  <div class="no-zu-card">
+    <div class="nz-verb" style="color:#7C3AED">können</div>
+    <div class="nz-ex">Er kann <strong>schwimmen</strong>.<br><em>(kein zu!)</em></div>
+    <div class="nz-ar">يستطيع أن يسبح</div>
+  </div>
+  <div class="no-zu-card">
+    <div class="nz-verb" style="color:#7C3AED">wollen</div>
+    <div class="nz-ex">Ich will <strong>schlafen</strong>.<br><em>(kein zu!)</em></div>
+    <div class="nz-ar">أريد أن أنام</div>
+  </div>
+  <div class="no-zu-card">
+    <div class="nz-verb" style="color:#7C3AED">dürfen</div>
+    <div class="nz-ex">Du darfst <strong>bleiben</strong>.<br><em>(kein zu!)</em></div>
+    <div class="nz-ar">مسموح لك أن تبقى</div>
+  </div>
+  <div class="no-zu-card">
+    <div class="nz-verb" style="color:#7C3AED">sollen</div>
+    <div class="nz-ex">Er soll <strong>kommen</strong>.<br><em>(kein zu!)</em></div>
+    <div class="nz-ar">يجب عليه أن يأتي</div>
+  </div>
+  <div class="no-zu-card">
+    <div class="nz-verb" style="color:#7C3AED">mögen / möchten</div>
+    <div class="nz-ex">Ich möchte <strong>essen</strong>.<br><em>(kein zu!)</em></div>
+    <div class="nz-ar">أود أن آكل</div>
+  </div>
+  <div class="no-zu-card">
+    <div class="nz-verb" style="color:#D85A30">sehen / hören</div>
+    <div class="nz-ex">Ich sehe ihn <strong>kommen</strong>.<br><em>(kein zu!)</em></div>
+    <div class="nz-ar">أراه يأتي</div>
+  </div>
+  <div class="no-zu-card">
+    <div class="nz-verb" style="color:#D85A30">lassen</div>
+    <div class="nz-ex">Ich lasse ihn <strong>schlafen</strong>.<br><em>(kein zu!)</em></div>
+    <div class="nz-ar">أتركه ينام</div>
+  </div>
+  <div class="no-zu-card">
+    <div class="nz-verb" style="color:#0891B2">gehen / fahren</div>
+    <div class="nz-ex">Ich gehe <strong>schwimmen</strong>.<br><em>(kein zu!)</em></div>
+    <div class="nz-ar">أذهب للسباحة</div>
+  </div>
+  <div class="no-zu-card">
+    <div class="nz-verb" style="color:#0891B2">bleiben / kommen</div>
+    <div class="nz-ex">Er bleibt <strong>sitzen</strong>.<br><em>(kein zu!)</em></div>
+    <div class="nz-ar">يبقى جالساً</div>
+  </div>
+  <div class="no-zu-card">
+    <div class="nz-verb" style="color:#1D9E75">helfen</div>
+    <div class="nz-ex">Sie hilft mir <strong>kochen</strong>.<br><em>(kein zu! — oft)</em></div>
+    <div class="nz-ar">تساعدني في الطبخ</div>
+  </div>
+  <div class="no-zu-card">
+    <div class="nz-verb" style="color:#1D9E75">lernen / lehren</div>
+    <div class="nz-ex">Sie lehrt mich <strong>lesen</strong>.<br><em>(kein zu!)</em></div>
+    <div class="nz-ar">تعلمني القراءة</div>
+  </div>
+</div>
+
+<!-- TRENNBARE VERBEN -->
+<div class="sh" id="trennbar">
+  <div class="sh-dot" style="background:var(--v1)"></div>
+  <div class="sh-title">Trennbare Verben — Präfix·zu·Stamm</div>
+  <div class="sh-line"></div>
+</div>
+<div class="contrast-wrap">
+  <div class="contrast-box">
+    <table class="ctbl">
+      <thead><tr><th>Infinitiv</th><th>mit zu</th><th>Beispiel</th><th class="ar">Arabisch</th></tr></thead>
+      <tbody>
+        <tr><td>aufstehen</td><td style="color:var(--v1t);font-weight:700">auf<span style="color:var(--ct)">zu</span>stehen</td><td>Ich versuche, früh auf<em style="color:var(--ct)">zu</em>stehen.</td><td class="ar">ينهض مبكراً</td></tr>
+        <tr><td>anrufen</td><td style="color:var(--v1t);font-weight:700">an<span style="color:var(--ct)">zu</span>rufen</td><td>Er verspricht, mich an<em style="color:var(--ct)">zu</em>rufen.</td><td class="ar">يتصل</td></tr>
+        <tr><td>einkaufen</td><td style="color:var(--v1t);font-weight:700">ein<span style="color:var(--ct)">zu</span>kaufen</td><td>Ich habe Lust, ein<em style="color:var(--ct)">zu</em>kaufen.</td><td class="ar">يتسوق</td></tr>
+        <tr><td>aufmachen</td><td style="color:var(--v1t);font-weight:700">auf<span style="color:var(--ct)">zu</span>machen</td><td>Vergiss nicht, das Fenster auf<em style="color:var(--ct)">zu</em>machen!</td><td class="ar">يفتح</td></tr>
+        <tr><td>aufhören</td><td style="color:var(--v1t);font-weight:700">auf<span style="color:var(--ct)">zu</span>hören</td><td>Er bittet mich, damit auf<em style="color:var(--ct)">zu</em>hören.</td><td class="ar">يتوقف عن</td></tr>
+        <tr><td>einschlafen</td><td style="color:var(--v1t);font-weight:700">ein<span style="color:var(--ct)">zu</span>schlafen</td><td>Es ist schwer, schnell ein<em style="color:var(--ct)">zu</em>schlafen.</td><td class="ar">يغفو</td></tr>
+        <tr><td>ausmachen</td><td style="color:var(--v1t);font-weight:700">aus<span style="color:var(--ct)">zu</span>machen</td><td>Ich vergesse, das Licht aus<em style="color:var(--ct)">zu</em>machen.</td><td class="ar">يطفئ</td></tr>
+        <tr><td>aufräumen</td><td style="color:var(--v1t);font-weight:700">auf<span style="color:var(--ct)">zu</span>räumen</td><td>Er verspricht, sein Zimmer auf<em style="color:var(--ct)">zu</em>räumen.</td><td class="ar">يرتب</td></tr>
+        <tr><td>weiterarbeiten</td><td style="color:var(--v1t);font-weight:700">weiter<span style="color:var(--ct)">zu</span>arbeiten</td><td>Ich höre auf, weiter<em style="color:var(--ct)">zu</em>arbeiten.</td><td class="ar">يواصل العمل</td></tr>
+        <tr><td>abschließen</td><td style="color:var(--v1t);font-weight:700">ab<span style="color:var(--ct)">zu</span>schließen</td><td>Er plant, das Studium ab<em style="color:var(--ct)">zu</em>schließen.</td><td class="ar">يُتم / يُكمل</td></tr>
+      </tbody>
+    </table>
+  </div>
+</div>
+
+<!-- VERGLEICH mit und ohne zu -->
+<div class="sh" id="vergleich">
+  <div class="sh-dot" style="background:var(--text)"></div>
+  <div class="sh-title">Vergleich: mit zu vs. ohne zu</div>
+  <div class="sh-line"></div>
+</div>
+<div class="contrast-wrap">
+  <div class="contrast-box">
+    <table class="ctbl">
+      <thead><tr><th>Verb</th><th>Verwendung</th><th>Beispiel</th></tr></thead>
+      <tbody>
+        <tr><td>versuchen</td><td><span class="yes">+ zu</span></td><td>Ich versuche, es <strong>zu schaffen</strong>.</td></tr>
+        <tr><td>müssen</td><td><span class="no">kein zu</span></td><td>Ich muss das <strong>schaffen</strong>.</td></tr>
+        <tr><td>hoffen</td><td><span class="yes">+ zu</span></td><td>Ich hoffe, es <strong>zu schaffen</strong>.</td></tr>
+        <tr><td>können</td><td><span class="no">kein zu</span></td><td>Ich kann es <strong>schaffen</strong>.</td></tr>
+        <tr><td>aufhören</td><td><span class="yes">+ zu</span></td><td>Hör auf, so laut <strong>zu sein</strong>!</td></tr>
+        <tr><td>bleiben</td><td><span class="no">kein zu</span></td><td>Er bleibt <strong>sitzen</strong>.</td></tr>
+        <tr><td>vergessen</td><td><span class="yes">+ zu</span></td><td>Vergiss nicht, die Tür <strong>zuzumachen</strong>.</td></tr>
+        <tr><td>sehen</td><td><span class="no">kein zu</span></td><td>Ich sehe sie <strong>kommen</strong>.</td></tr>
+        <tr><td>es ist schön</td><td><span class="yes">+ zu</span></td><td>Es ist schön, hier <strong>zu sein</strong>.</td></tr>
+        <tr><td>lassen</td><td><span class="no">kein zu</span></td><td>Lass mich <strong>denken</strong>!</td></tr>
+      </tbody>
+    </table>
+  </div>
+</div>
+
+<!-- TIPPS -->
+<div class="sh" id="tipps">
+  <div class="sh-dot" style="background:var(--text)"></div>
+  <div class="sh-title">Lerntipps</div>
+  <div class="sh-line"></div>
+</div>
+<div class="tips-grid">
+  <div class="tip-box">
+    <span class="tip-icon">🔑</span>
+    <div class="tip-title">Die einfachste Regel</div>
+    <div class="tip-body"><strong>Modalverb → kein zu</strong><br><em>ich muss gehen · ich kann kommen</em><br><br><strong>Alle anderen → meist zu</strong><br><em>ich versuche zu gehen · ich hoffe zu kommen</em></div>
+  </div>
+  <div class="tip-box">
+    <span class="tip-icon">✂️</span>
+    <div class="tip-title">Trennbare Verben — Eselsbrücke</div>
+    <div class="tip-body">Stell dir vor: das <strong>zu</strong> drückt sich zwischen Präfix und Stamm:<br><br><code>auf + zu + stehen = aufzustehen</code><br><code>an + zu + rufen = anzurufen</code><br><br>Alles in <strong>einem Wort!</strong></div>
+  </div>
+  <div class="tip-box">
+    <span class="tip-icon">📌</span>
+    <div class="tip-title">Komma nicht vergessen</div>
+    <div class="tip-body">Vor dem Infinitivsatz mit zu steht <strong>immer ein Komma</strong>:<br><br><em>Ich versuche<strong>,</strong> früh aufzustehen.</em><br><em>Es ist schön<strong>,</strong> hier zu sein.</em><br><br>Das Komma trennt Haupt- und Infinitivsatz.</div>
+  </div>
+  <div class="tip-box">
+    <span class="tip-icon">🔄</span>
+    <div class="tip-title">zu steht vor dem Infinitiv</div>
+    <div class="tip-body">Das <strong>zu</strong> steht direkt vor dem Infinitiv — nicht vor dem ganzen Satz:<br><br>❌ <em>zu früh aufstehen</em><br>✅ <em>früh <strong>aufzustehen</strong></em><br><br>Andere Wörter kommen <strong>vor</strong> dem zu+Infinitiv.</div>
+  </div>
+</div>
+
+<div class="footer">
+  <div class="footer-brand">Spiel Deutsch</div>
+  <div class="footer-credit">by ❤️ Mostafa Toumi</div>
+</div>
+
+<script>
+function toggle(hdr){
+  const body=hdr.nextElementSibling;
+  const arrow=hdr.querySelector('span:last-child');
+  const isOpen=body.classList.toggle('open');
+  arrow.textContent=isOpen?'▾':'▸';
+}
+
+// Sticky nav
+const IDS=['was','formel','regeln','vollverben','adjektive','nomen','kein-zu','trennbar','vergleich','tipps'];
+const btns=document.querySelectorAll('.snb');
+function upd(){
+  let a=IDS[0];
+  IDS.forEach(id=>{const el=document.getElementById(id);if(el&&el.getBoundingClientRect().top<=80)a=id;});
+  btns.forEach(b=>b.classList.toggle('active',b.getAttribute('href')==='#'+a));
+}
+window.addEventListener('scroll',upd,{passive:true});upd();
+</script>
+</body>
+</html>

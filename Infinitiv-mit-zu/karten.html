@@ -1,0 +1,213 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<title>Infinitiv mit zu — Lernkarten</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=DM+Sans:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --bg:#F7F4EF;--surface:#fff;--text:#1C1917;--muted:#78716C;--hint:#A8A29E;
+  --c:#0891B2;--cl:#E0F2FE;--ct:#0C4A6E;--cb:#7DD3FC;
+  --green:#1D9E75;--greenl:#E1F5EE;--greent:#0F6E56;
+  --red:#D85A30;--redl:#FAECE7;--redt:#993C1D;
+  --border:rgba(28,25,23,0.1);--bm:rgba(28,25,23,0.15);
+  --r:16px;--rs:12px;--sh:0 2px 12px rgba(28,25,23,0.07);--shc:0 8px 32px rgba(28,25,23,0.12)
+}
+html,body{min-height:100%;background:var(--bg);font-family:'DM Sans',sans-serif;color:var(--text);-webkit-font-smoothing:antialiased}
+body{display:flex;flex-direction:column;align-items:center;padding-bottom:32px}
+.hdr{width:100%;max-width:560px;padding:20px 20px 0;display:flex;justify-content:space-between;align-items:flex-start}
+.title{font-family:'DM Serif Display',serif;font-size:clamp(18px,5vw,24px)}
+.subtitle{font-size:12px;color:var(--muted);margin-top:3px}
+.counter{font-size:13px;color:var(--muted);margin-top:4px;white-space:nowrap}
+.prog-wrap{width:100%;max-width:560px;padding:10px 20px 0}
+.prog-meta{display:flex;justify-content:space-between;font-size:12px;color:var(--muted);margin-bottom:6px}
+.prog-bar{height:4px;background:var(--border);border-radius:4px;overflow:hidden}
+.prog-fill{height:100%;background:var(--c);border-radius:4px;transition:width .4s}
+.filters{width:100%;max-width:560px;padding:10px 20px 0;overflow-x:auto;scrollbar-width:none}
+.filters::-webkit-scrollbar{display:none}
+.filter-row{display:flex;gap:7px;width:max-content}
+.fb{padding:5px 13px;border-radius:20px;border:1px solid var(--bm);font-family:'DM Sans',sans-serif;font-size:12px;font-weight:500;cursor:pointer;background:var(--surface);color:var(--muted);transition:all .15s;-webkit-tap-highlight-color:transparent;white-space:nowrap}
+.fb.active{background:var(--text);color:var(--bg);border-color:var(--text)}
+/* card */
+.card-area{width:100%;max-width:560px;padding:12px 20px 0;display:flex;flex-direction:column}
+.card-wrap{perspective:1000px;height:clamp(250px,55vw,310px);cursor:pointer;-webkit-tap-highlight-color:transparent;user-select:none}
+.card{width:100%;height:100%;position:relative;transform-style:preserve-3d;transition:transform .52s cubic-bezier(.4,0,.2,1)}
+.card.flipped{transform:rotateY(180deg)}
+.face{position:absolute;inset:0;backface-visibility:hidden;-webkit-backface-visibility:hidden;border-radius:var(--r);background:var(--surface);box-shadow:var(--shc);display:flex;flex-direction:column;align-items:center;justify-content:center;padding:20px 24px;gap:8px;border:1px solid var(--border);text-align:center}
+.back{transform:rotateY(180deg)}
+.f-label{font-size:10px;font-weight:600;letter-spacing:1.2px;text-transform:uppercase;color:var(--hint)}
+.f-verb{font-family:'DM Serif Display',serif;font-size:clamp(22px,6vw,32px);color:var(--text);line-height:1.2}
+.f-ar{font-size:14px;color:var(--muted);direction:rtl}
+.f-hint{font-size:11px;color:var(--hint)}
+.f-group-badge{padding:5px 14px;border-radius:20px;font-size:12px;font-weight:600}
+.f-formula{font-family:'DM Serif Display',serif;font-size:clamp(16px,4.5vw,22px);color:var(--ct);background:var(--cl);border:1px solid var(--cb);border-radius:var(--rs);padding:8px 18px;max-width:100%;text-align:center;line-height:1.5}
+.f-formula .hz{color:var(--ct);font-weight:700}
+.f-formula .hv{color:var(--greent);font-style:italic}
+.f-formula .ht{color:#5B21B6;font-weight:700}
+.f-ex{font-size:13px;color:var(--muted);font-style:italic;max-width:290px;line-height:1.5}
+.f-kazu{font-size:11px;font-weight:600;padding:3px 10px;border-radius:20px;background:#FEF2F2;color:#7F1D1D;border:1px solid #FCA5A5}
+/* btns */
+.btns{display:flex;gap:10px;margin-top:12px}
+.btn{flex:1;padding:13px;border-radius:var(--rs);border:1px solid var(--bm);background:var(--surface);color:var(--text);font-family:'DM Sans',sans-serif;font-size:14px;font-weight:500;cursor:pointer;transition:all .15s;-webkit-tap-highlight-color:transparent;box-shadow:var(--sh)}
+.btn:active{transform:scale(.97)}
+.btn.wrong{border-color:var(--red);color:var(--redt);background:var(--redl)}
+.btn.correct{border-color:var(--green);color:var(--greent);background:var(--greenl)}
+.btn.flip{background:var(--text);color:var(--bg);border-color:var(--text)}
+.stats{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin-top:12px}
+.stat{background:var(--surface);border:1px solid var(--border);border-radius:var(--rs);padding:12px 8px;text-align:center;box-shadow:var(--sh)}
+.stat-n{font-family:'DM Serif Display',serif;font-size:24px;line-height:1}
+.stat-l{font-size:10px;font-weight:600;letter-spacing:.5px;text-transform:uppercase;color:var(--hint);margin-top:3px}
+.done{text-align:center;padding:40px 20px;display:flex;flex-direction:column;align-items:center;gap:12px}
+.done h2{font-family:'DM Serif Display',serif;font-size:28px}
+.restart{padding:13px 32px;border-radius:var(--rs);background:var(--text);color:var(--bg);font-family:'DM Sans',sans-serif;font-size:15px;font-weight:500;border:none;cursor:pointer}
+.footer{padding:20px 0 8px;font-size:11px;font-weight:600;letter-spacing:2px;text-transform:uppercase;color:var(--hint);text-align:center;width:100%}
+</style>
+</head>
+<body>
+<div class="hdr">
+  <div><div class="title">Infinitiv mit zu</div><div class="subtitle">Verb → zu-Formel + Beispiel</div></div>
+  <span class="counter" id="counter">1 / 44</span>
+</div>
+<div class="prog-wrap">
+  <div class="prog-meta"><span id="prog-lbl">0%</span><span id="prog-done">0 fertig</span></div>
+  <div class="prog-bar"><div class="prog-fill" id="prog" style="width:0%"></div></div>
+</div>
+<div class="filters">
+  <div class="filter-row">
+    <button class="fb active" onclick="setFilter('all',this)">Alle</button>
+    <button class="fb" onclick="setFilter('mit-zu',this)">+ zu</button>
+    <button class="fb" onclick="setFilter('kein-zu',this)">Kein zu ❌</button>
+    <button class="fb" onclick="setFilter('trennbar',this)">Trennbar</button>
+    <button class="fb" onclick="setFilter('adjektiv',this)">Adjektive</button>
+    <button class="fb" onclick="setFilter('nomen',this)">Nomen</button>
+  </div>
+</div>
+<div class="card-area" id="card-area">
+  <div class="card-wrap" onclick="flipCard()">
+    <div class="card" id="card">
+      <div class="face front">
+        <div class="f-label">Verb / Ausdruck</div>
+        <div class="f-verb" id="f-verb">versuchen</div>
+        <div class="f-ar" id="f-ar">يحاول</div>
+        <div class="f-hint" id="f-hint">Mit zu oder kein zu?</div>
+      </div>
+      <div class="face back">
+        <div class="f-label">Formel + Beispiel</div>
+        <div class="f-group-badge" id="b-badge">mit zu</div>
+        <div class="f-formula" id="b-formula">… <span class="hz">zu</span> <span class="hv">machen</span></div>
+        <div class="f-ex" id="b-ex">Er versucht, das Problem zu lösen.</div>
+        <div class="f-ar" id="b-ar">يحاول</div>
+      </div>
+    </div>
+  </div>
+  <div class="btns" id="btns" style="display:none">
+    <button class="btn wrong" onclick="answer(false)">✗ nochmal</button>
+    <button class="btn correct" onclick="answer(true)">✓ gewusst</button>
+  </div>
+  <div class="btns" id="flipbtn">
+    <button class="btn flip" onclick="flipCard()">Antwort zeigen ↩</button>
+  </div>
+  <div class="stats">
+    <div class="stat"><div class="stat-n" id="s-c" style="color:var(--green)">0</div><div class="stat-l">Gewusst</div></div>
+    <div class="stat"><div class="stat-n" id="s-w" style="color:var(--red)">0</div><div class="stat-l">Nochmal</div></div>
+    <div class="stat"><div class="stat-n" id="s-l">44</div><div class="stat-l">Verbleibend</div></div>
+  </div>
+</div>
+<div class="footer">by ❤️ Mostafa Toumi</div>
+<script>
+// type: 'mit-zu' | 'kein-zu' | 'trennbar' | 'adjektiv' | 'nomen'
+const ALL=[
+  // ── MIT ZU ──
+  {v:"versuchen",     t:"mit-zu",   ar:"يحاول",        formula:"versuchen, … <b>zu</b> <i>tun</i>",    ex:"Er versucht, das Problem zu lösen.",  badge:{bg:"#E0F2FE",c:"#0C4A6E",txt:"+ zu"}},
+  {v:"hoffen",        t:"mit-zu",   ar:"يأمل في",       formula:"hoffen, … <b>zu</b> <i>kommen</i>",    ex:"Ich hoffe, dich bald zu sehen.",      badge:{bg:"#E0F2FE",c:"#0C4A6E",txt:"+ zu"}},
+  {v:"vergessen",     t:"mit-zu",   ar:"ينسى",          formula:"vergessen, … <b>zu</b> <i>machen</i>", ex:"Ich vergesse, das Licht auszumachen.", badge:{bg:"#E0F2FE",c:"#0C4A6E",txt:"+ zu"}},
+  {v:"beschließen",   t:"mit-zu",   ar:"يقرر",          formula:"beschließen, … <b>zu</b> <i>tun</i>",  ex:"Ich beschließe, früher aufzustehen.", badge:{bg:"#E0F2FE",c:"#0C4A6E",txt:"+ zu"}},
+  {v:"versprechen",   t:"mit-zu",   ar:"يعد بـ",        formula:"versprechen, … <b>zu</b> <i>sein</i>", ex:"Er verspricht, pünktlich zu sein.",   badge:{bg:"#E0F2FE",c:"#0C4A6E",txt:"+ zu"}},
+  {v:"planen",        t:"mit-zu",   ar:"يخطط لـ",       formula:"planen, … <b>zu</b> <i>fahren</i>",    ex:"Wir planen, nach Berlin zu fahren.",  badge:{bg:"#E0F2FE",c:"#0C4A6E",txt:"+ zu"}},
+  {v:"anfangen",      t:"mit-zu",   ar:"يشرع في",       formula:"anfangen, … <b>zu</b> <i>lernen</i>",  ex:"Sie fängt an, Deutsch zu lernen.",    badge:{bg:"#E0F2FE",c:"#0C4A6E",txt:"+ zu"}},
+  {v:"aufhören",      t:"mit-zu",   ar:"يتوقف عن",      formula:"aufhören, … <b>zu</b> <i>sein</i>",    ex:"Hör auf, so laut zu sein!",           badge:{bg:"#E0F2FE",c:"#0C4A6E",txt:"+ zu"}},
+  {v:"bitten",        t:"mit-zu",   ar:"يطلب من شخص أن",formula:"bitten + Obj., … <b>zu</b> <i>helfen</i>",ex:"Ich bitte dich, pünktlich zu sein.", badge:{bg:"#E0F2FE",c:"#0C4A6E",txt:"+ zu"}},
+  {v:"erlauben",      t:"mit-zu",   ar:"يسمح بأن",      formula:"erlauben + Obj., … <b>zu</b> <i>spielen</i>",ex:"Sie erlaubt ihm, draußen zu spielen.", badge:{bg:"#E0F2FE",c:"#0C4A6E",txt:"+ zu"}},
+  {v:"empfehlen",     t:"mit-zu",   ar:"ينصح بأن",      formula:"empfehlen + Obj., … <b>zu</b> <i>schlafen</i>",ex:"Ich empfehle dir, früh aufzustehen.", badge:{bg:"#E0F2FE",c:"#0C4A6E",txt:"+ zu"}},
+  {v:"sich weigern",  t:"mit-zu",   ar:"يرفض أن",       formula:"sich weigern, … <b>zu</b> <i>tun</i>", ex:"Sie weigert sich, das zu tun.",       badge:{bg:"#E0F2FE",c:"#0C4A6E",txt:"+ zu"}},
+  {v:"sich entscheiden",t:"mit-zu", ar:"يقرر",          formula:"sich entscheiden, … <b>zu</b> <i>bleiben</i>",ex:"Sie entscheidet sich, zu bleiben.", badge:{bg:"#E0F2FE",c:"#0C4A6E",txt:"+ zu"}},
+  {v:"drohen",        t:"mit-zu",   ar:"يهدد بأن",      formula:"drohen, … <b>zu</b> <i>rufen</i>",     ex:"Er droht, die Polizei zu rufen.",     badge:{bg:"#E0F2FE",c:"#0C4A6E",txt:"+ zu"}},
+  {v:"sich freuen",   t:"mit-zu",   ar:"يسعد بـ",       formula:"sich freuen, … <b>zu</b> <i>treffen</i>",ex:"Ich freue mich, dich zu treffen.",  badge:{bg:"#E0F2FE",c:"#0C4A6E",txt:"+ zu"}},
+  // ── TRENNBAR ──
+  {v:"aufstehen",     t:"trennbar", ar:"ينهض",          formula:"versuchen, früh <b style='color:#5B21B6'>auf</b><b>zu</b><i>stehen</i>", ex:"Er versucht, früh aufzustehen.",     badge:{bg:"#EDE9FE",c:"#5B21B6",txt:"Trennbar"}},
+  {v:"anrufen",       t:"trennbar", ar:"يتصل",          formula:"versprechen, … <b style='color:#5B21B6'>an</b><b>zu</b><i>rufen</i>",   ex:"Er verspricht, mich anzurufen.",     badge:{bg:"#EDE9FE",c:"#5B21B6",txt:"Trennbar"}},
+  {v:"einkaufen",     t:"trennbar", ar:"يتسوق",         formula:"Lust haben, <b style='color:#5B21B6'>ein</b><b>zu</b><i>kaufen</i>",    ex:"Ich habe Lust, einzukaufen.",        badge:{bg:"#EDE9FE",c:"#5B21B6",txt:"Trennbar"}},
+  {v:"aufmachen",     t:"trennbar", ar:"يفتح",          formula:"vergessen, … <b style='color:#5B21B6'>auf</b><b>zu</b><i>machen</i>",   ex:"Vergiss nicht, das Fenster aufzumachen.", badge:{bg:"#EDE9FE",c:"#5B21B6",txt:"Trennbar"}},
+  {v:"ausmachen",     t:"trennbar", ar:"يطفئ",          formula:"vergessen, … <b style='color:#5B21B6'>aus</b><b>zu</b><i>machen</i>",   ex:"Ich vergesse, das Licht auszumachen.", badge:{bg:"#EDE9FE",c:"#5B21B6",txt:"Trennbar"}},
+  {v:"aufräumen",     t:"trennbar", ar:"يرتب",          formula:"versprechen, … <b style='color:#5B21B6'>auf</b><b>zu</b><i>räumen</i>", ex:"Er verspricht, sein Zimmer aufzuräumen.", badge:{bg:"#EDE9FE",c:"#5B21B6",txt:"Trennbar"}},
+  {v:"einschlafen",   t:"trennbar", ar:"يغفو",          formula:"es ist schwer, … <b style='color:#5B21B6'>ein</b><b>zu</b><i>schlafen</i>",ex:"Es ist schwer, einzuschlafen.",   badge:{bg:"#EDE9FE",c:"#5B21B6",txt:"Trennbar"}},
+  {v:"abschließen",   t:"trennbar", ar:"يُتم",          formula:"planen, … <b style='color:#5B21B6'>ab</b><b>zu</b><i>schließen</i>",   ex:"Er plant, das Studium abzuschließen.", badge:{bg:"#EDE9FE",c:"#5B21B6",txt:"Trennbar"}},
+  // ── KEIN ZU ──
+  {v:"müssen",        t:"kein-zu",  ar:"يجب (modal)",   formula:"müssen + Infinitiv <b style='color:#7F1D1D'>OHNE zu</b>",              ex:"Ich muss gehen. (kein zu!)",          badge:{bg:"#FEF2F2",c:"#7F1D1D",txt:"KEIN zu ❌"}},
+  {v:"können",        t:"kein-zu",  ar:"يستطيع (modal)", formula:"können + Infinitiv <b style='color:#7F1D1D'>OHNE zu</b>",             ex:"Er kann schwimmen.",                  badge:{bg:"#FEF2F2",c:"#7F1D1D",txt:"KEIN zu ❌"}},
+  {v:"wollen",        t:"kein-zu",  ar:"يريد (modal)",  formula:"wollen + Infinitiv <b style='color:#7F1D1D'>OHNE zu</b>",              ex:"Ich will schlafen.",                  badge:{bg:"#FEF2F2",c:"#7F1D1D",txt:"KEIN zu ❌"}},
+  {v:"dürfen",        t:"kein-zu",  ar:"مسموح (modal)", formula:"dürfen + Infinitiv <b style='color:#7F1D1D'>OHNE zu</b>",              ex:"Du darfst bleiben.",                  badge:{bg:"#FEF2F2",c:"#7F1D1D",txt:"KEIN zu ❌"}},
+  {v:"sollen",        t:"kein-zu",  ar:"يجب (auftrag)", formula:"sollen + Infinitiv <b style='color:#7F1D1D'>OHNE zu</b>",              ex:"Er soll kommen.",                     badge:{bg:"#FEF2F2",c:"#7F1D1D",txt:"KEIN zu ❌"}},
+  {v:"möchten",       t:"kein-zu",  ar:"يود (modal)",   formula:"möchten + Infinitiv <b style='color:#7F1D1D'>OHNE zu</b>",             ex:"Ich möchte essen.",                   badge:{bg:"#FEF2F2",c:"#7F1D1D",txt:"KEIN zu ❌"}},
+  {v:"sehen / hören", t:"kein-zu",  ar:"يرى / يسمع",   formula:"sehen + Obj. + Infinitiv <b style='color:#7F1D1D'>OHNE zu</b>",        ex:"Ich sehe ihn kommen.",                badge:{bg:"#FEF2F2",c:"#7F1D1D",txt:"KEIN zu ❌"}},
+  {v:"lassen",        t:"kein-zu",  ar:"يترك / يجعل",  formula:"lassen + Obj. + Infinitiv <b style='color:#7F1D1D'>OHNE zu</b>",       ex:"Ich lasse ihn schlafen.",             badge:{bg:"#FEF2F2",c:"#7F1D1D",txt:"KEIN zu ❌"}},
+  {v:"gehen + Inf.",  t:"kein-zu",  ar:"يذهب للـ",     formula:"gehen + Infinitiv <b style='color:#7F1D1D'>OHNE zu</b>",               ex:"Ich gehe schwimmen.",                 badge:{bg:"#FEF2F2",c:"#7F1D1D",txt:"KEIN zu ❌"}},
+  {v:"bleiben + Inf.",t:"kein-zu",  ar:"يبقى + حال",   formula:"bleiben + Infinitiv <b style='color:#7F1D1D'>OHNE zu</b>",             ex:"Er bleibt sitzen.",                   badge:{bg:"#FEF2F2",c:"#7F1D1D",txt:"KEIN zu ❌"}},
+  // ── ADJEKTIV ──
+  {v:"Es ist wichtig, …",  t:"adjektiv",ar:"من المهم أن",   formula:"Es ist wichtig, … <b>zu</b> <i>sein</i>",   ex:"Es ist wichtig, pünktlich zu sein.",   badge:{bg:"#FCE7F3",c:"#831843",txt:"Adjektiv"}},
+  {v:"Es ist schön, …",    t:"adjektiv",ar:"من الجميل أن",  formula:"Es ist schön, … <b>zu</b> <i>sein</i>",     ex:"Es ist schön, hier zu sein.",          badge:{bg:"#FCE7F3",c:"#831843",txt:"Adjektiv"}},
+  {v:"Es ist schwer, …",   t:"adjektiv",ar:"من الصعب أن",   formula:"Es ist schwer, … <b>zu</b> <i>lernen</i>",  ex:"Es ist schwer, Deutsch zu lernen.",    badge:{bg:"#FCE7F3",c:"#831843",txt:"Adjektiv"}},
+  {v:"Es ist möglich, …",  t:"adjektiv",ar:"من الممكن أن",  formula:"Es ist möglich, … <b>zu</b> <i>ändern</i>", ex:"Es ist möglich, das zu ändern.",       badge:{bg:"#FCE7F3",c:"#831843",txt:"Adjektiv"}},
+  {v:"Es ist verboten, …", t:"adjektiv",ar:"ممنوع أن",      formula:"Es ist verboten, … <b>zu</b> <i>rauchen</i>",ex:"Es ist verboten, hier zu rauchen.",   badge:{bg:"#FCE7F3",c:"#831843",txt:"Adjektiv"}},
+  {v:"Ich bin froh, …",    t:"adjektiv",ar:"سعيد لأنني",    formula:"Ich bin froh, … <b>zu</b> <i>sehen</i>",    ex:"Ich bin froh, dich zu sehen.",         badge:{bg:"#FCE7F3",c:"#831843",txt:"Adjektiv"}},
+  {v:"Ich bin bereit, …",  t:"adjektiv",ar:"مستعد لأن",     formula:"Ich bin bereit, … <b>zu</b> <i>helfen</i>", ex:"Ich bin bereit, dir zu helfen.",       badge:{bg:"#FCE7F3",c:"#831843",txt:"Adjektiv"}},
+  // ── NOMEN ──
+  {v:"Zeit haben, …",      t:"nomen",   ar:"لديه وقت لـ",   formula:"keine Zeit haben, … <b>zu</b> <i>gehen</i>", ex:"Ich habe keine Zeit, ins Kino zu gehen.", badge:{bg:"#FEF3C7",c:"#92400E",txt:"Nomen"}},
+  {v:"Lust haben, …",      t:"nomen",   ar:"لديه رغبة في",  formula:"Lust haben, … <b>zu</b> <i>gehen</i>",       ex:"Hast du Lust, spazieren zu gehen?",    badge:{bg:"#FEF3C7",c:"#92400E",txt:"Nomen"}},
+  {v:"Angst haben, …",     t:"nomen",   ar:"يخاف من أن",    formula:"Angst haben, … <b>zu</b> <i>sein</i>",        ex:"Er hat Angst, allein zu sein.",        badge:{bg:"#FEF3C7",c:"#92400E",txt:"Nomen"}},
+  {v:"Spaß machen, …",     t:"nomen",   ar:"ممتع أن",       formula:"Spaß machen, … <b>zu</b> <i>lernen</i>",      ex:"Es macht Spaß, Deutsch zu lernen.",    badge:{bg:"#FEF3C7",c:"#92400E",txt:"Nomen"}},
+];
+
+let deck=[],idx=0,correct=0,wrong=0,flipped=false,filter='all';
+
+function setFilter(f,btn){filter=f;document.querySelectorAll('.fb').forEach(b=>b.classList.remove('active'));btn.classList.add('active');resetDeck();}
+function resetDeck(){
+  deck=(filter==='all'?[...ALL]:ALL.filter(x=>x.t===filter)).sort(()=>Math.random()-.5);
+  idx=0;correct=0;wrong=0;flipped=false;
+  document.getElementById('card').classList.remove('flipped');
+  document.getElementById('btns').style.display='none';
+  document.getElementById('flipbtn').style.display='';
+  updateStats();showCard();
+}
+function showCard(){
+  if(idx>=deck.length){showDone();return;}
+  const c=deck[idx];
+  document.getElementById('f-verb').textContent=c.v;
+  document.getElementById('f-ar').textContent=c.ar;
+  document.getElementById('f-hint').textContent=c.t==='kein-zu'?'Mit zu oder kein zu?':'Wie lautet die Formel?';
+  document.getElementById('b-badge').textContent=c.badge.txt;
+  document.getElementById('b-badge').style.cssText=`background:${c.badge.bg};color:${c.badge.c}`;
+  document.getElementById('b-formula').innerHTML=c.formula;
+  document.getElementById('b-ex').textContent=c.ex;
+  document.getElementById('b-ar').textContent=c.ar;
+  const total=deck.length;
+  document.getElementById('counter').textContent=(idx+1)+' / '+total;
+  document.getElementById('prog-lbl').textContent=Math.round(idx/total*100)+'%';
+  document.getElementById('prog-done').textContent=idx+' fertig';
+  document.getElementById('prog').style.width=(idx/total*100)+'%';
+  flipped=false;
+  document.getElementById('card').classList.remove('flipped');
+  document.getElementById('btns').style.display='none';
+  document.getElementById('flipbtn').style.display='';
+}
+function flipCard(){if(flipped)return;flipped=true;document.getElementById('card').classList.add('flipped');setTimeout(()=>{document.getElementById('btns').style.display='';document.getElementById('flipbtn').style.display='none';},260);}
+function answer(ok){if(ok)correct++;else{wrong++;deck.push(deck[idx]);}idx++;updateStats();showCard();}
+function updateStats(){document.getElementById('s-c').textContent=correct;document.getElementById('s-w').textContent=wrong;document.getElementById('s-l').textContent=Math.max(0,deck.length-idx);}
+function showDone(){const pct=Math.round(correct/(correct+wrong)*100)||0;document.getElementById('card-area').innerHTML=`<div class="done"><div style="font-size:48px">${pct>=80?'🎉':pct>=50?'💪':'📚'}</div><h2>Geschafft!</h2><p style="color:var(--muted);font-size:14px">${correct} gewusst · ${wrong} nochmal · ${pct}%</p><button class="restart" onclick="location.reload()">Nochmal ↺</button></div>`;}
+resetDeck();
+</script>
+</body>
+</html>
