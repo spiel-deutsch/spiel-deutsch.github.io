@@ -5,7 +5,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Spiel Deutsch — Lern Deutsch spielend</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
-<link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=DM+Sans:wght@400;500;600&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=DM+Sans:ital,wght@0,400;0,500;0,600;1,400&display=swap" rel="stylesheet">
 <style>
 *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
 :root{
@@ -21,30 +21,55 @@
   --wfr:#0F766E;--wfrl:#CCFBF1;--wfrt:#134E4A;--wfrb:#5EEAD4;
   --prf:#7C3AED;--prfl:#EDE9FE;--prft:#5B21B6;--prfb:#C4B5FD;
   --poZ:#0F766E;--poZl:#CCFBF1;--poZt:#134E4A;--poZb:#5EEAD4;
+  --imz:#0891B2;--imzl:#E0F2FE;--imzt:#0C4A6E;--imzb:#7DD3FC;
   --amber:#B45309;--amberl:#FEF3C7;--amberb:#F59E0B;
   --border:rgba(28,25,23,0.10);--bm:rgba(28,25,23,0.15);
-  --r:16px;--rs:12px;--sh:0 2px 16px rgba(28,25,23,0.08);--shc:0 8px 40px rgba(28,25,23,0.10)
+  --r:16px;--rs:12px;--sh:0 2px 16px rgba(28,25,23,0.08);--shc:0 4px 24px rgba(28,25,23,0.09)
 }
 html,body{min-height:100%;background:var(--bg);font-family:'DM Sans',sans-serif;color:var(--text);-webkit-font-smoothing:antialiased}
 body{display:flex;flex-direction:column;align-items:center}
 
-.hero{width:100%;max-width:640px;padding:clamp(48px,12vw,96px) 24px 0;text-align:center}
+/* ── Hero ── */
+.hero{width:100%;max-width:680px;padding:clamp(48px,12vw,88px) 24px 0;text-align:center}
 .hero-tag{display:inline-block;font-size:11px;font-weight:600;letter-spacing:2px;text-transform:uppercase;color:var(--greent);background:var(--greenl);border:1px solid var(--green);border-radius:20px;padding:4px 14px;margin-bottom:20px}
-.hero-title{font-family:'DM Serif Display',serif;font-size:clamp(40px,10vw,68px);line-height:1.05;letter-spacing:-1.5px}
+.hero-title{font-family:'DM Serif Display',serif;font-size:clamp(38px,9vw,64px);line-height:1.06;letter-spacing:-1.5px}
 .hero-title em{font-style:italic;color:var(--green)}
-.hero-sub{font-size:clamp(15px,3.5vw,17px);color:var(--muted);margin:18px auto 0;line-height:1.65;max-width:380px}
-.dots{display:flex;justify-content:center;gap:6px;margin-top:32px}
-.dot{width:6px;height:6px;border-radius:50%;background:var(--bm)}
-.dot.active{background:var(--green)}
+.hero-sub{font-size:clamp(14px,3vw,16px);color:var(--muted);margin:16px auto 0;line-height:1.7;max-width:360px}
 
-.section-label{width:100%;max-width:640px;padding:clamp(36px,8vw,56px) 24px 0;display:flex;align-items:center;gap:12px;scroll-margin-top:20px}
+/* Stats row */
+.hero-stats{display:flex;justify-content:center;gap:0;margin:28px auto 0;max-width:360px;border:1px solid var(--border);border-radius:var(--r);overflow:hidden;background:var(--surface);box-shadow:var(--shc)}
+.stat-item{flex:1;padding:14px 8px;text-align:center;position:relative}
+.stat-item+.stat-item::before{content:'';position:absolute;left:0;top:20%;height:60%;width:1px;background:var(--border)}
+.stat-num{font-family:'DM Serif Display',serif;font-size:22px;color:var(--text);line-height:1}
+.stat-lbl{font-size:10px;font-weight:600;letter-spacing:1px;text-transform:uppercase;color:var(--hint);margin-top:4px}
+
+/* ── Chapter header ── */
+.chapter-header{width:100%;max-width:680px;padding:clamp(40px,8vw,60px) 24px 0}
+.ch-inner{display:flex;align-items:center;gap:14px}
+.ch-num{font-size:11px;font-weight:600;letter-spacing:2px;text-transform:uppercase;color:var(--hint);flex-shrink:0;width:24px;text-align:right}
+.ch-line-left{width:20px;height:1px;background:var(--border);flex-shrink:0}
+.ch-body{flex:1}
+.ch-title{font-family:'DM Serif Display',serif;font-size:clamp(18px,4vw,22px);color:var(--text);line-height:1.2}
+.ch-subtitle{font-size:12px;color:var(--hint);margin-top:3px;font-weight:500;letter-spacing:.5px}
+.ch-line-right{flex:1;height:1px;background:var(--border)}
+.ch-level{font-size:10px;font-weight:600;letter-spacing:1.5px;text-transform:uppercase;padding:3px 10px;border-radius:20px;flex-shrink:0;white-space:nowrap}
+.lv-a1{background:#DCFCE7;color:#15803D;border:1px solid #86EFAC}
+.lv-a2{background:#FEF9C3;color:#854D0E;border:1px solid #FDE047}
+.lv-b1{background:#DBEAFE;color:#1D4ED8;border:1px solid #93C5FD}
+.lv-b2{background:#F3E8FF;color:#7E22CE;border:1px solid #D8B4FE}
+.lv-soon{background:var(--bg);color:var(--hint);border:1px solid var(--border)}
+
+/* Section label (inside chapter — for multiple sections per chapter) */
+.section-label{width:100%;max-width:680px;padding:20px 24px 0;display:flex;align-items:center;gap:10px;scroll-margin-top:20px}
+.sl-num{font-size:10px;font-weight:600;color:var(--hint);letter-spacing:1px;flex-shrink:0}
 .sl-text{font-size:11px;font-weight:600;letter-spacing:1.5px;text-transform:uppercase;color:var(--hint);white-space:nowrap}
 .sl-line{flex:1;height:1px;background:var(--border)}
 
-.ref-card{width:100%;max-width:640px;padding:10px 24px 0}
-.ref-link{display:flex;align-items:center;justify-content:space-between;background:var(--surface);border:1px solid var(--border);border-radius:var(--r);box-shadow:var(--shc);padding:16px 20px;text-decoration:none;color:inherit;transition:transform .2s,box-shadow .2s;position:relative;overflow:hidden;-webkit-tap-highlight-color:transparent}
+/* ── Overview card ── */
+.ref-card{width:100%;max-width:680px;padding:10px 24px 0}
+.ref-link{display:flex;align-items:center;justify-content:space-between;background:var(--surface);border:1px solid var(--border);border-radius:var(--r);box-shadow:var(--shc);padding:15px 18px;text-decoration:none;color:inherit;transition:transform .2s,box-shadow .2s;position:relative;overflow:hidden;-webkit-tap-highlight-color:transparent}
 .ref-link::before{content:'';position:absolute;top:0;left:0;right:0;height:3px;transform:scaleX(0);transform-origin:left;transition:transform .25s cubic-bezier(.4,0,.2,1)}
-.ref-link:hover{transform:translateY(-2px);box-shadow:0 16px 48px rgba(28,25,23,0.13)}
+.ref-link:hover{transform:translateY(-2px);box-shadow:0 12px 40px rgba(28,25,23,0.13)}
 .ref-link:hover::before{transform:scaleX(1)}
 .ref-link.c-green::before{background:var(--green)}
 .ref-link.c-gen::before{background:var(--gen)}
@@ -56,10 +81,11 @@ body{display:flex;flex-direction:column;align-items:center}
 .ref-link.c-wfr::before{background:var(--wfr)}
 .ref-link.c-prf::before{background:var(--prf)}
 .ref-link.c-poZ::before{background:var(--poZ)}
+.ref-link.c-imz::before{background:var(--imz)}
 .ref-left{display:flex;align-items:center;gap:14px}
-.ref-icon{font-size:24px;line-height:1}
-.ref-title{font-family:'DM Serif Display',serif;font-size:17px;line-height:1.2}
-.ref-desc{font-size:13px;color:var(--muted);margin-top:3px;line-height:1.4}
+.ref-icon{font-size:22px;line-height:1}
+.ref-title{font-family:'DM Serif Display',serif;font-size:16px;line-height:1.2}
+.ref-desc{font-size:12px;color:var(--muted);margin-top:3px;line-height:1.4}
 .ref-tag{font-size:10px;font-weight:600;letter-spacing:.8px;text-transform:uppercase;padding:3px 9px;border-radius:20px;white-space:nowrap;flex-shrink:0}
 .ref-tag.green{background:var(--greenl);color:var(--greent);border:1px solid var(--green)}
 .ref-tag.gen{background:var(--genl);color:var(--gent);border:1px solid var(--genb)}
@@ -71,11 +97,13 @@ body{display:flex;flex-direction:column;align-items:center}
 .ref-tag.wfr{background:var(--wfrl);color:var(--wfrt);border:1px solid var(--wfrb)}
 .ref-tag.prf{background:var(--prfl);color:var(--prft);border:1px solid var(--prfb)}
 .ref-tag.poZ{background:var(--poZl);color:var(--poZt);border:1px solid var(--poZb)}
+.ref-tag.imz{background:var(--imzl);color:var(--imzt);border:1px solid var(--imzb)}
 
-.cards-grid{width:100%;max-width:640px;padding:12px 24px 0;display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:12px}
-.game-card{background:var(--surface);border:1px solid var(--border);border-radius:var(--r);box-shadow:var(--shc);padding:22px;text-decoration:none;color:inherit;display:flex;flex-direction:column;gap:9px;transition:transform .2s,box-shadow .2s;-webkit-tap-highlight-color:transparent;position:relative;overflow:hidden}
+/* ── Activity cards ── */
+.cards-grid{width:100%;max-width:680px;padding:10px 24px 0;display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:10px}
+.game-card{background:var(--surface);border:1px solid var(--border);border-radius:var(--r);box-shadow:var(--shc);padding:20px;text-decoration:none;color:inherit;display:flex;flex-direction:column;gap:8px;transition:transform .2s,box-shadow .2s;-webkit-tap-highlight-color:transparent;position:relative;overflow:hidden}
 .game-card::before{content:'';position:absolute;top:0;left:0;right:0;height:3px;transform:scaleX(0);transform-origin:left;transition:transform .25s cubic-bezier(.4,0,.2,1)}
-.game-card:hover{transform:translateY(-3px);box-shadow:0 16px 48px rgba(28,25,23,0.13)}
+.game-card:hover{transform:translateY(-3px);box-shadow:0 14px 44px rgba(28,25,23,0.13)}
 .game-card:hover::before{transform:scaleX(1)}
 .game-card:active{transform:translateY(-1px)}
 .gc-green::before{background:var(--green)} .gc-green .card-cta{color:var(--greent)}
@@ -90,8 +118,9 @@ body{display:flex;flex-direction:column;align-items:center}
 .gc-wfr::before{background:var(--wfr)}   .gc-wfr .card-cta{color:var(--wfrt)}
 .gc-prf::before{background:var(--prf)}   .gc-prf .card-cta{color:var(--prft)}
 .gc-poZ::before{background:var(--poZ)}   .gc-poZ .card-cta{color:var(--poZt)}
-.card-icon{font-size:26px;line-height:1}
-.card-badge{position:absolute;top:14px;right:14px;font-size:10px;font-weight:600;letter-spacing:.8px;text-transform:uppercase;padding:3px 9px;border-radius:20px}
+.gc-imz::before{background:var(--imz)}   .gc-imz .card-cta{color:var(--imzt)}
+.card-icon{font-size:24px;line-height:1}
+.card-badge{position:absolute;top:12px;right:12px;font-size:10px;font-weight:600;letter-spacing:.8px;text-transform:uppercase;padding:3px 9px;border-radius:20px}
 .b-popular{background:var(--greenl);color:var(--greent);border:1px solid var(--green)}
 .b-new{background:var(--amberl);color:var(--amber);border:1px solid var(--amberb)}
 .b-hot{background:#FEE2E2;color:#991B1B;border:1px solid #F87171}
@@ -105,25 +134,40 @@ body{display:flex;flex-direction:column;align-items:center}
 .b-wfr{background:var(--wfrl);color:var(--wfrt);border:1px solid var(--wfrb)}
 .b-prf{background:var(--prfl);color:var(--prft);border:1px solid var(--prfb)}
 .b-poZ{background:var(--poZl);color:var(--poZt);border:1px solid var(--poZb)}
-.card-title{font-family:'DM Serif Display',serif;font-size:19px;color:var(--text);line-height:1.2}
-.card-desc{font-size:13px;color:var(--muted);line-height:1.5}
-.card-meta{display:flex;align-items:center;gap:7px;margin-top:3px;flex-wrap:wrap}
-.meta-pill{font-size:11px;font-weight:600;color:var(--hint);background:var(--bg);border:1px solid var(--border);border-radius:20px;padding:3px 10px}
-.card-cta{display:flex;align-items:center;gap:5px;font-size:13px;font-weight:600;margin-top:5px}
+.b-imz{background:var(--imzl);color:var(--imzt);border:1px solid var(--imzb)}
+.card-title{font-family:'DM Serif Display',serif;font-size:18px;color:var(--text);line-height:1.2}
+.card-desc{font-size:12px;color:var(--muted);line-height:1.5}
+.card-meta{display:flex;align-items:center;gap:6px;margin-top:2px;flex-wrap:wrap}
+.meta-pill{font-size:10px;font-weight:600;color:var(--hint);background:var(--bg);border:1px solid var(--border);border-radius:20px;padding:3px 9px}
+.card-cta{display:flex;align-items:center;gap:5px;font-size:12px;font-weight:600;margin-top:4px}
 .card-cta-arrow{transition:transform .2s}
 .game-card:hover .card-cta-arrow{transform:translateX(4px)}
 
-.footer{width:100%;max-width:640px;padding:clamp(40px,8vw,64px) 24px 32px;display:flex;flex-direction:column;align-items:center;gap:8px;text-align:center;border-top:1px solid var(--border);margin-top:clamp(40px,8vw,64px)}
+/* ── Coming Soon Block ── */
+.coming-soon-block{width:100%;max-width:680px;padding:10px 24px 0}
+.coming-soon-inner{border:2px dashed var(--border);border-radius:var(--r);padding:28px 24px;display:flex;flex-direction:column;align-items:center;gap:10px;text-align:center}
+.cs-icon{font-size:28px;opacity:.5}
+.cs-title{font-family:'DM Serif Display',serif;font-size:17px;color:var(--muted)}
+.cs-desc{font-size:12px;color:var(--hint);max-width:300px;line-height:1.6}
+.cs-tag{font-size:10px;font-weight:600;letter-spacing:1.5px;text-transform:uppercase;color:var(--hint);background:var(--bg);border:1px solid var(--border);border-radius:20px;padding:3px 10px}
+
+/* ── Chapter divider ── */
+.chapter-divider{width:100%;max-width:680px;margin:clamp(32px,6vw,48px) 24px 0;height:1px;background:linear-gradient(to right,transparent,var(--border) 20%,var(--border) 80%,transparent)}
+
+/* ── Footer ── */
+.footer{width:100%;max-width:680px;padding:clamp(40px,8vw,64px) 24px 36px;display:flex;flex-direction:column;align-items:center;gap:8px;text-align:center;border-top:1px solid var(--border);margin-top:clamp(48px,10vw,72px)}
 .footer-brand{font-family:'DM Serif Display',serif;font-size:18px}
 .footer-sub{font-size:12px;color:var(--hint)}
 .footer-credit{font-size:11px;font-weight:600;letter-spacing:2px;text-transform:uppercase;color:var(--hint);margin-top:4px}
-@media(max-width:420px){.cards-grid{grid-template-columns:1fr}}
+
+@media(max-width:440px){
+  .cards-grid{grid-template-columns:1fr}
+  .hero-stats{max-width:100%}
+}
 
 /* ═══════════════════════
    NAVIGATION SYSTEM
 ═══════════════════════ */
-
-/* Floating action button */
 .nav-fab{
   position:fixed;bottom:24px;right:20px;z-index:300;
   width:54px;height:54px;border-radius:50%;
@@ -135,8 +179,6 @@ body{display:flex;flex-direction:column;align-items:center}
 }
 .nav-fab:active{transform:scale(.92)}
 .nav-fab.open{background:var(--surface);color:var(--text);box-shadow:0 2px 12px rgba(28,25,23,0.15)}
-
-/* Backdrop */
 .nav-backdrop{
   position:fixed;inset:0;z-index:290;
   background:rgba(28,25,23,0.4);
@@ -146,8 +188,6 @@ body{display:flex;flex-direction:column;align-items:center}
   -webkit-backdrop-filter:blur(3px);
 }
 .nav-backdrop.open{opacity:1;pointer-events:all}
-
-/* Drawer — slides up from bottom */
 .nav-drawer{
   position:fixed;bottom:0;left:0;right:0;z-index:295;
   background:var(--surface);
@@ -160,158 +200,184 @@ body{display:flex;flex-direction:column;align-items:center}
   padding-bottom:env(safe-area-inset-bottom,0);
 }
 .nav-drawer.open{transform:translateY(0)}
-
-/* Handle bar */
-.drawer-handle{
-  width:40px;height:4px;border-radius:2px;background:var(--bm);
-  margin:12px auto 0;flex-shrink:0;
-}
-
-/* Drawer header */
-.drawer-header{
-  padding:12px 20px 12px;
-  display:flex;align-items:center;justify-content:space-between;
-  border-bottom:1px solid var(--border);flex-shrink:0;
-}
+.drawer-handle{width:40px;height:4px;border-radius:2px;background:var(--bm);margin:12px auto 0;flex-shrink:0}
+.drawer-header{padding:12px 20px 12px;display:flex;align-items:center;justify-content:space-between;border-bottom:1px solid var(--border);flex-shrink:0}
 .drawer-title{font-family:'DM Serif Display',serif;font-size:19px}
-
-/* Progress */
 .drawer-progress{padding:10px 20px 0;flex-shrink:0}
 .dp-row{display:flex;justify-content:space-between;font-size:11px;font-weight:600;color:var(--hint);margin-bottom:6px}
 .dp-track{height:4px;background:var(--border);border-radius:4px;overflow:hidden}
 .dp-fill{height:100%;background:var(--green);border-radius:4px;transition:width .4s cubic-bezier(.4,0,.2,1)}
-
-/* Scrollable list */
 .drawer-body{overflow-y:auto;flex:1;padding:6px 0 16px;scrollbar-width:none}
 .drawer-body::-webkit-scrollbar{display:none}
 
-/* Each item */
+/* Drawer chapter group */
+.drawer-chapter{padding:12px 20px 4px;display:flex;align-items:center;gap:10px}
+.dc-label{font-size:10px;font-weight:600;letter-spacing:1.5px;text-transform:uppercase;color:var(--hint)}
+.dc-line{flex:1;height:1px;background:var(--border)}
+.dc-lv{font-size:9px;font-weight:600;letter-spacing:1px;text-transform:uppercase;padding:2px 7px;border-radius:20px}
+
 .drawer-item{
   display:flex;align-items:center;gap:12px;
-  padding:11px 20px;width:100%;border:none;background:none;
+  padding:10px 20px;width:100%;border:none;background:none;
   text-align:left;cursor:pointer;text-decoration:none;color:inherit;
   transition:background .1s;-webkit-tap-highlight-color:transparent;
 }
+.drawer-item.disabled{pointer-events:none;opacity:.45}
 .drawer-item:active{background:var(--bg)}
 .drawer-item.active{background:rgba(28,25,23,0.04)}
-
-.di-num{
-  font-size:11px;font-weight:600;color:var(--hint);
-  width:20px;text-align:right;flex-shrink:0;
-}
+.di-num{font-size:11px;font-weight:600;color:var(--hint);width:20px;text-align:right;flex-shrink:0}
 .drawer-item.active .di-num{color:var(--text)}
-
-.di-pip{
-  width:10px;height:10px;border-radius:50%;flex-shrink:0;
-  transition:transform .2s;
-}
+.di-pip{width:10px;height:10px;border-radius:50%;flex-shrink:0;transition:transform .2s}
 .drawer-item.active .di-pip{transform:scale(1.3)}
-
-.di-label{
-  font-size:14px;font-weight:500;color:var(--muted);
-  flex:1;line-height:1.3;
-}
+.di-label{font-size:14px;font-weight:500;color:var(--muted);flex:1;line-height:1.3}
 .drawer-item.active .di-label{color:var(--text);font-weight:600}
-
-.di-check{
-  font-size:13px;color:var(--green);flex-shrink:0;
-  opacity:0;transition:opacity .2s;
-}
+.di-check{font-size:13px;color:var(--green);flex-shrink:0;opacity:0;transition:opacity .2s}
 .drawer-item.active .di-check{opacity:1}
-
-/* Separator */
+.di-soon{font-size:9px;font-weight:600;letter-spacing:1px;text-transform:uppercase;color:var(--hint);background:var(--bg);border:1px solid var(--border);border-radius:20px;padding:2px 7px;flex-shrink:0}
 .di-sep{height:1px;background:var(--border);margin:2px 20px}
-
-/* Counter badge next to title */
-.drawer-badge{
-  font-size:11px;font-weight:600;
-  background:var(--bg);border:1px solid var(--border);
-  border-radius:20px;padding:2px 9px;color:var(--hint);
-}
+.drawer-badge{font-size:11px;font-weight:600;background:var(--bg);border:1px solid var(--border);border-radius:20px;padding:2px 9px;color:var(--hint)}
 </style>
 </head>
 <body>
 
+<!-- ══ HERO ══ -->
 <div class="hero">
   <div class="hero-tag">Kostenlos &amp; Open Source</div>
   <h1 class="hero-title">Lern Deutsch<br><em>spielend.</em></h1>
   <p class="hero-sub">Interaktive Übungen und Spiele für Deutsch als Fremdsprache. Einfach, schnell, auf dem Handy.</p>
-  <div class="dots"><div class="dot active"></div><div class="dot"></div><div class="dot"></div></div>
+  <div class="hero-stats">
+    <div class="stat-item">
+      <div class="stat-num">12</div>
+      <div class="stat-lbl">Themen</div>
+    </div>
+    <div class="stat-item">
+      <div class="stat-num">40+</div>
+      <div class="stat-lbl">Aktivitäten</div>
+    </div>
+    <div class="stat-item">
+      <div class="stat-num">A1–B2</div>
+      <div class="stat-lbl">Niveau</div>
+    </div>
+  </div>
 </div>
 
-<!-- ══ 1 ══ -->
-<div class="section-label" id="s1">
-  <span class="sl-text">Verben mit Präpositionen</span><div class="sl-line"></div>
+
+<!-- ════════════════════════════════════
+  KAPITEL 1 — GRUNDLAGEN (A1)
+════════════════════════════════════ -->
+<div class="chapter-header" id="kapitel1">
+  <div class="ch-inner">
+    <span class="ch-num">01</span>
+    <div class="ch-line-left"></div>
+    <div class="ch-body">
+      <div class="ch-title">Grundlagen</div>
+      <div class="ch-subtitle">Fragen · Pronomen · Grundstrukturen</div>
+    </div>
+    <div class="ch-line-right"></div>
+    <span class="ch-level lv-a1">A1</span>
+  </div>
+</div>
+
+<!-- s1: W-Fragen -->
+<div class="section-label" id="s9">
+  <span class="sl-num">1.1</span>
+  <div class="sl-line"></div>
+  <span class="sl-text">W-Fragen</span>
+  <div class="sl-line"></div>
 </div>
 <div class="ref-card">
-  <a class="ref-link c-green" href="Verben-mit-prepositionen/index.html">
+  <a class="ref-link c-wfr" href="W-Fragen/index.html">
     <div class="ref-left"><div class="ref-icon">📖</div>
-      <div><div class="ref-title">Übersicht &amp; Regeln</div><div class="ref-desc">53 Verben mit Präpositionen — geordnet und erklärt.</div></div>
-    </div><span class="ref-tag green">Lesen →</span>
+      <div><div class="ref-title">Übersicht &amp; Regeln</div><div class="ref-desc">Alle W-Fragen: wer · was · wo · wie · wann · warum · woher · wohin — mit Wortstellung und Beispielen.</div></div>
+    </div><span class="ref-tag wfr">Lesen →</span>
   </a>
 </div>
 <div class="cards-grid">
-  <a class="game-card gc-green" href="Verben-mit-prepositionen/verben_flashcards.html">
-    <span class="card-badge b-popular">Beliebt</span>
+  <a class="game-card gc-wfr" href="W-Fragen/karten.html">
+    <span class="card-badge b-wfr">Lernen</span>
     <div class="card-icon">🃏</div><div class="card-title">Lernkarten</div>
-    <div class="card-desc">Blättere durch alle 53 Verben. Filtere nach Präposition.</div>
-    <div class="card-meta"><span class="meta-pill">53 Karten</span><span class="meta-pill">Selbsttest</span></div>
-    <div class="card-cta">Jetzt lernen <span class="card-cta-arrow">→</span></div>
+    <div class="card-desc">W-Frage → Bedeutung + Beispielsatz. Filter nach Kategorie.</div>
+    <div class="card-meta"><span class="meta-pill">21 Karten</span><span class="meta-pill">6 Kategorien</span></div>
+    <div class="card-cta">Lernen <span class="card-cta-arrow">→</span></div>
   </a>
-  <a class="game-card gc-green" href="Verben-mit-prepositionen/verben_quiz.html">
+  <a class="game-card gc-wfr" href="W-Fragen/quiz.html">
     <span class="card-badge b-new">Quiz</span>
-    <div class="card-icon">🎯</div><div class="card-title">Multiple Choice Quiz</div>
-    <div class="card-desc">Wähle die richtige Präposition aus 4 Antworten.</div>
-    <div class="card-meta"><span class="meta-pill">53 Fragen</span><span class="meta-pill">Streak</span></div>
+    <div class="card-icon">🎯</div><div class="card-title">Satz-Quiz</div>
+    <div class="card-desc">Welches Fragewort passt? Ergänze den Satz — 40 Fragen.</div>
+    <div class="card-meta"><span class="meta-pill">40 Sätze</span><span class="meta-pill">Streak</span></div>
     <div class="card-cta">Quiz starten <span class="card-cta-arrow">→</span></div>
   </a>
-  <a class="game-card gc-green" href="Verben-mit-prepositionen/speed_round.html">
-    <span class="card-badge b-hot">🔥</span>
-    <div class="card-icon">⏱️</div><div class="card-title">Speed Round</div>
-    <div class="card-desc">Beantworte so viele Fragen wie möglich vor dem Timer.</div>
-    <div class="card-meta"><span class="meta-pill">Timer</span><span class="meta-pill">Highscore</span></div>
-    <div class="card-cta">Starten <span class="card-cta-arrow">→</span></div>
-  </a>
-</div>
-
-<!-- ══ 2 ══ -->
-<div class="section-label" id="s2">
-  <span class="sl-text">Fragen mit Präpositionen</span><div class="sl-line"></div>
-</div>
-<div class="ref-card">
-  <a class="ref-link c-green" href="Fragen-mit-Praepositionen/index.html">
-    <div class="ref-left"><div class="ref-icon">📖</div>
-      <div><div class="ref-title">Übersicht &amp; Regeln</div><div class="ref-desc">worauf? · woran? · worüber? vs. auf wen? · an wen? — Wann benutzt man wo(r)+ und wann Präp.+wen/wem? Mit Farben, Beispielen und arabischen Bedeutungen.</div></div>
-    </div><span class="ref-tag green">Lesen →</span>
-  </a>
-</div>
-<div class="cards-grid">
-  <a class="game-card gc-green" href="Fragen-mit-Praepositionen/karten.html">
-    <span class="card-badge b-popular">Lernen</span>
-    <div class="card-icon">🃏</div><div class="card-title">Lernkarten</div>
-    <div class="card-desc">Verb → Sache-Frage + Personen-Frage + Beispielsätze. Filter nach Präposition.</div>
-    <div class="card-meta"><span class="meta-pill">40 Karten</span><span class="meta-pill">2 Formen</span></div>
-    <div class="card-cta">Jetzt lernen <span class="card-cta-arrow">→</span></div>
-  </a>
-  <a class="game-card gc-green" href="Fragen-mit-Praepositionen/quiz.html">
-    <span class="card-badge b-new">Quiz</span>
-    <div class="card-icon">✏️</div><div class="card-title">Lückentext Quiz</div>
-    <div class="card-desc">Ergänze die richtige Frageform — worauf? oder auf wen? 50 Sätze mit Regelhinweisen.</div>
-    <div class="card-meta"><span class="meta-pill">50 Sätze</span><span class="meta-pill">Streak</span></div>
-    <div class="card-cta">Quiz starten <span class="card-cta-arrow">→</span></div>
-  </a>
-  <a class="game-card gc-green" href="Fragen-mit-Praepositionen/match.html">
+  <a class="game-card gc-wfr" href="W-Fragen/match.html">
     <span class="card-badge b-new">Neu</span>
     <div class="card-icon">🧩</div><div class="card-title">Match &amp; Zuordnen</div>
-    <div class="card-desc">Ziehe die Sache-Frage und die Personen-Frage auf das passende Verb.</div>
-    <div class="card-meta"><span class="meta-pill">Drag &amp; Drop</span><span class="meta-pill">5 Runden</span></div>
+    <div class="card-desc">Ziehe jedes Fragewort in die richtige Kategorie — Person, Ort, Zeit...</div>
+    <div class="card-meta"><span class="meta-pill">Drag &amp; Drop</span><span class="meta-pill">4 Runden</span></div>
     <div class="card-cta">Spielen <span class="card-cta-arrow">→</span></div>
   </a>
 </div>
 
-<!-- ══ 3 ══ -->
+<!-- s2: Personalpronomen -->
+<div class="section-label" id="s8">
+  <span class="sl-num">1.2</span>
+  <div class="sl-line"></div>
+  <span class="sl-text">Personalpronomen — Nom · Akk · Dat</span>
+  <div class="sl-line"></div>
+</div>
+<div class="ref-card">
+  <a class="ref-link c-pro" href="Personalpronomen/pronomen_uebersicht.html">
+    <div class="ref-left"><div class="ref-icon">📖</div>
+      <div><div class="ref-title">Übersicht &amp; Regeln</div><div class="ref-desc">Vollständige Tabelle, 3 Kasus erklärt, Eselsbrücken, Beispiele und schwierige Paare.</div></div>
+    </div><span class="ref-tag pro">Lesen →</span>
+  </a>
+</div>
+<div class="cards-grid">
+  <a class="game-card gc-pro" href="Personalpronomen/pronomen_karten.html">
+    <span class="card-badge b-pro">Lernen</span>
+    <div class="card-icon">🃏</div><div class="card-title">Lernkarten</div>
+    <div class="card-desc">Alle 3 Formen auf einer Karte — Nom, Akk und Dat zusammen sehen und lernen.</div>
+    <div class="card-meta"><span class="meta-pill">9 Personen</span><span class="meta-pill">3 Formen</span></div>
+    <div class="card-cta">Lernen <span class="card-cta-arrow">→</span></div>
+  </a>
+  <a class="game-card gc-pro" href="Personalpronomen/pronomen_quiz.html">
+    <span class="card-badge b-new">Quiz</span>
+    <div class="card-icon">🎯</div><div class="card-title">Satz-Quiz</div>
+    <div class="card-desc">Wähle das richtige Pronomen für den Satz — Nom, Akk und Dat gemischt.</div>
+    <div class="card-meta"><span class="meta-pill">36 Sätze</span><span class="meta-pill">Streak</span></div>
+    <div class="card-cta">Quiz starten <span class="card-cta-arrow">→</span></div>
+  </a>
+  <a class="game-card gc-pro" href="Personalpronomen/pronomen_match.html">
+    <span class="card-badge b-new">Neu</span>
+    <div class="card-icon">🧩</div><div class="card-title">Match &amp; Zuordnen</div>
+    <div class="card-desc">Ziehe jedes Pronomen in die richtige Kasus-Spalte — 3 Runden.</div>
+    <div class="card-meta"><span class="meta-pill">Drag &amp; Drop</span><span class="meta-pill">3 Runden</span></div>
+    <div class="card-cta">Spielen <span class="card-cta-arrow">→</span></div>
+  </a>
+</div>
+
+<div class="chapter-divider"></div>
+
+<!-- ════════════════════════════════════
+  KAPITEL 2 — PRÄPOSITIONEN (A2)
+════════════════════════════════════ -->
+<div class="chapter-header" id="kapitel2">
+  <div class="ch-inner">
+    <span class="ch-num">02</span>
+    <div class="ch-line-left"></div>
+    <div class="ch-body">
+      <div class="ch-title">Präpositionen</div>
+      <div class="ch-subtitle">Kasus · Ort &amp; Zeit · Verben · Fragen</div>
+    </div>
+    <div class="ch-line-right"></div>
+    <span class="ch-level lv-a2">A2</span>
+  </div>
+</div>
+
+<!-- s3: Präpositionen Akk/Dat/Gen -->
 <div class="section-label" id="s3">
-  <span class="sl-text">Präpositionen — Akkusativ · Dativ · Genitiv</span><div class="sl-line"></div>
+  <span class="sl-num">2.1</span>
+  <div class="sl-line"></div>
+  <span class="sl-text">Präpositionen — Akkusativ · Dativ · Genitiv</span>
+  <div class="sl-line"></div>
 </div>
 <div class="ref-card">
   <a class="ref-link c-gen" href="praepositionen/praepositionen_uebersicht.html">
@@ -351,9 +417,279 @@ body{display:flex;flex-direction:column;align-items:center}
   </a>
 </div>
 
-<!-- ══ 3 ══ -->
+<!-- s: Präpositionen Ort & Zeit -->
+<div class="section-label" id="s11">
+  <span class="sl-num">2.2</span>
+  <div class="sl-line"></div>
+  <span class="sl-text">Präpositionen für Ort &amp; Zeit</span>
+  <div class="sl-line"></div>
+</div>
+<div class="ref-card">
+  <a class="ref-link c-poZ" href="Praepositionen-Ort-Zeit/index.html">
+    <div class="ref-left"><div class="ref-icon">📖</div>
+      <div><div class="ref-title">Übersicht &amp; Regeln</div><div class="ref-desc">Wann benutzt man in, im, am, auf, nach, aus, bei, zu, von? — Vollständige Regeln für Ort, Zeit und Richtung.</div></div>
+    </div><span class="ref-tag poZ">Lesen →</span>
+  </a>
+</div>
+<div class="cards-grid">
+  <a class="game-card gc-poZ" href="Praepositionen-Ort-Zeit/karten.html">
+    <span class="card-badge b-poZ">Lernen</span>
+    <div class="card-icon">🃏</div><div class="card-title">Lernkarten</div>
+    <div class="card-desc">Präposition → Regel + Beispiele. Filter: Ort / Zeit / Richtung.</div>
+    <div class="card-meta"><span class="meta-pill">23 Karten</span><span class="meta-pill">3 Kategorien</span></div>
+    <div class="card-cta">Lernen <span class="card-cta-arrow">→</span></div>
+  </a>
+  <a class="game-card gc-poZ" href="Praepositionen-Ort-Zeit/quiz.html">
+    <span class="card-badge b-new">Quiz</span>
+    <div class="card-icon">🎯</div><div class="card-title">Satz-Quiz</div>
+    <div class="card-desc">Welche Präposition passt? 45 Sätze — mit Regelhinweisen bei Fehlern.</div>
+    <div class="card-meta"><span class="meta-pill">45 Sätze</span><span class="meta-pill">Streak</span></div>
+    <div class="card-cta">Quiz starten <span class="card-cta-arrow">→</span></div>
+  </a>
+  <a class="game-card gc-poZ" href="Praepositionen-Ort-Zeit/match.html">
+    <span class="card-badge b-new">Neu</span>
+    <div class="card-icon">🧩</div><div class="card-title">Match &amp; Zuordnen</div>
+    <div class="card-desc">Ziehe jede Präposition in die richtige Kategorie — Ort, Zeit oder Richtung.</div>
+    <div class="card-meta"><span class="meta-pill">Drag &amp; Drop</span><span class="meta-pill">3 Runden</span></div>
+    <div class="card-cta">Spielen <span class="card-cta-arrow">→</span></div>
+  </a>
+</div>
+
+<!-- s: Verben mit Präpositionen -->
+<div class="section-label" id="s1">
+  <span class="sl-num">2.3</span>
+  <div class="sl-line"></div>
+  <span class="sl-text">Verben mit Präpositionen</span>
+  <div class="sl-line"></div>
+</div>
+<div class="ref-card">
+  <a class="ref-link c-green" href="Verben-mit-prepositionen/index.html">
+    <div class="ref-left"><div class="ref-icon">📖</div>
+      <div><div class="ref-title">Übersicht &amp; Regeln</div><div class="ref-desc">53 Verben mit Präpositionen — geordnet und erklärt.</div></div>
+    </div><span class="ref-tag green">Lesen →</span>
+  </a>
+</div>
+<div class="cards-grid">
+  <a class="game-card gc-green" href="Verben-mit-prepositionen/verben_flashcards.html">
+    <span class="card-badge b-popular">Beliebt</span>
+    <div class="card-icon">🃏</div><div class="card-title">Lernkarten</div>
+    <div class="card-desc">Blättere durch alle 53 Verben. Filtere nach Präposition.</div>
+    <div class="card-meta"><span class="meta-pill">53 Karten</span><span class="meta-pill">Selbsttest</span></div>
+    <div class="card-cta">Jetzt lernen <span class="card-cta-arrow">→</span></div>
+  </a>
+  <a class="game-card gc-green" href="Verben-mit-prepositionen/verben_quiz.html">
+    <span class="card-badge b-new">Quiz</span>
+    <div class="card-icon">🎯</div><div class="card-title">Multiple Choice Quiz</div>
+    <div class="card-desc">Wähle die richtige Präposition aus 4 Antworten.</div>
+    <div class="card-meta"><span class="meta-pill">53 Fragen</span><span class="meta-pill">Streak</span></div>
+    <div class="card-cta">Quiz starten <span class="card-cta-arrow">→</span></div>
+  </a>
+  <a class="game-card gc-green" href="Verben-mit-prepositionen/speed_round.html">
+    <span class="card-badge b-hot">🔥</span>
+    <div class="card-icon">⏱️</div><div class="card-title">Speed Round</div>
+    <div class="card-desc">Beantworte so viele Fragen wie möglich vor dem Timer.</div>
+    <div class="card-meta"><span class="meta-pill">Timer</span><span class="meta-pill">Highscore</span></div>
+    <div class="card-cta">Starten <span class="card-cta-arrow">→</span></div>
+  </a>
+</div>
+
+<!-- s: Fragen mit Präpositionen -->
+<div class="section-label" id="s2">
+  <span class="sl-num">2.4</span>
+  <div class="sl-line"></div>
+  <span class="sl-text">Fragen mit Präpositionen</span>
+  <div class="sl-line"></div>
+</div>
+<div class="ref-card">
+  <a class="ref-link c-green" href="Fragen-mit-Praepositionen/index.html">
+    <div class="ref-left"><div class="ref-icon">📖</div>
+      <div><div class="ref-title">Übersicht &amp; Regeln</div><div class="ref-desc">worauf? · woran? · worüber? vs. auf wen? · an wen? — Wann benutzt man wo(r)+ und wann Präp.+wen/wem?</div></div>
+    </div><span class="ref-tag green">Lesen →</span>
+  </a>
+</div>
+<div class="cards-grid">
+  <a class="game-card gc-green" href="Fragen-mit-Praepositionen/karten.html">
+    <span class="card-badge b-popular">Lernen</span>
+    <div class="card-icon">🃏</div><div class="card-title">Lernkarten</div>
+    <div class="card-desc">Verb → Sache-Frage + Personen-Frage + Beispielsätze. Filter nach Präposition.</div>
+    <div class="card-meta"><span class="meta-pill">40 Karten</span><span class="meta-pill">2 Formen</span></div>
+    <div class="card-cta">Jetzt lernen <span class="card-cta-arrow">→</span></div>
+  </a>
+  <a class="game-card gc-green" href="Fragen-mit-Praepositionen/quiz.html">
+    <span class="card-badge b-new">Quiz</span>
+    <div class="card-icon">✏️</div><div class="card-title">Lückentext Quiz</div>
+    <div class="card-desc">Ergänze die richtige Frageform — worauf? oder auf wen? 50 Sätze mit Regelhinweisen.</div>
+    <div class="card-meta"><span class="meta-pill">50 Sätze</span><span class="meta-pill">Streak</span></div>
+    <div class="card-cta">Quiz starten <span class="card-cta-arrow">→</span></div>
+  </a>
+  <a class="game-card gc-green" href="Fragen-mit-Praepositionen/match.html">
+    <span class="card-badge b-new">Neu</span>
+    <div class="card-icon">🧩</div><div class="card-title">Match &amp; Zuordnen</div>
+    <div class="card-desc">Ziehe die Sache-Frage und die Personen-Frage auf das passende Verb.</div>
+    <div class="card-meta"><span class="meta-pill">Drag &amp; Drop</span><span class="meta-pill">5 Runden</span></div>
+    <div class="card-cta">Spielen <span class="card-cta-arrow">→</span></div>
+  </a>
+</div>
+
+<div class="chapter-divider"></div>
+
+<!-- ════════════════════════════════════
+  KAPITEL 3 — VERBEN & KASUS (B1)
+════════════════════════════════════ -->
+<div class="chapter-header" id="kapitel3">
+  <div class="ch-inner">
+    <span class="ch-num">03</span>
+    <div class="ch-line-left"></div>
+    <div class="ch-body">
+      <div class="ch-title">Verben &amp; Kasus</div>
+      <div class="ch-subtitle">Dativ · Akkusativ · Reflexiv · Infinitiv</div>
+    </div>
+    <div class="ch-line-right"></div>
+    <span class="ch-level lv-b1">B1</span>
+  </div>
+</div>
+
+<!-- s: Verben mit Dativ -->
+<div class="section-label" id="s5">
+  <span class="sl-num">3.1</span>
+  <div class="sl-line"></div>
+  <span class="sl-text">Verben mit Dativ</span>
+  <div class="sl-line"></div>
+</div>
+<div class="ref-card">
+  <a class="ref-link c-dat" href="Verben-mit-Dativ-und-Akkusativ/dativ_uebersicht.html">
+    <div class="ref-left"><div class="ref-icon">📖</div>
+      <div><div class="ref-title">Übersicht &amp; Regeln</div><div class="ref-desc">37 Verben, die immer den Dativ verlangen — mit Typen, Präteritum und arabischen Bedeutungen.</div></div>
+    </div><span class="ref-tag dat">Lesen →</span>
+  </a>
+</div>
+<div class="cards-grid">
+  <a class="game-card gc-dat" href="Verben-mit-Dativ-und-Akkusativ/dativ_karten.html">
+    <span class="card-badge b-dat">Lernen</span>
+    <div class="card-icon">🃏</div><div class="card-title">Lernkarten</div>
+    <div class="card-desc">Verb → Präteritum + Bedeutung. Filter nach Schwach, Stark, Trennbar.</div>
+    <div class="card-meta"><span class="meta-pill">37 Karten</span><span class="meta-pill">+ Dativ</span></div>
+    <div class="card-cta">Lernen <span class="card-cta-arrow">→</span></div>
+  </a>
+  <a class="game-card gc-dat" href="Verben-mit-Dativ-und-Akkusativ/dativ_match.html">
+    <span class="card-badge b-new">Neu</span>
+    <div class="card-icon">🧩</div><div class="card-title">Match &amp; Zuordnen</div>
+    <div class="card-desc">Ordne jedes Dativ-Verb nach Typ: Schwach · Stark · Trennbar.</div>
+    <div class="card-meta"><span class="meta-pill">Drag &amp; Drop</span><span class="meta-pill">5 Runden</span></div>
+    <div class="card-cta">Spielen <span class="card-cta-arrow">→</span></div>
+  </a>
+</div>
+
+<!-- s: Verben mit Dativ + Akkusativ -->
+<div class="section-label" id="s6">
+  <span class="sl-num">3.2</span>
+  <div class="sl-line"></div>
+  <span class="sl-text">Verben mit Dativ und Akkusativ</span>
+  <div class="sl-line"></div>
+</div>
+<div class="ref-card">
+  <a class="ref-link c-dak" href="Verben-mit-Dativ-und-Akkusativ/dativ_akkusativ_uebersicht.html">
+    <div class="ref-left"><div class="ref-icon">📖</div>
+      <div><div class="ref-title">Übersicht &amp; Regeln</div><div class="ref-desc">Verben mit zwei Objekten — Wem? (Dativ) + Was? (Akkusativ) — mit Satzmuster und 23 Verben.</div></div>
+    </div><span class="ref-tag dak">Lesen →</span>
+  </a>
+</div>
+<div class="cards-grid">
+  <a class="game-card gc-dak" href="Verben-mit-Dativ-und-Akkusativ/dativ_akkusativ_quiz.html">
+    <span class="card-badge b-dak">Quiz</span>
+    <div class="card-icon">🎯</div><div class="card-title">Satz-Quiz</div>
+    <div class="card-desc">Wähle das richtige Dativ- und Akkusativ-Objekt — vervollständige den Satz.</div>
+    <div class="card-meta"><span class="meta-pill">20 Sätze</span><span class="meta-pill">Wem? + Was?</span></div>
+    <div class="card-cta">Quiz starten <span class="card-cta-arrow">→</span></div>
+  </a>
+</div>
+
+<!-- s: Reflexive Verben -->
+<div class="section-label" id="s7">
+  <span class="sl-num">3.3</span>
+  <div class="sl-line"></div>
+  <span class="sl-text">Reflexive Verben</span>
+  <div class="sl-line"></div>
+</div>
+<div class="ref-card">
+  <a class="ref-link c-ref" href="Reflexive-Verben/index.html">
+    <div class="ref-left"><div class="ref-icon">📖</div>
+      <div><div class="ref-title">Übersicht &amp; Regeln</div><div class="ref-desc">Was sind Reflexivverben? Pronomen-Tabelle, 4 Typen, 50 Verben + interaktive Übung.</div></div>
+    </div><span class="ref-tag ref">Lesen →</span>
+  </a>
+</div>
+<div class="cards-grid">
+  <a class="game-card gc-ref" href="Reflexive-Verben/karten.html">
+    <span class="card-badge b-ref">Lernen</span>
+    <div class="card-icon">🃏</div><div class="card-title">Lernkarten</div>
+    <div class="card-desc">Verb → Pronomen + Beispielsatz + Bedeutung. Filter nach Typ.</div>
+    <div class="card-meta"><span class="meta-pill">50 Karten</span><span class="meta-pill">4 Typen</span></div>
+    <div class="card-cta">Lernen <span class="card-cta-arrow">→</span></div>
+  </a>
+  <a class="game-card gc-ref" href="Reflexive-Verben/quiz.html">
+    <span class="card-badge b-new">Quiz</span>
+    <div class="card-icon">🎯</div><div class="card-title">Pronomen Quiz</div>
+    <div class="card-desc">Ergänze das richtige Reflexivpronomen: mich · dich · sich · uns · euch · mir.</div>
+    <div class="card-meta"><span class="meta-pill">50 Sätze</span><span class="meta-pill">Streak</span></div>
+    <div class="card-cta">Quiz starten <span class="card-cta-arrow">→</span></div>
+  </a>
+</div>
+
+<!-- s: Infinitiv mit zu -->
+<div class="section-label" id="s12">
+  <span class="sl-num">3.4</span>
+  <div class="sl-line"></div>
+  <span class="sl-text">Infinitiv mit zu</span>
+  <div class="sl-line"></div>
+</div>
+<div class="ref-card">
+  <a class="ref-link c-imz" href="Infinitiv-mit-zu/index.html">
+    <div class="ref-left"><div class="ref-icon">📖</div>
+      <div><div class="ref-title">Übersicht &amp; Regeln</div><div class="ref-desc">Die 4 Hauptregeln, Trennbare Verben (aufzustehen), alle Gruppen, Kein-zu-Verben (Modalverben, lassen, sehen).</div></div>
+    </div><span class="ref-tag imz">Lesen →</span>
+  </a>
+</div>
+<div class="cards-grid">
+  <a class="game-card gc-imz" href="Infinitiv-mit-zu/karten.html">
+    <span class="card-badge b-imz">Lernen</span>
+    <div class="card-icon">🃏</div><div class="card-title">Lernkarten</div>
+    <div class="card-desc">Verb → zu-Formel + Beispielsatz. Filter: mit zu / kein zu / Trennbar / Adjektive / Nomen.</div>
+    <div class="card-meta"><span class="meta-pill">44 Karten</span><span class="meta-pill">5 Gruppen</span></div>
+    <div class="card-cta">Lernen <span class="card-cta-arrow">→</span></div>
+  </a>
+  <a class="game-card gc-imz" href="Infinitiv-mit-zu/quiz.html">
+    <span class="card-badge b-new">Quiz</span>
+    <div class="card-icon">🎯</div><div class="card-title">Lückentext-Quiz</div>
+    <div class="card-desc">Ergänze: zu / aufzustehen / (kein zu) / um / ohne / statt — 50 Sätze mit Regelhinweisen.</div>
+    <div class="card-meta"><span class="meta-pill">50 Sätze</span><span class="meta-pill">Streak</span></div>
+    <div class="card-cta">Quiz starten <span class="card-cta-arrow">→</span></div>
+  </a>
+</div>
+
+<div class="chapter-divider"></div>
+
+<!-- ════════════════════════════════════
+  KAPITEL 4 — ZEITFORMEN (B1–B2)
+════════════════════════════════════ -->
+<div class="chapter-header" id="kapitel4">
+  <div class="ch-inner">
+    <span class="ch-num">04</span>
+    <div class="ch-line-left"></div>
+    <div class="ch-body">
+      <div class="ch-title">Zeitformen</div>
+      <div class="ch-subtitle">Präteritum · Perfekt · Futur</div>
+    </div>
+    <div class="ch-line-right"></div>
+    <span class="ch-level lv-b1">B1</span>
+  </div>
+</div>
+
+<!-- s: Präteritum -->
 <div class="section-label" id="s4">
-  <span class="sl-text">Das Präteritum</span><div class="sl-line"></div>
+  <span class="sl-num">4.1</span>
+  <div class="sl-line"></div>
+  <span class="sl-text">Das Präteritum</span>
+  <div class="sl-line"></div>
 </div>
 <div class="ref-card">
   <a class="ref-link c-prt" href="praeteritum/praeteritum_uebersicht.html">
@@ -393,161 +729,17 @@ body{display:flex;flex-direction:column;align-items:center}
   </a>
 </div>
 
-<!-- ══ 4 ══ -->
-<div class="section-label" id="s5">
-  <span class="sl-text">Verben mit Dativ</span><div class="sl-line"></div>
-</div>
-<div class="ref-card">
-  <a class="ref-link c-dat" href="Verben-mit-Dativ-und-Akkusativ/dativ_uebersicht.html">
-    <div class="ref-left"><div class="ref-icon">📖</div>
-      <div><div class="ref-title">Übersicht &amp; Regeln</div><div class="ref-desc">37 Verben, die immer den Dativ verlangen — mit Typen, Präteritum und arabischen Bedeutungen.</div></div>
-    </div><span class="ref-tag dat">Lesen →</span>
-  </a>
-</div>
-<div class="cards-grid">
-  <a class="game-card gc-dat" href="Verben-mit-Dativ-und-Akkusativ/dativ_karten.html">
-    <span class="card-badge b-dat">Lernen</span>
-    <div class="card-icon">🃏</div><div class="card-title">Lernkarten</div>
-    <div class="card-desc">Verb → Präteritum + Bedeutung. Filter nach Schwach, Stark, Trennbar.</div>
-    <div class="card-meta"><span class="meta-pill">37 Karten</span><span class="meta-pill">+ Dativ</span></div>
-    <div class="card-cta">Lernen <span class="card-cta-arrow">→</span></div>
-  </a>
-  <a class="game-card gc-dat" href="Verben-mit-Dativ-und-Akkusativ/dativ_match.html">
-    <span class="card-badge b-new">Neu</span>
-    <div class="card-icon">🧩</div><div class="card-title">Match &amp; Zuordnen</div>
-    <div class="card-desc">Ordne jedes Dativ-Verb nach Typ: Schwach · Stark · Trennbar.</div>
-    <div class="card-meta"><span class="meta-pill">Drag &amp; Drop</span><span class="meta-pill">5 Runden</span></div>
-    <div class="card-cta">Spielen <span class="card-cta-arrow">→</span></div>
-  </a>
-</div>
-
-<!-- ══ 5 ══ -->
-<div class="section-label" id="s6">
-  <span class="sl-text">Verben mit Dativ und Akkusativ</span><div class="sl-line"></div>
-</div>
-<div class="ref-card">
-  <a class="ref-link c-dak" href="Verben-mit-Dativ-und-Akkusativ/dativ_akkusativ_uebersicht.html">
-    <div class="ref-left"><div class="ref-icon">📖</div>
-      <div><div class="ref-title">Übersicht &amp; Regeln</div><div class="ref-desc">Verben mit zwei Objekten — Wem? (Dativ) + Was? (Akkusativ) — mit Satzmuster und 23 Verben.</div></div>
-    </div><span class="ref-tag dak">Lesen →</span>
-  </a>
-</div>
-<div class="cards-grid">
-  <a class="game-card gc-dak" href="Verben-mit-Dativ-und-Akkusativ/dativ_akkusativ_quiz.html">
-    <span class="card-badge b-dak">Quiz</span>
-    <div class="card-icon">🎯</div><div class="card-title">Satz-Quiz</div>
-    <div class="card-desc">Wähle das richtige Dativ- und Akkusativ-Objekt — vervollständige den Satz.</div>
-    <div class="card-meta"><span class="meta-pill">20 Sätze</span><span class="meta-pill">Wem? + Was?</span></div>
-    <div class="card-cta">Quiz starten <span class="card-cta-arrow">→</span></div>
-  </a>
-</div>
-
-<!-- ══ 6 ══ -->
-<div class="section-label" id="s7">
-  <span class="sl-text">Reflexive Verben</span><div class="sl-line"></div>
-</div>
-<div class="ref-card">
-  <a class="ref-link c-ref" href="Reflexive-Verben/index.html">
-    <div class="ref-left"><div class="ref-icon">📖</div>
-      <div><div class="ref-title">Übersicht &amp; Regeln</div><div class="ref-desc">Was sind Reflexivverben? Pronomen-Tabelle, 4 Typen, 50 Verben + interaktive Übung.</div></div>
-    </div><span class="ref-tag ref">Lesen →</span>
-  </a>
-</div>
-<div class="cards-grid">
-  <a class="game-card gc-ref" href="Reflexive-Verben/karten.html">
-    <span class="card-badge b-ref">Lernen</span>
-    <div class="card-icon">🃏</div><div class="card-title">Lernkarten</div>
-    <div class="card-desc">Verb → Pronomen + Beispielsatz + Bedeutung. Filter nach Typ.</div>
-    <div class="card-meta"><span class="meta-pill">50 Karten</span><span class="meta-pill">4 Typen</span></div>
-    <div class="card-cta">Lernen <span class="card-cta-arrow">→</span></div>
-  </a>
-  <a class="game-card gc-ref" href="Reflexive-Verben/quiz.html">
-    <span class="card-badge b-new">Quiz</span>
-    <div class="card-icon">🎯</div><div class="card-title">Pronomen Quiz</div>
-    <div class="card-desc">Ergänze das richtige Reflexivpronomen: mich · dich · sich · uns · euch · mir.</div>
-    <div class="card-meta"><span class="meta-pill">50 Sätze</span><span class="meta-pill">Streak</span></div>
-    <div class="card-cta">Quiz starten <span class="card-cta-arrow">→</span></div>
-  </a>
-</div>
-
-<!-- ══ 7 ══ -->
-<div class="section-label" id="s8">
-  <span class="sl-text">Personalpronomen — Nom · Akk · Dat</span><div class="sl-line"></div>
-</div>
-<div class="ref-card">
-  <a class="ref-link c-pro" href="Personalpronomen/pronomen_uebersicht.html">
-    <div class="ref-left"><div class="ref-icon">📖</div>
-      <div><div class="ref-title">Übersicht &amp; Regeln</div><div class="ref-desc">Vollständige Tabelle, 3 Kasus erklärt, Eselsbrücken, Beispiele und schwierige Paare — mit arabischen Bedeutungen.</div></div>
-    </div><span class="ref-tag pro">Lesen →</span>
-  </a>
-</div>
-<div class="cards-grid">
-  <a class="game-card gc-pro" href="Personalpronomen/pronomen_karten.html">
-    <span class="card-badge b-pro">Lernen</span>
-    <div class="card-icon">🃏</div><div class="card-title">Lernkarten</div>
-    <div class="card-desc">Alle 3 Formen auf einer Karte — Nom, Akk und Dat zusammen sehen und lernen.</div>
-    <div class="card-meta"><span class="meta-pill">9 Personen</span><span class="meta-pill">3 Formen</span></div>
-    <div class="card-cta">Lernen <span class="card-cta-arrow">→</span></div>
-  </a>
-  <a class="game-card gc-pro" href="Personalpronomen/pronomen_quiz.html">
-    <span class="card-badge b-new">Quiz</span>
-    <div class="card-icon">🎯</div><div class="card-title">Satz-Quiz</div>
-    <div class="card-desc">Wähle das richtige Pronomen für den Satz — Nom, Akk und Dat gemischt.</div>
-    <div class="card-meta"><span class="meta-pill">36 Sätze</span><span class="meta-pill">Streak</span></div>
-    <div class="card-cta">Quiz starten <span class="card-cta-arrow">→</span></div>
-  </a>
-  <a class="game-card gc-pro" href="Personalpronomen/pronomen_match.html">
-    <span class="card-badge b-new">Neu</span>
-    <div class="card-icon">🧩</div><div class="card-title">Match &amp; Zuordnen</div>
-    <div class="card-desc">Ziehe jedes Pronomen in die richtige Kasus-Spalte — 3 Runden.</div>
-    <div class="card-meta"><span class="meta-pill">Drag &amp; Drop</span><span class="meta-pill">3 Runden</span></div>
-    <div class="card-cta">Spielen <span class="card-cta-arrow">→</span></div>
-  </a>
-</div>
-
-<!-- ══ 8. W-Fragen ══ -->
-<div class="section-label" id="s9">
-  <span class="sl-text">W-Fragen</span><div class="sl-line"></div>
-</div>
-<div class="ref-card">
-  <a class="ref-link c-wfr" href="W-Fragen/index.html">
-    <div class="ref-left"><div class="ref-icon">📖</div>
-      <div><div class="ref-title">Übersicht &amp; Regeln</div><div class="ref-desc">Alle W-Fragen: wer · was · wo · wie · wann · warum · woher · wohin · wem · wen · wessen · welch- — mit Wortstellung, Beispielen und arabischen Bedeutungen.</div></div>
-    </div><span class="ref-tag wfr">Lesen →</span>
-  </a>
-</div>
-<div class="cards-grid">
-  <a class="game-card gc-wfr" href="W-Fragen/karten.html">
-    <span class="card-badge b-wfr">Lernen</span>
-    <div class="card-icon">🃏</div><div class="card-title">Lernkarten</div>
-    <div class="card-desc">W-Frage → Bedeutung + Beispielsatz. Filter nach Kategorie.</div>
-    <div class="card-meta"><span class="meta-pill">21 Karten</span><span class="meta-pill">6 Kategorien</span></div>
-    <div class="card-cta">Lernen <span class="card-cta-arrow">→</span></div>
-  </a>
-  <a class="game-card gc-wfr" href="W-Fragen/quiz.html">
-    <span class="card-badge b-new">Quiz</span>
-    <div class="card-icon">🎯</div><div class="card-title">Satz-Quiz</div>
-    <div class="card-desc">Welches Fragewort passt? Ergänze den Satz — 40 Fragen.</div>
-    <div class="card-meta"><span class="meta-pill">40 Sätze</span><span class="meta-pill">Streak</span></div>
-    <div class="card-cta">Quiz starten <span class="card-cta-arrow">→</span></div>
-  </a>
-  <a class="game-card gc-wfr" href="W-Fragen/match.html">
-    <span class="card-badge b-new">Neu</span>
-    <div class="card-icon">🧩</div><div class="card-title">Match &amp; Zuordnen</div>
-    <div class="card-desc">Ziehe jedes Fragewort in die richtige Kategorie — Person, Ort, Zeit...</div>
-    <div class="card-meta"><span class="meta-pill">Drag &amp; Drop</span><span class="meta-pill">4 Runden</span></div>
-    <div class="card-cta">Spielen <span class="card-cta-arrow">→</span></div>
-  </a>
-</div>
-
-<!-- ══ 9. Das Perfekt ══ -->
+<!-- s: Das Perfekt -->
 <div class="section-label" id="s10">
-  <span class="sl-text">Das Perfekt</span><div class="sl-line"></div>
+  <span class="sl-num">4.2</span>
+  <div class="sl-line"></div>
+  <span class="sl-text">Das Perfekt</span>
+  <div class="sl-line"></div>
 </div>
 <div class="ref-card">
   <a class="ref-link c-prf" href="Perfekt/index.html">
     <div class="ref-left"><div class="ref-icon">📖</div>
-      <div><div class="ref-title">Übersicht &amp; Regeln</div><div class="ref-desc">Bildung · haben vs. sein · Partizip II Regeln (schwach, stark, gemischt, trennbar, untrennbar, -ieren) · 85 Verben mit arabischen Bedeutungen und Beispielsätzen.</div></div>
+      <div><div class="ref-title">Übersicht &amp; Regeln</div><div class="ref-desc">Bildung · haben vs. sein · Partizip II Regeln (schwach, stark, gemischt, trennbar, untrennbar, -ieren) · 85 Verben.</div></div>
     </div><span class="ref-tag prf">Lesen →</span>
   </a>
 </div>
@@ -568,70 +760,90 @@ body{display:flex;flex-direction:column;align-items:center}
   </a>
 </div>
 
-<!-- ══ 10. Präpositionen Ort & Zeit ══ -->
-<div class="section-label" id="s11">
-  <span class="sl-text">Präpositionen für Ort & Zeit</span><div class="sl-line"></div>
+<!-- Coming soon: Futur -->
+<div class="section-label" id="s-futur">
+  <span class="sl-num">4.3</span>
+  <div class="sl-line"></div>
+  <span class="sl-text">Das Futur I &amp; II</span>
+  <div class="sl-line"></div>
 </div>
-<div class="ref-card">
-  <a class="ref-link c-poZ" href="Praepositionen-Ort-Zeit/index.html">
-    <div class="ref-left"><div class="ref-icon">📖</div>
-      <div><div class="ref-title">Übersicht &amp; Regeln</div><div class="ref-desc">Wann benutzt man in, im, am, auf, nach, aus, bei, zu, von? — Vollständige Regeln für Ort, Zeit und Richtung mit arabischen Bedeutungen und Vergleichen.</div></div>
-    </div><span class="ref-tag poZ">Lesen →</span>
-  </a>
-</div>
-<div class="cards-grid">
-  <a class="game-card gc-poZ" href="Praepositionen-Ort-Zeit/karten.html">
-    <span class="card-badge b-poZ">Lernen</span>
-    <div class="card-icon">🃏</div><div class="card-title">Lernkarten</div>
-    <div class="card-desc">Präposition → Regel + Beispiele. Filter: Ort / Zeit / Richtung.</div>
-    <div class="card-meta"><span class="meta-pill">23 Karten</span><span class="meta-pill">3 Kategorien</span></div>
-    <div class="card-cta">Lernen <span class="card-cta-arrow">→</span></div>
-  </a>
-  <a class="game-card gc-poZ" href="Praepositionen-Ort-Zeit/quiz.html">
-    <span class="card-badge b-new">Quiz</span>
-    <div class="card-icon">🎯</div><div class="card-title">Satz-Quiz</div>
-    <div class="card-desc">Welche Präposition passt? 45 Sätze — mit Regelhinweisen bei Fehlern.</div>
-    <div class="card-meta"><span class="meta-pill">45 Sätze</span><span class="meta-pill">Streak</span></div>
-    <div class="card-cta">Quiz starten <span class="card-cta-arrow">→</span></div>
-  </a>
-  <a class="game-card gc-poZ" href="Praepositionen-Ort-Zeit/match.html">
-    <span class="card-badge b-new">Neu</span>
-    <div class="card-icon">🧩</div><div class="card-title">Match &amp; Zuordnen</div>
-    <div class="card-desc">Ziehe jede Präposition in die richtige Kategorie — Ort, Zeit oder Richtung.</div>
-    <div class="card-meta"><span class="meta-pill">Drag &amp; Drop</span><span class="meta-pill">3 Runden</span></div>
-    <div class="card-cta">Spielen <span class="card-cta-arrow">→</span></div>
-  </a>
+<div class="coming-soon-block">
+  <div class="coming-soon-inner">
+    <div class="cs-icon">🔭</div>
+    <div class="cs-title">Futur I &amp; II — bald verfügbar</div>
+    <div class="cs-desc">Zukünftige Ereignisse und Vermutungen ausdrücken — werden + Infinitiv und Partizip II.</div>
+    <span class="cs-tag">Demnächst</span>
+  </div>
 </div>
 
-<!-- ══ 12. Infinitiv mit zu ══ -->
-<div class="section-label" id="s12">
-  <span class="sl-text">Infinitiv mit zu</span><div class="sl-line"></div>
+<div class="chapter-divider"></div>
+
+<!-- ════════════════════════════════════
+  KAPITEL 5 — ERWEITERTE GRAMMATIK (B2)
+════════════════════════════════════ -->
+<div class="chapter-header" id="kapitel5">
+  <div class="ch-inner">
+    <span class="ch-num">05</span>
+    <div class="ch-line-left"></div>
+    <div class="ch-body">
+      <div class="ch-title">Erweiterte Grammatik</div>
+      <div class="ch-subtitle">Konjunktiv · Passiv · Nebensätze</div>
+    </div>
+    <div class="ch-line-right"></div>
+    <span class="ch-level lv-b2">B2</span>
+  </div>
 </div>
-<div class="ref-card">
-  <a class="ref-link c-imz" href="Infinitiv-mit-zu/index.html">
-    <div class="ref-left"><div class="ref-icon">📖</div>
-      <div><div class="ref-title">Übersicht &amp; Regeln</div><div class="ref-desc">Die 4 Hauptregeln, Trennbare Verben (aufzustehen), alle Gruppen (hoffen/versuchen/bitten/es ist schön...), Kein-zu-Verben (Modalverben, lassen, sehen) — mit arabischen Bedeutungen.</div></div>
-    </div><span class="ref-tag imz">Lesen →</span>
-  </a>
+
+<!-- Coming soon: Konjunktiv II -->
+<div class="section-label" id="s-konj2">
+  <span class="sl-num">5.1</span>
+  <div class="sl-line"></div>
+  <span class="sl-text">Konjunktiv II</span>
+  <div class="sl-line"></div>
 </div>
-<div class="cards-grid">
-  <a class="game-card gc-imz" href="Infinitiv-mit-zu/karten.html">
-    <span class="card-badge b-imz">Lernen</span>
-    <div class="card-icon">🃏</div><div class="card-title">Lernkarten</div>
-    <div class="card-desc">Verb → zu-Formel + Beispielsatz. Filter: mit zu / kein zu / Trennbar / Adjektive / Nomen.</div>
-    <div class="card-meta"><span class="meta-pill">44 Karten</span><span class="meta-pill">5 Gruppen</span></div>
-    <div class="card-cta">Lernen <span class="card-cta-arrow">→</span></div>
-  </a>
-  <a class="game-card gc-imz" href="Infinitiv-mit-zu/quiz.html">
-    <span class="card-badge b-new">Quiz</span>
-    <div class="card-icon">🎯</div><div class="card-title">Lückentext-Quiz</div>
-    <div class="card-desc">Ergänze: zu / aufzustehen / (kein zu) / um / ohne / statt — 50 Sätze mit Regelhinweisen.</div>
-    <div class="card-meta"><span class="meta-pill">50 Sätze</span><span class="meta-pill">Streak</span></div>
-    <div class="card-cta">Quiz starten <span class="card-cta-arrow">→</span></div>
-  </a>
+<div class="coming-soon-block">
+  <div class="coming-soon-inner">
+    <div class="cs-icon">💭</div>
+    <div class="cs-title">Konjunktiv II — bald verfügbar</div>
+    <div class="cs-desc">Wünsche, Möglichkeiten und Hypothesen — würde + Infinitiv, wäre, hätte und mehr.</div>
+    <span class="cs-tag">Demnächst</span>
+  </div>
+</div>
+
+<!-- Coming soon: Passiv -->
+<div class="section-label" id="s-passiv">
+  <span class="sl-num">5.2</span>
+  <div class="sl-line"></div>
+  <span class="sl-text">Passiv</span>
+  <div class="sl-line"></div>
+</div>
+<div class="coming-soon-block">
+  <div class="coming-soon-inner">
+    <div class="cs-icon">🔄</div>
+    <div class="cs-title">Passiv — bald verfügbar</div>
+    <div class="cs-desc">Vorgangspassiv und Zustandspassiv — werden/sein + Partizip II, mit Agensangaben.</div>
+    <span class="cs-tag">Demnächst</span>
+  </div>
+</div>
+
+<!-- Coming soon: Nebensätze -->
+<div class="section-label" id="s-neben">
+  <span class="sl-num">5.3</span>
+  <div class="sl-line"></div>
+  <span class="sl-text">Nebensätze</span>
+  <div class="sl-line"></div>
+</div>
+<div class="coming-soon-block">
+  <div class="coming-soon-inner">
+    <div class="cs-icon">🔗</div>
+    <div class="cs-title">Nebensätze — bald verfügbar</div>
+    <div class="cs-desc">Kausalsätze, Konzessivsätze, Temporalsätze, Relativsätze — mit Verb am Ende.</div>
+    <span class="cs-tag">Demnächst</span>
+  </div>
 </div>
 
 
+<!-- FOOTER -->
 <div class="footer">
   <div class="footer-brand">Spiel Deutsch</div>
   <div class="footer-sub">Deutsch lernen — kostenlos, offen, spielerisch</div>
@@ -645,14 +857,14 @@ body{display:flex;flex-direction:column;align-items:center}
   <div class="drawer-handle"></div>
   <div class="drawer-header">
     <span class="drawer-title">Themen</span>
-    <span class="drawer-badge" id="drawer-badge">7 Abschnitte</span>
+    <span class="drawer-badge" id="drawer-badge">5 Kapitel</span>
   </div>
   <div class="drawer-progress">
     <div class="dp-row">
       <span>Aktueller Abschnitt</span>
-      <span id="dp-text">1 / 7</span>
+      <span id="dp-text">—</span>
     </div>
-    <div class="dp-track"><div class="dp-fill" id="dp-fill" style="width:14%"></div></div>
+    <div class="dp-track"><div class="dp-fill" id="dp-fill" style="width:0%"></div></div>
   </div>
   <div class="drawer-body" id="drawer-body"></div>
 </div>
@@ -666,52 +878,126 @@ body{display:flex;flex-direction:column;align-items:center}
 </button>
 
 <script>
-// ── Section definitions ──
-// To add more sections in the future: just add to this array + add id="sN" to the HTML
-const SECTIONS = [
-  { id:'s1',  label:'Verben mit Präpositionen',        color:'#1D9E75' },
-  { id:'s2',  label:'Fragen mit Präpositionen',        color:'#1D9E75' },
-  { id:'s3',  label:'Präpositionen — Akk · Dat · Gen', color:'#7C3AED' },
-  { id:'s4',  label:'Das Präteritum',                  color:'#D85A30' },
-  { id:'s5',  label:'Verben mit Dativ',                color:'#7C3AED' },
-  { id:'s6',  label:'Verben mit Dativ + Akkusativ',    color:'#0891B2' },
-  { id:'s7',  label:'Reflexive Verben',                color:'#0891B2' },
-  { id:'s8',  label:'Personalpronomen',                color:'#185FA5' },
-  { id:'s9',  label:'W-Fragen',                        color:'#0F766E' },
-  { id:'s10', label:'Das Perfekt',                     color:'#7C3AED' },
-  { id:'s11', label:'Präpositionen Ort & Zeit',        color:'#0F766E' },
-  { id:'s12', label:'Infinitiv mit zu',                  color:'#0891B2' },
+// ══════════════════════════════════════════
+//  DATA — add chapters & sections here to expand the site
+// ══════════════════════════════════════════
+const CHAPTERS = [
+  {
+    id: 'kapitel1',
+    num: '01',
+    label: 'Grundlagen',
+    level: 'A1',
+    levelClass: 'lv-a1',
+    color: '#185FA5',
+    sections: [
+      { id:'s9',     label:'W-Fragen',                        color:'#0F766E', soon:false },
+      { id:'s8',     label:'Personalpronomen',                color:'#185FA5', soon:false },
+    ]
+  },
+  {
+    id: 'kapitel2',
+    num: '02',
+    label: 'Präpositionen',
+    level: 'A2',
+    levelClass: 'lv-a2',
+    color: '#7C3AED',
+    sections: [
+      { id:'s3',     label:'Präp. — Akk · Dat · Gen',        color:'#7C3AED', soon:false },
+      { id:'s11',    label:'Präp. für Ort & Zeit',            color:'#0F766E', soon:false },
+      { id:'s1',     label:'Verben mit Präpositionen',        color:'#1D9E75', soon:false },
+      { id:'s2',     label:'Fragen mit Präpositionen',        color:'#1D9E75', soon:false },
+    ]
+  },
+  {
+    id: 'kapitel3',
+    num: '03',
+    label: 'Verben & Kasus',
+    level: 'B1',
+    levelClass: 'lv-b1',
+    color: '#0891B2',
+    sections: [
+      { id:'s5',     label:'Verben mit Dativ',                color:'#7C3AED', soon:false },
+      { id:'s6',     label:'Verben mit Dativ + Akkusativ',    color:'#0891B2', soon:false },
+      { id:'s7',     label:'Reflexive Verben',                color:'#0891B2', soon:false },
+      { id:'s12',    label:'Infinitiv mit zu',                color:'#0891B2', soon:false },
+    ]
+  },
+  {
+    id: 'kapitel4',
+    num: '04',
+    label: 'Zeitformen',
+    level: 'B1',
+    levelClass: 'lv-b1',
+    color: '#D85A30',
+    sections: [
+      { id:'s4',     label:'Das Präteritum',                  color:'#D85A30', soon:false },
+      { id:'s10',    label:'Das Perfekt',                     color:'#7C3AED', soon:false },
+      { id:'s-futur',label:'Futur I & II',                   color:'#A8A29E', soon:true  },
+    ]
+  },
+  {
+    id: 'kapitel5',
+    num: '05',
+    label: 'Erweiterte Grammatik',
+    level: 'B2',
+    levelClass: 'lv-b2',
+    color: '#9333EA',
+    sections: [
+      { id:'s-konj2', label:'Konjunktiv II',                 color:'#A8A29E', soon:true  },
+      { id:'s-passiv',label:'Passiv',                        color:'#A8A29E', soon:true  },
+      { id:'s-neben', label:'Nebensätze',                    color:'#A8A29E', soon:true  },
+    ]
+  },
 ];
 
-// ── Build drawer list ──
-const body = document.getElementById('drawer-body');
-document.getElementById('drawer-badge').textContent = SECTIONS.length + ' Abschnitte';
+// Flat list of all sections for scroll tracking
+const ALL_SECTIONS = CHAPTERS.flatMap(ch =>
+  ch.sections.map(s => ({ ...s, chapterId: ch.id }))
+);
 
-SECTIONS.forEach((sec, i) => {
-  // Item
-  const a = document.createElement('a');
-  a.href = '#' + sec.id;
-  a.className = 'drawer-item';
-  a.dataset.idx = i;
-  a.innerHTML =
-    `<span class="di-num">${i+1}</span>` +
-    `<span class="di-pip" style="background:${sec.color}"></span>` +
-    `<span class="di-label">${sec.label}</span>` +
-    `<span class="di-check">✓</span>`;
-  a.addEventListener('click', () => {
-    closeNav();
-    // smooth scroll after drawer closes
-    setTimeout(() => {
-      document.getElementById(sec.id)?.scrollIntoView({ behavior:'smooth', block:'start' });
-    }, 180);
+// ── Build drawer ──
+const drawerBody = document.getElementById('drawer-body');
+
+CHAPTERS.forEach((ch, ci) => {
+  // Chapter heading
+  const chDiv = document.createElement('div');
+  chDiv.className = 'drawer-chapter';
+  chDiv.innerHTML =
+    `<span class="dc-label">${ch.num} · ${ch.label}</span>` +
+    `<div class="dc-line"></div>` +
+    `<span class="dc-lv ${ch.levelClass}" style="background:none;border:1px solid var(--border);color:var(--hint)">${ch.level}</span>`;
+  drawerBody.appendChild(chDiv);
+
+  ch.sections.forEach((sec, si) => {
+    const a = document.createElement('a');
+    a.href = '#' + sec.id;
+    a.className = 'drawer-item' + (sec.soon ? ' disabled' : '');
+    a.dataset.secId = sec.id;
+    const numLabel = `${parseInt(ch.num)}.${si + 1}`;
+    a.innerHTML =
+      `<span class="di-num">${numLabel}</span>` +
+      `<span class="di-pip" style="background:${sec.color}"></span>` +
+      `<span class="di-label">${sec.label}</span>` +
+      (sec.soon
+        ? `<span class="di-soon">bald</span>`
+        : `<span class="di-check">✓</span>`);
+    if (!sec.soon) {
+      a.addEventListener('click', () => {
+        closeNav();
+        setTimeout(() => {
+          document.getElementById(sec.id)?.scrollIntoView({ behavior:'smooth', block:'start' });
+        }, 180);
+      });
+    }
+    drawerBody.appendChild(a);
   });
-  body.appendChild(a);
 
-  // Separator (not after last)
-  if (i < SECTIONS.length - 1) {
+  // Divider between chapters
+  if (ci < CHAPTERS.length - 1) {
     const sep = document.createElement('div');
     sep.className = 'di-sep';
-    body.appendChild(sep);
+    sep.style.margin = '8px 20px';
+    drawerBody.appendChild(sep);
   }
 });
 
@@ -727,7 +1013,6 @@ function openNav() {
     '<line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/>';
   updateActive();
 }
-
 function closeNav() {
   isOpen = false;
   document.getElementById('nav-drawer').classList.remove('open');
@@ -738,30 +1023,38 @@ function closeNav() {
     '<line x1="3" y1="12" x2="21" y2="12"/>' +
     '<line x1="3" y1="18" x2="21" y2="18"/>';
 }
-
 function toggleNav() { isOpen ? closeNav() : openNav(); }
 
 // ── Active section tracking ──
-function getActiveIdx() {
+function getActiveSecIdx() {
   let idx = 0;
-  SECTIONS.forEach((sec, i) => {
+  ALL_SECTIONS.forEach((sec, i) => {
     const el = document.getElementById(sec.id);
-    if (el && el.getBoundingClientRect().top <= 100) idx = i;
+    if (el && el.getBoundingClientRect().top <= 120) idx = i;
   });
   return idx;
 }
 
 function updateActive() {
-  const idx = getActiveIdx();
-  document.querySelectorAll('.drawer-item').forEach((item, i) => {
-    item.classList.toggle('active', i === idx);
+  const activeSections = ALL_SECTIONS.filter(s => !s.soon);
+  const idx = getActiveSecIdx();
+  const activeSec = ALL_SECTIONS[idx];
+  document.querySelectorAll('.drawer-item').forEach(item => {
+    item.classList.toggle('active', item.dataset.secId === activeSec?.id);
   });
-  const pct = Math.round((idx + 1) / SECTIONS.length * 100);
+  // Progress based on non-soon sections only
+  const activeCountableSections = ALL_SECTIONS.filter(s => !s.soon);
+  const doneIdx = activeCountableSections.findIndex(s => s.id === activeSec?.id);
+  const pct = activeCountableSections.length
+    ? Math.round((doneIdx + 1) / activeCountableSections.length * 100)
+    : 0;
   document.getElementById('dp-fill').style.width = pct + '%';
-  document.getElementById('dp-text').textContent = (idx + 1) + ' / ' + SECTIONS.length;
+  const chNum = CHAPTERS.findIndex(ch => ch.id === activeSec?.chapterId) + 1;
+  document.getElementById('dp-text').textContent =
+    activeSec ? `Kapitel ${chNum}` : '—';
 }
 
-window.addEventListener('scroll', updateActive, { passive: true });
+window.addEventListener('scroll', updateActive, { passive:true });
 updateActive();
 
 // ── Swipe down to close ──
