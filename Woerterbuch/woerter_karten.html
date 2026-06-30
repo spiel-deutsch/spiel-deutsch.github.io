@@ -144,7 +144,7 @@ let allWords = [], deck = [], current = 0, rightCount = 0, wrongCount = 0, wrong
 let mode = 'de', flipped = false;
 
 async function init() {
-  const res = await fetch('../woerter.json');
+  const res = await fetch('woerter.json');
   allWords = await res.json();
   restartAll();
 }

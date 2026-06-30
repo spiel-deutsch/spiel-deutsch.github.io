@@ -145,7 +145,7 @@ let rightCount = 0, wrongCount = 0, streak = 0, maxStreak = 0;
 let mode = 'de', answered = false;
 
 async function init() {
-  const res = await fetch('../woerter.json');
+  const res = await fetch('woerter.json');
   allWords = await res.json();
   startQuiz();
 }

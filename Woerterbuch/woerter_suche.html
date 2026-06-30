@@ -134,7 +134,7 @@ let allWords = [], filtered = [], visibleCount = 40;
 let activeFilter = 'all', searchQuery = '';
 
 async function init() {
-  const res = await fetch('../woerter.json');
+  const res = await fetch('woerter.json');
   allWords = await res.json();
   // Sort alphabetically by German word
   allWords.sort((a,b) => a.de.toLowerCase().localeCompare(b.de.toLowerCase(), 'de'));
