@@ -1,0 +1,258 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Wörterbuch — Lernkarten · Spiel Deutsch</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=DM+Sans:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --bg:#F7F4EF;--surface:#fff;--text:#1C1917;--muted:#78716C;--hint:#A8A29E;
+  --green:#1D9E75;--greenl:#E1F5EE;--greent:#0F6E56;
+  --border:rgba(28,25,23,0.10);--bm:rgba(28,25,23,0.15);
+  --r:16px;--shc:0 4px 24px rgba(28,25,23,0.10);
+  --red:#DC2626;--redl:#FEE2E2;--redt:#991B1B;
+}
+html,body{min-height:100%;background:var(--bg);font-family:'DM Sans',sans-serif;color:var(--text);-webkit-font-smoothing:antialiased}
+body{display:flex;flex-direction:column;align-items:center;padding-bottom:48px}
+
+/* Top bar */
+.topbar{width:100%;max-width:640px;padding:20px 24px 0;display:flex;align-items:center;gap:12px}
+.back-btn{display:flex;align-items:center;gap:6px;font-size:13px;font-weight:600;color:var(--muted);text-decoration:none;-webkit-tap-highlight-color:transparent}
+.back-btn:hover{color:var(--text)}
+.topbar-title{font-family:'DM Serif Display',serif;font-size:18px;flex:1;text-align:center}
+.topbar-count{font-size:12px;font-weight:600;color:var(--hint);background:var(--bg);border:1px solid var(--border);border-radius:20px;padding:3px 10px}
+
+/* Progress */
+.progress-wrap{width:100%;max-width:640px;padding:16px 24px 0}
+.prog-row{display:flex;justify-content:space-between;font-size:11px;font-weight:600;color:var(--hint);margin-bottom:6px}
+.prog-track{height:5px;background:var(--border);border-radius:5px;overflow:hidden}
+.prog-fill{height:100%;background:var(--green);border-radius:5px;transition:width .35s cubic-bezier(.4,0,.2,1)}
+
+/* Mode toggle */
+.mode-row{width:100%;max-width:640px;padding:16px 24px 0;display:flex;gap:8px}
+.mode-btn{flex:1;padding:8px;border-radius:10px;border:1px solid var(--border);background:var(--surface);font-size:12px;font-weight:600;color:var(--muted);cursor:pointer;transition:all .15s;-webkit-tap-highlight-color:transparent}
+.mode-btn.active{background:var(--text);color:#fff;border-color:var(--text)}
+
+/* Card area */
+.card-area{width:100%;max-width:640px;padding:20px 24px 0;perspective:1200px}
+.flip-card{width:100%;aspect-ratio:3/2;cursor:pointer;position:relative;transform-style:preserve-3d;transition:transform .55s cubic-bezier(.4,0,.2,1)}
+.flip-card.flipped{transform:rotateY(180deg)}
+.card-face{position:absolute;inset:0;backface-visibility:hidden;-webkit-backface-visibility:hidden;border-radius:var(--r);box-shadow:var(--shc);display:flex;flex-direction:column;align-items:center;justify-content:center;padding:28px 24px;text-align:center;background:var(--surface);border:1px solid var(--border)}
+.card-back{transform:rotateY(180deg)}
+.card-face::before{content:'';position:absolute;top:0;left:0;right:0;height:4px;border-radius:var(--r) var(--r) 0 0;background:var(--green)}
+.card-back::before{background:var(--akk, #185FA5)}
+.card-lang{font-size:10px;font-weight:600;letter-spacing:1.5px;text-transform:uppercase;color:var(--hint);margin-bottom:12px}
+.card-word{font-family:'DM Serif Display',serif;font-size:clamp(24px,6vw,36px);line-height:1.2;color:var(--text)}
+.card-example{font-size:13px;color:var(--muted);margin-top:14px;line-height:1.6;max-width:380px}
+.card-example b{color:var(--text);font-weight:600}
+.card-hint{position:absolute;bottom:14px;font-size:11px;color:var(--hint)}
+
+/* Action buttons */
+.actions{width:100%;max-width:640px;padding:16px 24px 0;display:flex;gap:10px}
+.btn{flex:1;padding:14px;border-radius:var(--r);border:none;font-size:14px;font-weight:600;cursor:pointer;display:flex;align-items:center;justify-content:center;gap:7px;transition:transform .15s,box-shadow .15s;-webkit-tap-highlight-color:transparent}
+.btn:active{transform:scale(.96)}
+.btn-wrong{background:var(--redl);color:var(--redt);border:1px solid #FECACA}
+.btn-right{background:var(--greenl);color:var(--greent);border:1px solid var(--green)}
+.btn-next{background:var(--text);color:#fff;box-shadow:0 2px 12px rgba(28,25,23,0.2)}
+.btn-flip{background:var(--surface);color:var(--text);border:1px solid var(--border);box-shadow:var(--shc)}
+
+/* Stats row */
+.stats-row{width:100%;max-width:640px;padding:14px 24px 0;display:flex;gap:8px}
+.stat-box{flex:1;background:var(--surface);border:1px solid var(--border);border-radius:12px;padding:10px;text-align:center}
+.stat-n{font-family:'DM Serif Display',serif;font-size:20px}
+.stat-l{font-size:10px;font-weight:600;letter-spacing:1px;text-transform:uppercase;color:var(--hint);margin-top:2px}
+.stat-n.green{color:var(--greent)}
+.stat-n.red{color:var(--redt)}
+
+/* Done screen */
+.done-screen{width:100%;max-width:640px;padding:40px 24px;text-align:center;display:none;flex-direction:column;align-items:center;gap:16px}
+.done-icon{font-size:48px}
+.done-title{font-family:'DM Serif Display',serif;font-size:28px}
+.done-sub{font-size:15px;color:var(--muted)}
+.done-stats{display:flex;gap:12px;margin-top:8px}
+.done-btn{padding:14px 28px;border-radius:var(--r);border:none;font-size:14px;font-weight:600;cursor:pointer;background:var(--text);color:#fff;box-shadow:0 2px 12px rgba(28,25,23,0.2)}
+</style>
+</head>
+<body>
+
+<div class="topbar">
+  <a class="back-btn" href="../index.html">← Zurück</a>
+  <span class="topbar-title">Lernkarten</span>
+  <span class="topbar-count" id="counter">0 / 0</span>
+</div>
+
+<div class="progress-wrap">
+  <div class="prog-row"><span id="prog-label">Fortschritt</span><span id="prog-pct">0%</span></div>
+  <div class="prog-track"><div class="prog-fill" id="prog-fill" style="width:0%"></div></div>
+</div>
+
+<div class="mode-row">
+  <button class="mode-btn active" onclick="setMode('de')" id="mode-de">🇩🇪 Deutsch → عربي</button>
+  <button class="mode-btn" onclick="setMode('ar')" id="mode-ar">🇸🇦 عربي → Deutsch</button>
+  <button class="mode-btn" onclick="setMode('rnd')" id="mode-rnd">🔀 Zufällig</button>
+</div>
+
+<div class="card-area">
+  <div class="flip-card" id="flip-card" onclick="flipCard()">
+    <div class="card-face card-front">
+      <div class="card-lang" id="front-lang">DEUTSCH</div>
+      <div class="card-word" id="front-word">Laden…</div>
+      <div class="card-example" id="front-example"></div>
+      <div class="card-hint">Tippen zum Umdrehen</div>
+    </div>
+    <div class="card-face card-back">
+      <div class="card-lang" id="back-lang">ARABISCH</div>
+      <div class="card-word" id="back-word"></div>
+      <div class="card-example" id="back-example"></div>
+    </div>
+  </div>
+</div>
+
+<div class="actions" id="actions-before">
+  <button class="btn btn-flip" onclick="flipCard()">↩ Umdrehen</button>
+  <button class="btn btn-next" onclick="revealAndRate()">Antwort zeigen →</button>
+</div>
+
+<div class="actions" id="actions-after" style="display:none">
+  <button class="btn btn-wrong" onclick="rateCard(false)">✗ Falsch</button>
+  <button class="btn btn-right" onclick="rateCard(true)">✓ Richtig</button>
+</div>
+
+<div class="stats-row">
+  <div class="stat-box"><div class="stat-n green" id="s-right">0</div><div class="stat-l">Richtig</div></div>
+  <div class="stat-box"><div class="stat-n red" id="s-wrong">0</div><div class="stat-l">Falsch</div></div>
+  <div class="stat-box"><div class="stat-n" id="s-left">0</div><div class="stat-l">Übrig</div></div>
+</div>
+
+<div class="done-screen" id="done-screen">
+  <div class="done-icon">🎉</div>
+  <div class="done-title">Runde beendet!</div>
+  <div class="done-sub" id="done-sub"></div>
+  <div class="done-stats">
+    <div class="stat-box"><div class="stat-n green" id="d-right">0</div><div class="stat-l">Richtig</div></div>
+    <div class="stat-box"><div class="stat-n red" id="d-wrong">0</div><div class="stat-l">Falsch</div></div>
+  </div>
+  <button class="done-btn" onclick="restart()">🔄 Nochmal (nur Falsche)</button>
+  <button class="done-btn" style="background:var(--surface);color:var(--text);border:1px solid var(--border);box-shadow:none" onclick="restartAll()">Alle Karten wiederholen</button>
+</div>
+
+<script>
+let allWords = [], deck = [], current = 0, rightCount = 0, wrongCount = 0, wrongCards = [];
+let mode = 'de', flipped = false;
+
+async function init() {
+  const res = await fetch('../woerter.json');
+  allWords = await res.json();
+  restartAll();
+}
+
+function shuffle(arr) {
+  for (let i = arr.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1));
+    [arr[i], arr[j]] = [arr[j], arr[i]];
+  }
+  return arr;
+}
+
+function setMode(m) {
+  mode = m;
+  ['de','ar','rnd'].forEach(id => document.getElementById('mode-'+id).classList.toggle('active', id === m));
+  restartAll();
+}
+
+function renderCard() {
+  const w = deck[current];
+  if (!w) return;
+  const showDE = mode === 'de' || (mode === 'rnd' && Math.random() > 0.5);
+  document.getElementById('front-lang').textContent = showDE ? 'DEUTSCH' : 'عربي';
+  document.getElementById('front-word').textContent = showDE ? w.de : w.ar;
+  document.getElementById('front-example').innerHTML = showDE
+    ? (w.example_de || '').replace(/\*\*(.*?)\*\*/g, '<b>$1</b>')
+    : (w.example_ar || '');
+  document.getElementById('back-lang').textContent = showDE ? 'عربي' : 'DEUTSCH';
+  document.getElementById('back-word').textContent = showDE ? w.ar : w.de;
+  document.getElementById('back-example').innerHTML = showDE
+    ? (w.example_ar || '')
+    : (w.example_de || '').replace(/\*\*(.*?)\*\*/g, '<b>$1</b>');
+
+  // Reset flip
+  flipped = false;
+  document.getElementById('flip-card').classList.remove('flipped');
+  document.getElementById('actions-before').style.display = 'flex';
+  document.getElementById('actions-after').style.display = 'none';
+
+  updateUI();
+}
+
+function flipCard() {
+  flipped = !flipped;
+  document.getElementById('flip-card').classList.toggle('flipped', flipped);
+}
+
+function revealAndRate() {
+  if (!flipped) flipCard();
+  document.getElementById('actions-before').style.display = 'none';
+  document.getElementById('actions-after').style.display = 'flex';
+}
+
+function rateCard(correct) {
+  if (correct) rightCount++;
+  else { wrongCount++; wrongCards.push(deck[current]); }
+  document.getElementById('s-right').textContent = rightCount;
+  document.getElementById('s-wrong').textContent = wrongCount;
+  document.getElementById('s-left').textContent = deck.length - current - 1;
+  current++;
+  if (current >= deck.length) showDone();
+  else renderCard();
+}
+
+function updateUI() {
+  const total = deck.length;
+  const pct = total ? Math.round(current / total * 100) : 0;
+  document.getElementById('counter').textContent = `${current + 1} / ${total}`;
+  document.getElementById('prog-fill').style.width = pct + '%';
+  document.getElementById('prog-pct').textContent = pct + '%';
+  document.getElementById('s-left').textContent = total - current;
+}
+
+function showDone() {
+  document.querySelector('.card-area').style.display = 'none';
+  document.getElementById('actions-before').style.display = 'none';
+  document.getElementById('actions-after').style.display = 'none';
+  document.getElementById('stats-row') && (document.querySelector('.stats-row').style.display = 'none');
+  document.getElementById('d-right').textContent = rightCount;
+  document.getElementById('d-wrong').textContent = wrongCount;
+  document.getElementById('done-sub').textContent =
+    `${rightCount} von ${deck.length} Wörtern richtig — ${Math.round(rightCount/deck.length*100)}%`;
+  document.getElementById('done-screen').style.display = 'flex';
+}
+
+function restart() {
+  if (!wrongCards.length) { restartAll(); return; }
+  deck = shuffle([...wrongCards]);
+  wrongCards = []; current = 0; rightCount = 0; wrongCount = 0;
+  resetView();
+}
+
+function restartAll() {
+  deck = shuffle([...allWords]);
+  wrongCards = []; current = 0; rightCount = 0; wrongCount = 0;
+  resetView();
+}
+
+function resetView() {
+  document.querySelector('.card-area').style.display = 'block';
+  document.querySelector('.stats-row').style.display = 'flex';
+  document.getElementById('done-screen').style.display = 'none';
+  document.getElementById('s-right').textContent = 0;
+  document.getElementById('s-wrong').textContent = 0;
+  renderCard();
+}
+
+init();
+</script>
+</body>
+</html>

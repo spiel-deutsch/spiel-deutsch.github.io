@@ -1,0 +1,283 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Wörterbuch — Quiz · Spiel Deutsch</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=DM+Sans:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --bg:#F7F4EF;--surface:#fff;--text:#1C1917;--muted:#78716C;--hint:#A8A29E;
+  --green:#1D9E75;--greenl:#E1F5EE;--greent:#0F6E56;
+  --border:rgba(28,25,23,0.10);--bm:rgba(28,25,23,0.15);
+  --r:16px;--shc:0 4px 24px rgba(28,25,23,0.10);
+  --red:#DC2626;--redl:#FEE2E2;--redt:#991B1B;
+  --amber:#B45309;--amberl:#FEF3C7;--amberb:#F59E0B;
+}
+html,body{min-height:100%;background:var(--bg);font-family:'DM Sans',sans-serif;color:var(--text);-webkit-font-smoothing:antialiased}
+body{display:flex;flex-direction:column;align-items:center;padding-bottom:48px}
+
+.topbar{width:100%;max-width:640px;padding:20px 24px 0;display:flex;align-items:center;gap:12px}
+.back-btn{display:flex;align-items:center;gap:6px;font-size:13px;font-weight:600;color:var(--muted);text-decoration:none}
+.back-btn:hover{color:var(--text)}
+.topbar-title{font-family:'DM Serif Display',serif;font-size:18px;flex:1;text-align:center}
+
+/* Streak */
+.streak-row{width:100%;max-width:640px;padding:14px 24px 0;display:flex;gap:8px;align-items:center}
+.streak-box{background:var(--surface);border:1px solid var(--border);border-radius:12px;padding:8px 14px;display:flex;align-items:center;gap:6px;font-size:13px;font-weight:600}
+.streak-fire{font-size:16px}
+.prog-wrap{flex:1;background:var(--border);border-radius:5px;height:5px;overflow:hidden}
+.prog-fill{height:100%;background:var(--green);border-radius:5px;transition:width .3s}
+.prog-label{font-size:11px;font-weight:600;color:var(--hint);white-space:nowrap}
+
+/* Question card */
+.q-card{width:100%;max-width:640px;padding:16px 24px 0}
+.q-inner{background:var(--surface);border:1px solid var(--border);border-radius:var(--r);box-shadow:var(--shc);padding:28px 24px;text-align:center;position:relative;overflow:hidden}
+.q-inner::before{content:'';position:absolute;top:0;left:0;right:0;height:4px;background:var(--green)}
+.q-num{font-size:11px;font-weight:600;letter-spacing:1.5px;text-transform:uppercase;color:var(--hint);margin-bottom:10px}
+.q-direction{font-size:11px;font-weight:600;color:var(--hint);margin-bottom:6px}
+.q-word{font-family:'DM Serif Display',serif;font-size:clamp(22px,6vw,34px);line-height:1.2}
+.q-example{font-size:13px;color:var(--muted);margin-top:12px;line-height:1.6}
+.q-example b{color:var(--text);font-weight:600}
+
+/* Options */
+.options{width:100%;max-width:640px;padding:12px 24px 0;display:flex;flex-direction:column;gap:10px}
+.opt-btn{width:100%;padding:16px 20px;border-radius:var(--r);border:1.5px solid var(--border);background:var(--surface);font-size:15px;font-weight:500;color:var(--text);cursor:pointer;text-align:left;transition:border-color .15s,background .15s;-webkit-tap-highlight-color:transparent;display:flex;align-items:center;gap:12px}
+.opt-btn:hover:not(:disabled){border-color:var(--bm);background:#FAFAF9}
+.opt-btn.correct{background:var(--greenl);border-color:var(--green);color:var(--greent)}
+.opt-btn.wrong{background:var(--redl);border-color:#FECACA;color:var(--redt)}
+.opt-btn:disabled{cursor:default}
+.opt-letter{width:28px;height:28px;border-radius:50%;background:var(--bg);border:1px solid var(--border);display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:700;color:var(--hint);flex-shrink:0;transition:background .15s,color .15s}
+.opt-btn.correct .opt-letter{background:var(--greent);color:#fff;border-color:var(--greent)}
+.opt-btn.wrong .opt-letter{background:var(--redt);color:#fff;border-color:var(--redt)}
+.opt-text{flex:1}
+
+/* Feedback */
+.feedback{width:100%;max-width:640px;padding:12px 24px 0;display:none}
+.feedback-inner{border-radius:var(--r);padding:14px 18px;font-size:13px;line-height:1.6}
+.feedback-inner.correct{background:var(--greenl);color:var(--greent);border:1px solid var(--green)}
+.feedback-inner.wrong{background:var(--redl);color:var(--redt);border:1px solid #FECACA}
+.feedback-title{font-weight:700;margin-bottom:4px}
+
+/* Next btn */
+.next-wrap{width:100%;max-width:640px;padding:12px 24px 0}
+.next-btn{width:100%;padding:15px;border-radius:var(--r);border:none;background:var(--text);color:#fff;font-size:14px;font-weight:600;cursor:pointer;display:none;box-shadow:0 2px 12px rgba(28,25,23,0.2);transition:opacity .15s}
+.next-btn:active{opacity:.85}
+
+/* Mode row */
+.mode-row{width:100%;max-width:640px;padding:14px 24px 0;display:flex;gap:8px}
+.mode-btn{flex:1;padding:8px;border-radius:10px;border:1px solid var(--border);background:var(--surface);font-size:12px;font-weight:600;color:var(--muted);cursor:pointer;transition:all .15s}
+.mode-btn.active{background:var(--text);color:#fff;border-color:var(--text)}
+
+/* Done */
+.done-screen{width:100%;max-width:640px;padding:40px 24px;text-align:center;display:none;flex-direction:column;align-items:center;gap:14px}
+.done-icon{font-size:48px}
+.done-title{font-family:'DM Serif Display',serif;font-size:26px}
+.done-sub{font-size:14px;color:var(--muted)}
+.done-stats{display:flex;gap:12px}
+.stat-box{flex:1;background:var(--surface);border:1px solid var(--border);border-radius:12px;padding:12px;text-align:center}
+.stat-n{font-family:'DM Serif Display',serif;font-size:22px}
+.stat-l{font-size:10px;font-weight:600;letter-spacing:1px;text-transform:uppercase;color:var(--hint);margin-top:2px}
+.stat-n.green{color:var(--greent)} .stat-n.red{color:var(--redt)}
+.done-btn{padding:14px 28px;border-radius:var(--r);border:none;font-size:14px;font-weight:600;cursor:pointer;background:var(--text);color:#fff}
+</style>
+</head>
+<body>
+
+<div class="topbar">
+  <a class="back-btn" href="../index.html">← Zurück</a>
+  <span class="topbar-title">Wörter-Quiz</span>
+</div>
+
+<div class="mode-row">
+  <button class="mode-btn active" onclick="setMode('de')" id="mode-de">🇩🇪 → عربي</button>
+  <button class="mode-btn" onclick="setMode('ar')" id="mode-ar">🇸🇦 → Deutsch</button>
+  <button class="mode-btn" onclick="setMode('rnd')" id="mode-rnd">🔀 Mix</button>
+</div>
+
+<div class="streak-row">
+  <div class="streak-box"><span class="streak-fire">🔥</span><span id="streak-num">0</span></div>
+  <div class="prog-wrap"><div class="prog-fill" id="prog-fill" style="width:0%"></div></div>
+  <span class="prog-label" id="prog-label">0 / 20</span>
+</div>
+
+<div class="q-card">
+  <div class="q-inner">
+    <div class="q-num" id="q-num">FRAGE 1</div>
+    <div class="q-direction" id="q-direction">Wie heißt das auf Arabisch?</div>
+    <div class="q-word" id="q-word">Laden…</div>
+    <div class="q-example" id="q-example"></div>
+  </div>
+</div>
+
+<div class="options" id="options"></div>
+
+<div class="feedback" id="feedback">
+  <div class="feedback-inner" id="feedback-inner">
+    <div class="feedback-title" id="feedback-title"></div>
+    <div id="feedback-body"></div>
+  </div>
+</div>
+
+<div class="next-wrap">
+  <button class="next-btn" id="next-btn" onclick="nextQuestion()">Weiter →</button>
+</div>
+
+<div class="done-screen" id="done-screen">
+  <div class="done-icon" id="done-icon">🎉</div>
+  <div class="done-title">Quiz beendet!</div>
+  <div class="done-sub" id="done-sub"></div>
+  <div class="done-stats">
+    <div class="stat-box"><div class="stat-n green" id="d-right">0</div><div class="stat-l">Richtig</div></div>
+    <div class="stat-box"><div class="stat-n red" id="d-wrong">0</div><div class="stat-l">Falsch</div></div>
+    <div class="stat-box"><div class="stat-n" id="d-streak">0</div><div class="stat-l">Max Streak</div></div>
+  </div>
+  <button class="done-btn" onclick="startQuiz()">🔄 Neues Quiz</button>
+  <button class="done-btn" style="background:var(--surface);color:var(--text);border:1px solid var(--border)" onclick="window.location.href='woerter_suche.html'">🔍 Wörterbuch</button>
+</div>
+
+<script>
+const QUIZ_SIZE = 20;
+let allWords = [], quizDeck = [], current = 0;
+let rightCount = 0, wrongCount = 0, streak = 0, maxStreak = 0;
+let mode = 'de', answered = false;
+
+async function init() {
+  const res = await fetch('../woerter.json');
+  allWords = await res.json();
+  startQuiz();
+}
+
+function setMode(m) {
+  mode = m;
+  ['de','ar','rnd'].forEach(id => document.getElementById('mode-'+id).classList.toggle('active', id===m));
+  startQuiz();
+}
+
+function shuffle(arr) {
+  const a = [...arr];
+  for (let i = a.length-1; i > 0; i--) {
+    const j = Math.floor(Math.random()*(i+1));
+    [a[i],a[j]]=[a[j],a[i]];
+  }
+  return a;
+}
+
+function startQuiz() {
+  quizDeck = shuffle(allWords).slice(0, QUIZ_SIZE);
+  current = 0; rightCount = 0; wrongCount = 0; streak = 0; maxStreak = 0;
+  document.getElementById('done-screen').style.display = 'none';
+  document.querySelector('.q-card').style.display = 'block';
+  document.getElementById('options').style.display = 'flex';
+  document.querySelector('.streak-row').style.display = 'flex';
+  renderQuestion();
+}
+
+function getDirection() {
+  if (mode === 'de') return 'de';
+  if (mode === 'ar') return 'ar';
+  return Math.random() > 0.5 ? 'de' : 'ar';
+}
+
+function renderQuestion() {
+  answered = false;
+  const w = quizDeck[current];
+  const dir = getDirection();
+  w._dir = dir;
+
+  document.getElementById('q-num').textContent = `FRAGE ${current+1} VON ${QUIZ_SIZE}`;
+  document.getElementById('q-direction').textContent = dir === 'de' ? 'Wie heißt das auf Arabisch?' : 'Wie heißt das auf Deutsch?';
+  document.getElementById('q-word').textContent = dir === 'de' ? w.de : w.ar;
+  document.getElementById('q-example').innerHTML = dir === 'de'
+    ? (w.example_de||'').replace(/\*\*(.*?)\*\*/g,'<b>$1</b>')
+    : (w.example_ar||'');
+
+  // Build 4 options: 1 correct + 3 random wrong
+  const correct = dir === 'de' ? w.ar : w.de;
+  const wrongPool = allWords.filter(x => x !== w);
+  const wrongs = shuffle(wrongPool).slice(0,3).map(x => dir === 'de' ? x.ar : x.de);
+  const options = shuffle([correct, ...wrongs]);
+
+  const letters = ['A','B','C','D'];
+  const container = document.getElementById('options');
+  container.innerHTML = '';
+  options.forEach((opt, i) => {
+    const btn = document.createElement('button');
+    btn.className = 'opt-btn';
+    btn.innerHTML = `<span class="opt-letter">${letters[i]}</span><span class="opt-text">${opt}</span>`;
+    btn.onclick = () => selectAnswer(btn, opt, correct, w, dir);
+    container.appendChild(btn);
+  });
+
+  document.getElementById('feedback').style.display = 'none';
+  document.getElementById('next-btn').style.display = 'none';
+  updateProgress();
+}
+
+function selectAnswer(btn, chosen, correct, word, dir) {
+  if (answered) return;
+  answered = true;
+  const isRight = chosen === correct;
+
+  document.querySelectorAll('.opt-btn').forEach(b => {
+    b.disabled = true;
+    const txt = b.querySelector('.opt-text').textContent;
+    if (txt === correct) b.classList.add('correct');
+    else if (b === btn && !isRight) b.classList.add('wrong');
+  });
+
+  if (isRight) {
+    rightCount++; streak++; maxStreak = Math.max(maxStreak, streak);
+  } else {
+    wrongCount++; streak = 0;
+  }
+  document.getElementById('streak-num').textContent = streak;
+
+  // Feedback
+  const fb = document.getElementById('feedback');
+  const fbi = document.getElementById('feedback-inner');
+  fbi.className = 'feedback-inner ' + (isRight ? 'correct' : 'wrong');
+  document.getElementById('feedback-title').textContent = isRight ? '✓ Richtig!' : '✗ Falsch';
+  const exampleDE = (word.example_de||'').replace(/\*\*(.*?)\*\*/g,'<b>$1</b>');
+  document.getElementById('feedback-body').innerHTML =
+    `<b>${word.de}</b> = ${word.ar}<br><span style="font-size:12px;opacity:.8">${exampleDE}</span>`;
+  fb.style.display = 'block';
+  document.getElementById('next-btn').style.display = 'block';
+
+  updateProgress();
+}
+
+function nextQuestion() {
+  current++;
+  if (current >= QUIZ_SIZE) showDone();
+  else renderQuestion();
+}
+
+function updateProgress() {
+  const pct = Math.round(current / QUIZ_SIZE * 100);
+  document.getElementById('prog-fill').style.width = pct + '%';
+  document.getElementById('prog-label').textContent = `${current} / ${QUIZ_SIZE}`;
+}
+
+function showDone() {
+  document.querySelector('.q-card').style.display = 'none';
+  document.getElementById('options').style.display = 'none';
+  document.getElementById('feedback').style.display = 'none';
+  document.getElementById('next-btn').style.display = 'none';
+  document.querySelector('.streak-row').style.display = 'none';
+
+  const pct = Math.round(rightCount / QUIZ_SIZE * 100);
+  document.getElementById('done-icon').textContent = pct >= 80 ? '🏆' : pct >= 50 ? '👍' : '💪';
+  document.getElementById('done-sub').textContent = `${rightCount} von ${QUIZ_SIZE} richtig — ${pct}%`;
+  document.getElementById('d-right').textContent = rightCount;
+  document.getElementById('d-wrong').textContent = wrongCount;
+  document.getElementById('d-streak').textContent = maxStreak;
+  document.getElementById('done-screen').style.display = 'flex';
+}
+
+init();
+</script>
+</body>
+</html>

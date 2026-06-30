@@ -1,0 +1,250 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Wörterbuch — Suche · Spiel Deutsch</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=DM+Sans:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --bg:#F7F4EF;--surface:#fff;--text:#1C1917;--muted:#78716C;--hint:#A8A29E;
+  --green:#1D9E75;--greenl:#E1F5EE;--greent:#0F6E56;
+  --border:rgba(28,25,23,0.10);--bm:rgba(28,25,23,0.15);
+  --r:16px;--shc:0 4px 24px rgba(28,25,23,0.09);
+}
+html,body{min-height:100%;background:var(--bg);font-family:'DM Sans',sans-serif;color:var(--text);-webkit-font-smoothing:antialiased}
+body{display:flex;flex-direction:column;align-items:center;padding-bottom:60px}
+
+.topbar{width:100%;max-width:680px;padding:20px 24px 0;display:flex;align-items:center;gap:12px}
+.back-btn{display:flex;align-items:center;gap:6px;font-size:13px;font-weight:600;color:var(--muted);text-decoration:none}
+.back-btn:hover{color:var(--text)}
+.topbar-title{font-family:'DM Serif Display',serif;font-size:18px;flex:1;text-align:center}
+.topbar-count{font-size:12px;font-weight:600;color:var(--hint);background:var(--bg);border:1px solid var(--border);border-radius:20px;padding:3px 10px;white-space:nowrap}
+
+/* Search */
+.search-wrap{width:100%;max-width:680px;padding:16px 24px 0}
+.search-inner{position:relative}
+.search-icon{position:absolute;left:14px;top:50%;transform:translateY(-50%);color:var(--hint);font-size:16px;pointer-events:none}
+.search-input{width:100%;padding:13px 14px 13px 40px;border-radius:var(--r);border:1.5px solid var(--border);background:var(--surface);font-size:15px;font-family:'DM Sans',sans-serif;color:var(--text);outline:none;box-shadow:var(--shc);transition:border-color .15s}
+.search-input:focus{border-color:var(--green)}
+.search-input::placeholder{color:var(--hint)}
+.search-clear{position:absolute;right:12px;top:50%;transform:translateY(-50%);background:none;border:none;cursor:pointer;color:var(--hint);font-size:18px;display:none;padding:4px}
+
+/* Filter row */
+.filter-row{width:100%;max-width:680px;padding:10px 24px 0;display:flex;gap:8px;overflow-x:auto;scrollbar-width:none}
+.filter-row::-webkit-scrollbar{display:none}
+.filter-btn{padding:7px 14px;border-radius:20px;border:1px solid var(--border);background:var(--surface);font-size:12px;font-weight:600;color:var(--muted);cursor:pointer;white-space:nowrap;transition:all .15s;flex-shrink:0}
+.filter-btn.active{background:var(--text);color:#fff;border-color:var(--text)}
+
+/* Results info */
+.results-info{width:100%;max-width:680px;padding:12px 24px 0;font-size:12px;color:var(--hint);font-weight:600}
+
+/* Word list */
+.word-list{width:100%;max-width:680px;padding:8px 24px 0;display:flex;flex-direction:column;gap:8px}
+.word-item{background:var(--surface);border:1px solid var(--border);border-radius:var(--r);box-shadow:var(--shc);padding:16px 18px;cursor:pointer;transition:box-shadow .2s,transform .2s;-webkit-tap-highlight-color:transparent;position:relative;overflow:hidden}
+.word-item::before{content:'';position:absolute;top:0;left:0;bottom:0;width:3px;background:var(--green);transform:scaleY(0);transform-origin:top;transition:transform .2s}
+.word-item:hover{transform:translateY(-1px);box-shadow:0 8px 32px rgba(28,25,23,0.12)}
+.word-item:hover::before{transform:scaleY(1)}
+.word-item.open::before{transform:scaleY(1)}
+.wi-top{display:flex;align-items:baseline;gap:12px;justify-content:space-between}
+.wi-de{font-family:'DM Serif Display',serif;font-size:18px}
+.wi-ar{font-size:14px;color:var(--muted);direction:rtl;text-align:right}
+.wi-expand{font-size:11px;color:var(--hint);flex-shrink:0}
+.wi-examples{display:none;margin-top:12px;padding-top:12px;border-top:1px solid var(--border);display:none;flex-direction:column;gap:8px}
+.word-item.open .wi-examples{display:flex}
+.wi-ex-de{font-size:13px;color:var(--text);line-height:1.6}
+.wi-ex-de b{color:var(--greent)}
+.wi-ex-ar{font-size:13px;color:var(--muted);line-height:1.6;direction:rtl;text-align:right;margin-top:4px}
+
+/* Alphabet jump */
+.alpha-bar{position:fixed;right:6px;top:50%;transform:translateY(-50%);display:flex;flex-direction:column;gap:1px;z-index:100}
+.alpha-btn{font-size:9px;font-weight:700;color:var(--hint);cursor:pointer;padding:2px 4px;border-radius:4px;-webkit-tap-highlight-color:transparent}
+.alpha-btn:hover{color:var(--text);background:var(--border)}
+
+/* Load more */
+.load-more-wrap{width:100%;max-width:680px;padding:16px 24px 0;text-align:center}
+.load-more-btn{padding:12px 28px;border-radius:var(--r);border:1px solid var(--border);background:var(--surface);font-size:13px;font-weight:600;color:var(--muted);cursor:pointer;transition:all .15s}
+.load-more-btn:hover{background:var(--text);color:#fff;border-color:var(--text)}
+
+/* Empty state */
+.empty{width:100%;max-width:680px;padding:48px 24px;text-align:center;display:none;flex-direction:column;align-items:center;gap:10px}
+.empty-icon{font-size:36px;opacity:.4}
+.empty-title{font-family:'DM Serif Display',serif;font-size:20px;color:var(--muted)}
+.empty-sub{font-size:13px;color:var(--hint)}
+</style>
+</head>
+<body>
+
+<div class="topbar">
+  <a class="back-btn" href="../index.html">← Zurück</a>
+  <span class="topbar-title">Wörterbuch</span>
+  <span class="topbar-count" id="topbar-count">0 Wörter</span>
+</div>
+
+<div class="search-wrap">
+  <div class="search-inner">
+    <span class="search-icon">🔍</span>
+    <input class="search-input" id="search-input" type="text" placeholder="Suche auf Deutsch oder عربي…" oninput="onSearch()" autocomplete="off" autocorrect="off" spellcheck="false">
+    <button class="search-clear" id="search-clear" onclick="clearSearch()">✕</button>
+  </div>
+</div>
+
+<div class="filter-row" id="filter-row">
+  <button class="filter-btn active" onclick="setFilter('all')" data-filter="all">Alle</button>
+  <button class="filter-btn" onclick="setFilter('A')" data-filter="A">A</button>
+  <button class="filter-btn" onclick="setFilter('B')" data-filter="B">B</button>
+  <button class="filter-btn" onclick="setFilter('C')" data-filter="C">C</button>
+  <button class="filter-btn" onclick="setFilter('D')" data-filter="D">D</button>
+  <button class="filter-btn" onclick="setFilter('E')" data-filter="E">E</button>
+  <button class="filter-btn" onclick="setFilter('F')" data-filter="F">F</button>
+  <button class="filter-btn" onclick="setFilter('G')" data-filter="G">G</button>
+  <button class="filter-btn" onclick="setFilter('H')" data-filter="H">H</button>
+  <button class="filter-btn" onclick="setFilter('I')" data-filter="I">I</button>
+  <button class="filter-btn" onclick="setFilter('J')" data-filter="J">J</button>
+  <button class="filter-btn" onclick="setFilter('K')" data-filter="K">K</button>
+  <button class="filter-btn" onclick="setFilter('L')" data-filter="L">L</button>
+  <button class="filter-btn" onclick="setFilter('M')" data-filter="M">M</button>
+  <button class="filter-btn" onclick="setFilter('N')" data-filter="N">N</button>
+  <button class="filter-btn" onclick="setFilter('O')" data-filter="O">O</button>
+  <button class="filter-btn" onclick="setFilter('P')" data-filter="P">P</button>
+  <button class="filter-btn" onclick="setFilter('R')" data-filter="R">R</button>
+  <button class="filter-btn" onclick="setFilter('S')" data-filter="S">S</button>
+  <button class="filter-btn" onclick="setFilter('T')" data-filter="T">T</button>
+  <button class="filter-btn" onclick="setFilter('U')" data-filter="U">U</button>
+  <button class="filter-btn" onclick="setFilter('V')" data-filter="V">V</button>
+  <button class="filter-btn" onclick="setFilter('W')" data-filter="W">W</button>
+  <button class="filter-btn" onclick="setFilter('Z')" data-filter="Z">Z</button>
+</div>
+
+<div class="results-info" id="results-info"></div>
+<div class="word-list" id="word-list"></div>
+<div class="empty" id="empty-state">
+  <div class="empty-icon">🔎</div>
+  <div class="empty-title">Kein Ergebnis</div>
+  <div class="empty-sub">Versuche einen anderen Suchbegriff</div>
+</div>
+<div class="load-more-wrap" id="load-more-wrap" style="display:none">
+  <button class="load-more-btn" onclick="loadMore()">Mehr anzeigen</button>
+</div>
+
+<script>
+let allWords = [], filtered = [], visibleCount = 40;
+let activeFilter = 'all', searchQuery = '';
+
+async function init() {
+  const res = await fetch('../woerter.json');
+  allWords = await res.json();
+  // Sort alphabetically by German word
+  allWords.sort((a,b) => a.de.toLowerCase().localeCompare(b.de.toLowerCase(), 'de'));
+  document.getElementById('topbar-count').textContent = allWords.length + ' Wörter';
+  applyFilters();
+}
+
+function onSearch() {
+  searchQuery = document.getElementById('search-input').value.trim();
+  document.getElementById('search-clear').style.display = searchQuery ? 'block' : 'none';
+  activeFilter = 'all';
+  document.querySelectorAll('.filter-btn').forEach(b => b.classList.toggle('active', b.dataset.filter === 'all'));
+  visibleCount = 40;
+  applyFilters();
+}
+
+function clearSearch() {
+  document.getElementById('search-input').value = '';
+  searchQuery = '';
+  document.getElementById('search-clear').style.display = 'none';
+  applyFilters();
+}
+
+function setFilter(f) {
+  activeFilter = f;
+  searchQuery = '';
+  document.getElementById('search-input').value = '';
+  document.getElementById('search-clear').style.display = 'none';
+  document.querySelectorAll('.filter-btn').forEach(b => b.classList.toggle('active', b.dataset.filter === f));
+  visibleCount = 40;
+  applyFilters();
+}
+
+function applyFilters() {
+  const q = searchQuery.toLowerCase();
+  if (q) {
+    filtered = allWords.filter(w =>
+      w.de.toLowerCase().includes(q) ||
+      w.ar.includes(q) ||
+      (w.example_de||'').toLowerCase().includes(q) ||
+      (w.example_ar||'').includes(q)
+    );
+  } else if (activeFilter !== 'all') {
+    filtered = allWords.filter(w => w.de.toUpperCase().startsWith(activeFilter));
+  } else {
+    filtered = allWords;
+  }
+  renderList();
+}
+
+function highlight(text, q) {
+  if (!q) return text;
+  const re = new RegExp('(' + q.replace(/[.*+?^${}()|[\]\\]/g,'\\$&') + ')', 'gi');
+  return text.replace(re, '<mark style="background:#FEF08A;border-radius:2px;padding:0 1px">$1</mark>');
+}
+
+function renderList() {
+  const list = document.getElementById('word-list');
+  const empty = document.getElementById('empty-state');
+  const info = document.getElementById('results-info');
+  const lmw = document.getElementById('load-more-wrap');
+  list.innerHTML = '';
+
+  if (!filtered.length) {
+    empty.style.display = 'flex';
+    info.textContent = '';
+    lmw.style.display = 'none';
+    return;
+  }
+  empty.style.display = 'none';
+
+  const slice = filtered.slice(0, visibleCount);
+  info.textContent = filtered.length === allWords.length
+    ? `${filtered.length} Wörter`
+    : `${filtered.length} Ergebnisse`;
+
+  const q = searchQuery.toLowerCase();
+  slice.forEach(w => {
+    const item = document.createElement('div');
+    item.className = 'word-item';
+    const exDE = (w.example_de||'').replace(/\*\*(.*?)\*\*/g,'<b>$1</b>');
+    const exDEhl = q ? highlight(exDE, q) : exDE;
+    const dehl = q ? highlight(w.de, q) : w.de;
+    const arhl = q ? highlight(w.ar, q) : w.ar;
+    item.innerHTML = `
+      <div class="wi-top">
+        <span class="wi-de">${dehl}</span>
+        <span class="wi-ar">${arhl}</span>
+        <span class="wi-expand">▾</span>
+      </div>
+      <div class="wi-examples">
+        <div class="wi-ex-de">${exDEhl}</div>
+        <div class="wi-ex-ar">${w.example_ar||''}</div>
+      </div>`;
+    item.addEventListener('click', () => {
+      item.classList.toggle('open');
+      item.querySelector('.wi-expand').textContent = item.classList.contains('open') ? '▴' : '▾';
+    });
+    list.appendChild(item);
+  });
+
+  lmw.style.display = filtered.length > visibleCount ? 'block' : 'none';
+}
+
+function loadMore() {
+  visibleCount += 40;
+  renderList();
+}
+
+init();
+</script>
+</body>
+</html>
