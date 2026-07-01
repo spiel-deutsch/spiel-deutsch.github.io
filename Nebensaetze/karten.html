@@ -1,0 +1,257 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Nebensätze — Lernkarten · Spiel Deutsch</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=DM+Sans:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --bg:#F7F4EF;--surface:#fff;--text:#1C1917;--muted:#78716C;--hint:#A8A29E;
+  --green:#1D9E75;--greenl:#E1F5EE;--greent:#0F6E56;
+  --border:rgba(28,25,23,0.10);--bm:rgba(28,25,23,0.15);
+  --r:16px;--shc:0 4px 24px rgba(28,25,23,0.10);
+  --red:#DC2626;--redl:#FEE2E2;--redt:#991B1B;
+  --neb:#9333EA;--nebl:#F3E8FF;--nebt:#6B21A8;--nebb:#D8B4FE;
+}
+html,body{min-height:100%;background:var(--bg);font-family:'DM Sans',sans-serif;color:var(--text);-webkit-font-smoothing:antialiased}
+body{display:flex;flex-direction:column;align-items:center;padding-bottom:48px}
+
+.topbar{width:100%;max-width:640px;padding:20px 24px 0;display:flex;align-items:center;gap:12px}
+.back-btn{display:flex;align-items:center;gap:6px;font-size:13px;font-weight:600;color:var(--muted);text-decoration:none}
+.back-btn:hover{color:var(--text)}
+.topbar-title{font-family:'DM Serif Display',serif;font-size:18px;flex:1;text-align:center}
+.topbar-count{font-size:12px;font-weight:600;color:var(--hint);background:var(--bg);border:1px solid var(--border);border-radius:20px;padding:3px 10px}
+
+.progress-wrap{width:100%;max-width:640px;padding:16px 24px 0}
+.prog-row{display:flex;justify-content:space-between;font-size:11px;font-weight:600;color:var(--hint);margin-bottom:6px}
+.prog-track{height:5px;background:var(--border);border-radius:5px;overflow:hidden}
+.prog-fill{height:100%;background:var(--neb);border-radius:5px;transition:width .35s cubic-bezier(.4,0,.2,1)}
+
+.filter-row{width:100%;max-width:640px;padding:14px 24px 0;display:flex;gap:8px;overflow-x:auto;scrollbar-width:none}
+.filter-row::-webkit-scrollbar{display:none}
+.filter-btn{flex-shrink:0;padding:7px 14px;border-radius:20px;border:1px solid var(--border);background:var(--surface);font-size:12px;font-weight:600;color:var(--muted);cursor:pointer;white-space:nowrap;transition:all .15s}
+.filter-btn.active{background:var(--neb);color:#fff;border-color:var(--neb)}
+
+.card-area{width:100%;max-width:640px;padding:20px 24px 0;perspective:1200px}
+.flip-card{width:100%;min-height:260px;cursor:pointer;position:relative;transform-style:preserve-3d;transition:transform .55s cubic-bezier(.4,0,.2,1)}
+.flip-card.flipped{transform:rotateY(180deg)}
+.card-face{position:absolute;inset:0;backface-visibility:hidden;-webkit-backface-visibility:hidden;border-radius:var(--r);box-shadow:var(--shc);display:flex;flex-direction:column;align-items:center;justify-content:center;padding:28px 24px;text-align:center;background:var(--surface);border:1px solid var(--border)}
+.card-back{transform:rotateY(180deg)}
+.card-face::before{content:'';position:absolute;top:0;left:0;right:0;height:4px;border-radius:var(--r) var(--r) 0 0;background:var(--neb)}
+.card-tag{font-size:10px;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;color:var(--nebt);background:var(--nebl);border:1px solid var(--nebb);border-radius:20px;padding:3px 10px;margin-bottom:14px}
+.card-word{font-family:'DM Serif Display',serif;font-size:clamp(26px,7vw,38px);line-height:1.2;color:var(--text)}
+.card-sub{font-size:13px;color:var(--muted);margin-top:10px}
+.card-example{font-size:14px;color:var(--text);margin-top:18px;line-height:1.7;max-width:420px}
+.card-example b{color:var(--nebt)}
+.card-example-ar{font-size:13px;color:var(--muted);margin-top:6px;direction:rtl}
+.card-hint{position:absolute;bottom:14px;font-size:11px;color:var(--hint)}
+
+.actions{width:100%;max-width:640px;padding:16px 24px 0;display:flex;gap:10px}
+.btn{flex:1;padding:14px;border-radius:var(--r);border:none;font-size:14px;font-weight:600;cursor:pointer;display:flex;align-items:center;justify-content:center;gap:7px;transition:transform .15s;-webkit-tap-highlight-color:transparent}
+.btn:active{transform:scale(.96)}
+.btn-wrong{background:var(--redl);color:var(--redt);border:1px solid #FECACA}
+.btn-right{background:var(--greenl);color:var(--greent);border:1px solid var(--green)}
+.btn-next{background:var(--text);color:#fff;box-shadow:0 2px 12px rgba(28,25,23,0.2)}
+.btn-flip{background:var(--surface);color:var(--text);border:1px solid var(--border);box-shadow:var(--shc)}
+
+.stats-row{width:100%;max-width:640px;padding:14px 24px 0;display:flex;gap:8px}
+.stat-box{flex:1;background:var(--surface);border:1px solid var(--border);border-radius:12px;padding:10px;text-align:center}
+.stat-n{font-family:'DM Serif Display',serif;font-size:20px}
+.stat-l{font-size:10px;font-weight:600;letter-spacing:1px;text-transform:uppercase;color:var(--hint);margin-top:2px}
+.stat-n.green{color:var(--greent)} .stat-n.red{color:var(--redt)}
+
+.done-screen{width:100%;max-width:640px;padding:40px 24px;text-align:center;display:none;flex-direction:column;align-items:center;gap:16px}
+.done-icon{font-size:48px}
+.done-title{font-family:'DM Serif Display',serif;font-size:28px}
+.done-sub{font-size:15px;color:var(--muted)}
+.done-stats{display:flex;gap:12px;margin-top:8px}
+.done-btn{padding:14px 28px;border-radius:var(--r);border:none;font-size:14px;font-weight:600;cursor:pointer;background:var(--neb);color:#fff;box-shadow:0 2px 12px rgba(28,25,23,0.2)}
+</style>
+</head>
+<body>
+
+<div class="topbar">
+  <a class="back-btn" href="index.html">← Übersicht</a>
+  <span class="topbar-title">Lernkarten</span>
+  <span class="topbar-count" id="counter">0 / 0</span>
+</div>
+
+<div class="progress-wrap">
+  <div class="prog-row"><span>Fortschritt</span><span id="prog-pct">0%</span></div>
+  <div class="prog-track"><div class="prog-fill" id="prog-fill" style="width:0%"></div></div>
+</div>
+
+<div class="filter-row" id="filter-row">
+  <button class="filter-btn active" onclick="setFilter('all')" data-f="all">Alle</button>
+  <button class="filter-btn" onclick="setFilter('kausal')" data-f="kausal">Kausal</button>
+  <button class="filter-btn" onclick="setFilter('konzessiv')" data-f="konzessiv">Konzessiv</button>
+  <button class="filter-btn" onclick="setFilter('temporal')" data-f="temporal">Temporal</button>
+  <button class="filter-btn" onclick="setFilter('relativ')" data-f="relativ">Relativ</button>
+</div>
+
+<div class="card-area">
+  <div class="flip-card" id="flip-card" onclick="flipCard()">
+    <div class="card-face card-front">
+      <div class="card-tag" id="front-tag">KAUSAL</div>
+      <div class="card-word" id="front-word">weil</div>
+      <div class="card-sub" id="front-sub">Verb am Ende</div>
+      <div class="card-hint">Tippen zum Umdrehen</div>
+    </div>
+    <div class="card-face card-back">
+      <div class="card-tag" id="back-tag">BEISPIEL</div>
+      <div class="card-example" id="back-example"></div>
+      <div class="card-example-ar" id="back-example-ar"></div>
+    </div>
+  </div>
+</div>
+
+<div class="actions" id="actions-before">
+  <button class="btn btn-flip" onclick="flipCard()">↩ Umdrehen</button>
+  <button class="btn btn-next" onclick="revealAndRate()">Beispiel zeigen →</button>
+</div>
+
+<div class="actions" id="actions-after" style="display:none">
+  <button class="btn btn-wrong" onclick="rateCard(false)">✗ Nochmal üben</button>
+  <button class="btn btn-right" onclick="rateCard(true)">✓ Verstanden</button>
+</div>
+
+<div class="stats-row">
+  <div class="stat-box"><div class="stat-n green" id="s-right">0</div><div class="stat-l">Gekonnt</div></div>
+  <div class="stat-box"><div class="stat-n red" id="s-wrong">0</div><div class="stat-l">Üben</div></div>
+  <div class="stat-box"><div class="stat-n" id="s-left">0</div><div class="stat-l">Übrig</div></div>
+</div>
+
+<div class="done-screen" id="done-screen">
+  <div class="done-icon">🎉</div>
+  <div class="done-title">Runde beendet!</div>
+  <div class="done-sub" id="done-sub"></div>
+  <div class="done-stats">
+    <div class="stat-box"><div class="stat-n green" id="d-right">0</div><div class="stat-l">Gekonnt</div></div>
+    <div class="stat-box"><div class="stat-n red" id="d-wrong">0</div><div class="stat-l">Üben</div></div>
+  </div>
+  <button class="done-btn" onclick="restartWrong()">🔄 Nochmal (nur Schwierige)</button>
+  <button class="done-btn" style="background:var(--surface);color:var(--text);border:1px solid var(--border)" onclick="restartAll()">Alle wiederholen</button>
+</div>
+
+<script>
+const KONNEKTOREN = [
+  { konj:'weil', typ:'kausal', sub:'Grund (neutral) · Verb am Ende', de:'Ich bleibe zu Hause, **weil** ich krank **bin**.', ar:'أبقى في البيت لأنني مريض.' },
+  { konj:'da', typ:'kausal', sub:'Grund (formell) · Verb am Ende', de:'**Da** es regnet, **bleiben** wir zu Hause.', ar:'بما أنها تمطر، سنبقى في البيت.' },
+  { konj:'obwohl', typ:'konzessiv', sub:'Gegensatz · Verb am Ende', de:'Sie geht joggen, **obwohl** es kalt **ist**.', ar:'تذهب للركض رغم أن الجو بارد.' },
+  { konj:'obgleich', typ:'konzessiv', sub:'Gegensatz (formell) · Verb am Ende', de:'**Obgleich** er müde **war**, arbeitete er weiter.', ar:'رغم أنه كان متعباً، واصل العمل.' },
+  { konj:'obschon', typ:'konzessiv', sub:'Gegensatz (formell) · Verb am Ende', de:'**Obschon** sie wenig Zeit **hatte**, half sie mir.', ar:'رغم أن وقتها كان قليلاً، ساعدتني.' },
+  { konj:'als', typ:'temporal', sub:'Einmaliges Ereignis · Vergangenheit', de:'**Als** ich klein **war**, wohnte ich in Berlin.', ar:'عندما كنت صغيراً، سكنت في برلين.' },
+  { konj:'wenn', typ:'temporal', sub:'Wiederholung / Bedingung', de:'**Wenn** ich Zeit **habe**, lese ich gern.', ar:'عندما يكون لدي وقت، أحب القراءة.' },
+  { konj:'während', typ:'temporal', sub:'Gleichzeitigkeit', de:'**Während** ich **kochte**, hörte ich Musik.', ar:'بينما كنت أطبخ، استمعت إلى الموسيقى.' },
+  { konj:'bevor', typ:'temporal', sub:'Reihenfolge — vorher', de:'**Bevor** ich **gehe**, räume ich auf.', ar:'قبل أن أذهب، أرتب المكان.' },
+  { konj:'nachdem', typ:'temporal', sub:'Reihenfolge — danach (oft Plusquamperfekt)', de:'**Nachdem** ich gegessen **hatte**, ging ich spazieren.', ar:'بعد أن أكلت، ذهبت في نزهة.' },
+  { konj:'seit / seitdem', typ:'temporal', sub:'Beginn bis jetzt', de:'**Seitdem** er in Köln **wohnt**, ist er glücklicher.', ar:'منذ أن سكن في كولونيا، أصبح أسعد.' },
+  { konj:'bis', typ:'temporal', sub:'Endpunkt', de:'Wir warten, **bis** der Bus **kommt**.', ar:'ننتظر حتى تأتي الحافلة.' },
+  { konj:'sobald', typ:'temporal', sub:'Unmittelbar danach', de:'**Sobald** ich **ankomme**, rufe ich dich an.', ar:'حالما أصل، سأتصل بك.' },
+  { konj:'der / die / das', typ:'relativ', sub:'Nominativ — Subjekt im Nebensatz', de:'Der Mann, **der** dort **steht**, ist mein Lehrer.', ar:'الرجل الذي يقف هناك هو معلمي.' },
+  { konj:'den / die / das', typ:'relativ', sub:'Akkusativ — direktes Objekt', de:'Das Buch, **das** ich **lese**, ist spannend.', ar:'الكتاب الذي أقرأه مثير للاهتمام.' },
+  { konj:'dem / der / dem', typ:'relativ', sub:'Dativ — indirektes Objekt', de:'Die Frau, **der** ich geholfen **habe**, heißt Anna.', ar:'المرأة التي ساعدتها اسمها آنا.' },
+  { konj:'dessen / deren', typ:'relativ', sub:'Genitiv — Besitz', de:'Der Mann, **dessen** Auto kaputt **ist**, wartet hier.', ar:'الرجل الذي تعطلت سيارته ينتظر هنا.' },
+  { konj:'dass', typ:'kausal', sub:'Objektsatz — einleitend, neutral', de:'Ich glaube, **dass** er recht **hat**.', ar:'أعتقد أنه على حق.' },
+  { konj:'damit', typ:'kausal', sub:'Zweck / Absicht', de:'Ich lerne Deutsch, **damit** ich in Deutschland arbeiten **kann**.', ar:'أتعلم الألمانية حتى أتمكن من العمل في ألمانيا.' },
+  { konj:'falls', typ:'temporal', sub:'Bedingung (Möglichkeit)', de:'**Falls** es **regnet**, bleiben wir zu Hause.', ar:'إذا أمطرت، سنبقى في البيت.' },
+];
+
+let deck = [], current = 0, rightCount = 0, wrongCount = 0, wrongCards = [];
+let activeFilter = 'all';
+
+function shuffle(arr) {
+  const a = [...arr];
+  for (let i = a.length-1; i>0; i--) { const j = Math.floor(Math.random()*(i+1)); [a[i],a[j]]=[a[j],a[i]]; }
+  return a;
+}
+
+function setFilter(f) {
+  activeFilter = f;
+  document.querySelectorAll('.filter-btn').forEach(b => b.classList.toggle('active', b.dataset.f === f));
+  restartAll();
+}
+
+function md(s) { return s.replace(/\*\*(.*?)\*\*/g, '<b>$1</b>'); }
+
+function renderCard() {
+  const w = deck[current];
+  if (!w) return;
+  document.getElementById('front-tag').textContent = w.typ.toUpperCase();
+  document.getElementById('front-word').textContent = w.konj;
+  document.getElementById('front-sub').textContent = w.sub;
+  document.getElementById('back-example').innerHTML = md(w.de);
+  document.getElementById('back-example-ar').textContent = w.ar;
+
+  document.getElementById('flip-card').classList.remove('flipped');
+  document.getElementById('actions-before').style.display = 'flex';
+  document.getElementById('actions-after').style.display = 'none';
+  updateUI();
+}
+
+function flipCard() { document.getElementById('flip-card').classList.toggle('flipped'); }
+
+function revealAndRate() {
+  document.getElementById('flip-card').classList.add('flipped');
+  document.getElementById('actions-before').style.display = 'none';
+  document.getElementById('actions-after').style.display = 'flex';
+}
+
+function rateCard(correct) {
+  if (correct) rightCount++; else { wrongCount++; wrongCards.push(deck[current]); }
+  document.getElementById('s-right').textContent = rightCount;
+  document.getElementById('s-wrong').textContent = wrongCount;
+  current++;
+  if (current >= deck.length) showDone(); else renderCard();
+}
+
+function updateUI() {
+  const total = deck.length;
+  const pct = total ? Math.round(current/total*100) : 0;
+  document.getElementById('counter').textContent = `${current+1} / ${total}`;
+  document.getElementById('prog-fill').style.width = pct + '%';
+  document.getElementById('prog-pct').textContent = pct + '%';
+  document.getElementById('s-left').textContent = total - current;
+}
+
+function showDone() {
+  document.querySelector('.card-area').style.display = 'none';
+  document.getElementById('actions-before').style.display = 'none';
+  document.getElementById('actions-after').style.display = 'none';
+  document.querySelector('.stats-row').style.display = 'none';
+  document.getElementById('d-right').textContent = rightCount;
+  document.getElementById('d-wrong').textContent = wrongCount;
+  document.getElementById('done-sub').textContent = `${rightCount} von ${deck.length} verstanden — ${Math.round(rightCount/deck.length*100)}%`;
+  document.getElementById('done-screen').style.display = 'flex';
+}
+
+function restartWrong() {
+  if (!wrongCards.length) { restartAll(); return; }
+  deck = shuffle([...wrongCards]);
+  wrongCards = []; current = 0; rightCount = 0; wrongCount = 0;
+  resetView();
+}
+
+function restartAll() {
+  const pool = activeFilter === 'all' ? KONNEKTOREN : KONNEKTOREN.filter(k => k.typ === activeFilter);
+  deck = shuffle(pool);
+  wrongCards = []; current = 0; rightCount = 0; wrongCount = 0;
+  resetView();
+}
+
+function resetView() {
+  document.querySelector('.card-area').style.display = 'block';
+  document.querySelector('.stats-row').style.display = 'flex';
+  document.getElementById('done-screen').style.display = 'none';
+  document.getElementById('s-right').textContent = 0;
+  document.getElementById('s-wrong').textContent = 0;
+  renderCard();
+}
+
+restartAll();
+</script>
+</body>
+</html>

@@ -1,0 +1,238 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Nebensätze — Quiz · Spiel Deutsch</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=DM+Sans:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --bg:#F7F4EF;--surface:#fff;--text:#1C1917;--muted:#78716C;--hint:#A8A29E;
+  --green:#1D9E75;--greenl:#E1F5EE;--greent:#0F6E56;
+  --border:rgba(28,25,23,0.10);--bm:rgba(28,25,23,0.15);
+  --r:16px;--shc:0 4px 24px rgba(28,25,23,0.10);
+  --red:#DC2626;--redl:#FEE2E2;--redt:#991B1B;
+  --neb:#9333EA;--nebl:#F3E8FF;--nebt:#6B21A8;--nebb:#D8B4FE;
+}
+html,body{min-height:100%;background:var(--bg);font-family:'DM Sans',sans-serif;color:var(--text);-webkit-font-smoothing:antialiased}
+body{display:flex;flex-direction:column;align-items:center;padding-bottom:48px}
+
+.topbar{width:100%;max-width:640px;padding:20px 24px 0;display:flex;align-items:center;gap:12px}
+.back-btn{display:flex;align-items:center;gap:6px;font-size:13px;font-weight:600;color:var(--muted);text-decoration:none}
+.back-btn:hover{color:var(--text)}
+.topbar-title{font-family:'DM Serif Display',serif;font-size:18px;flex:1;text-align:center}
+
+.streak-row{width:100%;max-width:640px;padding:14px 24px 0;display:flex;gap:8px;align-items:center}
+.streak-box{background:var(--surface);border:1px solid var(--border);border-radius:12px;padding:8px 14px;display:flex;align-items:center;gap:6px;font-size:13px;font-weight:600}
+.prog-wrap{flex:1;background:var(--border);border-radius:5px;height:5px;overflow:hidden}
+.prog-fill{height:100%;background:var(--neb);border-radius:5px;transition:width .3s}
+.prog-label{font-size:11px;font-weight:600;color:var(--hint);white-space:nowrap}
+
+.q-card{width:100%;max-width:640px;padding:16px 24px 0}
+.q-inner{background:var(--surface);border:1px solid var(--border);border-radius:var(--r);box-shadow:var(--shc);padding:28px 24px;text-align:center;position:relative;overflow:hidden}
+.q-inner::before{content:'';position:absolute;top:0;left:0;right:0;height:4px;background:var(--neb)}
+.q-num{font-size:11px;font-weight:600;letter-spacing:1.5px;text-transform:uppercase;color:var(--hint);margin-bottom:14px}
+.q-sentence{font-size:clamp(16px,4.5vw,20px);line-height:1.8;color:var(--text)}
+.q-blank{display:inline-block;min-width:90px;border-bottom:2px solid var(--nebb);color:var(--nebt);font-weight:700;padding:0 4px}
+.q-hint{font-size:12px;color:var(--hint);margin-top:14px}
+
+.options{width:100%;max-width:640px;padding:12px 24px 0;display:flex;flex-direction:column;gap:10px}
+.opt-btn{width:100%;padding:16px 20px;border-radius:var(--r);border:1.5px solid var(--border);background:var(--surface);font-size:15px;font-weight:500;color:var(--text);cursor:pointer;text-align:left;transition:border-color .15s,background .15s;display:flex;align-items:center;gap:12px}
+.opt-btn:hover:not(:disabled){border-color:var(--bm);background:#FAFAF9}
+.opt-btn.correct{background:var(--greenl);border-color:var(--green);color:var(--greent)}
+.opt-btn.wrong{background:var(--redl);border-color:#FECACA;color:var(--redt)}
+.opt-btn:disabled{cursor:default}
+.opt-letter{width:28px;height:28px;border-radius:50%;background:var(--bg);border:1px solid var(--border);display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:700;color:var(--hint);flex-shrink:0}
+.opt-btn.correct .opt-letter{background:var(--greent);color:#fff;border-color:var(--greent)}
+.opt-btn.wrong .opt-letter{background:var(--redt);color:#fff;border-color:var(--redt)}
+
+.feedback{width:100%;max-width:640px;padding:12px 24px 0;display:none}
+.feedback-inner{border-radius:var(--r);padding:14px 18px;font-size:13px;line-height:1.7}
+.feedback-inner.correct{background:var(--greenl);color:var(--greent);border:1px solid var(--green)}
+.feedback-inner.wrong{background:var(--redl);color:var(--redt);border:1px solid #FECACA}
+.feedback-title{font-weight:700;margin-bottom:4px}
+.feedback-rule{margin-top:6px;font-size:12px;opacity:.85;direction:rtl;text-align:right}
+
+.next-wrap{width:100%;max-width:640px;padding:12px 24px 0}
+.next-btn{width:100%;padding:15px;border-radius:var(--r);border:none;background:var(--text);color:#fff;font-size:14px;font-weight:600;cursor:pointer;display:none;box-shadow:0 2px 12px rgba(28,25,23,0.2)}
+
+.done-screen{width:100%;max-width:640px;padding:40px 24px;text-align:center;display:none;flex-direction:column;align-items:center;gap:14px}
+.done-icon{font-size:48px}
+.done-title{font-family:'DM Serif Display',serif;font-size:26px}
+.done-sub{font-size:14px;color:var(--muted)}
+.done-stats{display:flex;gap:12px}
+.stat-box{flex:1;background:var(--surface);border:1px solid var(--border);border-radius:12px;padding:12px;text-align:center}
+.stat-n{font-family:'DM Serif Display',serif;font-size:22px}
+.stat-l{font-size:10px;font-weight:600;letter-spacing:1px;text-transform:uppercase;color:var(--hint);margin-top:2px}
+.stat-n.green{color:var(--greent)} .stat-n.red{color:var(--redt)}
+.done-btn{padding:14px 28px;border-radius:var(--r);border:none;font-size:14px;font-weight:600;cursor:pointer;background:var(--neb);color:#fff}
+</style>
+</head>
+<body>
+
+<div class="topbar">
+  <a class="back-btn" href="index.html">← Übersicht</a>
+  <span class="topbar-title">Nebensätze-Quiz</span>
+</div>
+
+<div class="streak-row">
+  <div class="streak-box"><span>🔥</span><span id="streak-num">0</span></div>
+  <div class="prog-wrap"><div class="prog-fill" id="prog-fill" style="width:0%"></div></div>
+  <span class="prog-label" id="prog-label">0 / 20</span>
+</div>
+
+<div class="q-card">
+  <div class="q-inner">
+    <div class="q-num" id="q-num">FRAGE 1 VON 20</div>
+    <div class="q-sentence" id="q-sentence">Laden…</div>
+    <div class="q-hint" id="q-hint"></div>
+  </div>
+</div>
+
+<div class="options" id="options"></div>
+
+<div class="feedback" id="feedback">
+  <div class="feedback-inner" id="feedback-inner">
+    <div class="feedback-title" id="feedback-title"></div>
+    <div id="feedback-body"></div>
+    <div class="feedback-rule" id="feedback-ar"></div>
+  </div>
+</div>
+
+<div class="next-wrap"><button class="next-btn" id="next-btn" onclick="nextQuestion()">Weiter →</button></div>
+
+<div class="done-screen" id="done-screen">
+  <div class="done-icon" id="done-icon">🎉</div>
+  <div class="done-title">Quiz beendet!</div>
+  <div class="done-sub" id="done-sub"></div>
+  <div class="done-stats">
+    <div class="stat-box"><div class="stat-n green" id="d-right">0</div><div class="stat-l">Richtig</div></div>
+    <div class="stat-box"><div class="stat-n red" id="d-wrong">0</div><div class="stat-l">Falsch</div></div>
+    <div class="stat-box"><div class="stat-n" id="d-streak">0</div><div class="stat-l">Max Streak</div></div>
+  </div>
+  <button class="done-btn" onclick="startQuiz()">🔄 Neues Quiz</button>
+  <button class="done-btn" style="background:var(--surface);color:var(--text);border:1px solid var(--border)" onclick="window.location.href='index.html'">📖 Zur Übersicht</button>
+</div>
+
+<script>
+const QUESTIONS = [
+  { sentence:"Ich bleibe zu Hause, ___ ich krank bin.", correct:"weil", options:["weil","obwohl","während","bevor"], rule_de:"weil leitet einen Grund ein — der häufigste Kausal-Konnektor.", rule_ar:"weil تقدّم سبباً — أكثر أداة سببية شيوعاً." },
+  { sentence:"___ es regnet, bleiben wir zu Hause.", correct:"Da", options:["Da","Obwohl","Nachdem","Sobald"], rule_de:"Da steht oft am Satzanfang und gibt einen bereits bekannten Grund an.", rule_ar:"Da غالباً في بداية الجملة، تقدّم سبباً معروفاً مسبقاً." },
+  { sentence:"Sie geht joggen, ___ es kalt ist.", correct:"obwohl", options:["obwohl","weil","wenn","seit"], rule_de:"obwohl drückt einen Gegensatz aus — trotz etwas passiert etwas anderes.", rule_ar:"obwohl تعبّر عن التناقض — رغم شيء يحدث شيء آخر." },
+  { sentence:"___ er müde war, arbeitete er weiter.", correct:"Obgleich", options:["Obgleich","Während","Bis","Damit"], rule_de:"Obgleich ist eine formelle Variante von obwohl.", rule_ar:"Obgleich صيغة رسمية لـ obwohl." },
+  { sentence:"___ ich klein war, wohnte ich in Berlin.", correct:"Als", options:["Als","Wenn","Während","Bevor"], rule_de:"als wird für ein einmaliges Ereignis in der Vergangenheit verwendet.", rule_ar:"als تُستخدم لحدث واحد في الماضي." },
+  { sentence:"___ ich Zeit habe, lese ich gern.", correct:"Wenn", options:["Wenn","Als","Seit","Bis"], rule_de:"wenn wird für wiederholte Ereignisse oder Bedingungen verwendet.", rule_ar:"wenn تُستخدم للأحداث المتكررة أو الشروط." },
+  { sentence:"___ ich kochte, hörte ich Musik.", correct:"Während", options:["Während","Bevor","Nachdem","Bis"], rule_de:"während drückt Gleichzeitigkeit aus — zwei Handlungen zur selben Zeit.", rule_ar:"während تعبّر عن التزامن — حدثان في نفس الوقت." },
+  { sentence:"___ ich gehe, räume ich auf.", correct:"Bevor", options:["Bevor","Nachdem","Seitdem","Falls"], rule_de:"bevor zeigt die Reihenfolge — etwas passiert vorher.", rule_ar:"bevor تُظهر الترتيب — شيء يحدث قبل." },
+  { sentence:"___ ich gegessen hatte, ging ich spazieren.", correct:"Nachdem", options:["Nachdem","Bevor","Während","Als"], rule_de:"nachdem zeigt die Reihenfolge — etwas passiert danach (oft mit Plusquamperfekt).", rule_ar:"nachdem تُظهر الترتيب — شيء يحدث بعد (غالباً مع الماضي التام)." },
+  { sentence:"___ er in Köln wohnt, ist er glücklicher.", correct:"Seitdem", options:["Seitdem","Bis","Sobald","Obwohl"], rule_de:"seitdem zeigt den Beginn eines Zustands, der bis jetzt andauert.", rule_ar:"seitdem تُظهر بداية حالة مستمرة حتى الآن." },
+  { sentence:"Wir warten, ___ der Bus kommt.", correct:"bis", options:["bis","seit","als","weil"], rule_de:"bis zeigt einen Endpunkt — etwas dauert bis zu diesem Zeitpunkt.", rule_ar:"bis تُظهر نقطة نهاية — شيء يستمر حتى هذا الوقت." },
+  { sentence:"___ ich ankomme, rufe ich dich an.", correct:"Sobald", options:["Sobald","Bevor","Während","Obgleich"], rule_de:"sobald bedeutet 'unmittelbar danach'.", rule_ar:"sobald تعني 'فور حدوث ذلك'." },
+  { sentence:"Der Mann, ___ dort steht, ist mein Lehrer.", correct:"der", options:["der","den","dem","dessen"], rule_de:"Nominativ: der Mann steht selbst — er ist das Subjekt im Nebensatz.", rule_ar:"حالة الرفع: الرجل نفسه يقف — هو الفاعل في الجملة الفرعية." },
+  { sentence:"Das Buch, ___ ich lese, ist spannend.", correct:"das", options:["das","der","dem","dessen"], rule_de:"Akkusativ: ich lese das Buch — es ist das direkte Objekt.", rule_ar:"حالة النصب: أنا أقرأ الكتاب — هو المفعول به المباشر." },
+  { sentence:"Die Frau, ___ ich geholfen habe, heißt Anna.", correct:"der", options:["der","die","den","deren"], rule_de:"Dativ: ich habe ihr geholfen — 'helfen' verlangt den Dativ.", rule_ar:"حالة الجر: ساعدتها — الفعل 'helfen' يتطلب حالة الجر." },
+  { sentence:"Der Mann, ___ Auto kaputt ist, wartet hier.", correct:"dessen", options:["dessen","der","den","dem"], rule_de:"Genitiv: sein Auto — Besitzverhältnis, maskulin/neutral Genitiv ist dessen.", rule_ar:"حالة الإضافة: سيارته — ملكية، صيغة المذكر/المحايد هي dessen." },
+  { sentence:"Ich glaube, ___ er recht hat.", correct:"dass", options:["dass","weil","ob","als"], rule_de:"dass leitet einen neutralen Objektsatz ein, ohne Bedeutung wie Grund oder Zeit.", rule_ar:"dass تقدّم جملة مفعول محايدة، دون معنى السبب أو الزمن." },
+  { sentence:"Ich lerne Deutsch, ___ ich in Deutschland arbeiten kann.", correct:"damit", options:["damit","weil","obwohl","seit"], rule_de:"damit drückt einen Zweck oder eine Absicht aus.", rule_ar:"damit تعبّر عن الغرض أو النية." },
+  { sentence:"___ es regnet, bleiben wir zu Hause.", correct:"Falls", options:["Falls","Als","Während","Bis"], rule_de:"falls drückt eine mögliche, unsichere Bedingung aus.", rule_ar:"falls تعبّر عن شرط محتمل وغير مؤكد." },
+  { sentence:"Die Kinder, ___ Eltern arbeiten, sind bei der Oma.", correct:"deren", options:["deren","dessen","der","die"], rule_de:"Genitiv Plural: ihre Eltern — die Genitivform für Plural ist deren.", rule_ar:"حالة الإضافة للجمع: والديهم — صيغة الإضافة للجمع هي deren." },
+];
+
+let deck = [], current = 0, rightCount = 0, wrongCount = 0, streak = 0, maxStreak = 0, answered = false;
+
+function shuffle(arr) { const a=[...arr]; for(let i=a.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[a[i],a[j]]=[a[j],a[i]];} return a; }
+
+function startQuiz() {
+  deck = shuffle(QUESTIONS);
+  current = 0; rightCount = 0; wrongCount = 0; streak = 0; maxStreak = 0;
+  document.getElementById('done-screen').style.display = 'none';
+  document.querySelector('.q-card').style.display = 'block';
+  document.getElementById('options').style.display = 'flex';
+  document.querySelector('.streak-row').style.display = 'flex';
+  renderQuestion();
+}
+
+function renderQuestion() {
+  answered = false;
+  const q = deck[current];
+  document.getElementById('q-num').textContent = `FRAGE ${current+1} VON ${deck.length}`;
+  document.getElementById('q-sentence').innerHTML = q.sentence.replace('___', '<span class="q-blank">______</span>');
+  document.getElementById('q-hint').textContent = 'Wähle den richtigen Konnektor';
+
+  const options = shuffle(q.options);
+  const letters = ['A','B','C','D'];
+  const container = document.getElementById('options');
+  container.innerHTML = '';
+  options.forEach((opt,i) => {
+    const btn = document.createElement('button');
+    btn.className = 'opt-btn';
+    btn.innerHTML = `<span class="opt-letter">${letters[i]}</span><span>${opt}</span>`;
+    btn.onclick = () => selectAnswer(btn, opt, q);
+    container.appendChild(btn);
+  });
+
+  document.getElementById('feedback').style.display = 'none';
+  document.getElementById('next-btn').style.display = 'none';
+  updateProgress();
+}
+
+function selectAnswer(btn, chosen, q) {
+  if (answered) return;
+  answered = true;
+  const isRight = chosen === q.correct;
+
+  document.querySelectorAll('.opt-btn').forEach(b => {
+    b.disabled = true;
+    const txt = b.querySelector('span:last-child').textContent;
+    if (txt === q.correct) b.classList.add('correct');
+    else if (b === btn && !isRight) b.classList.add('wrong');
+  });
+
+  if (isRight) { rightCount++; streak++; maxStreak = Math.max(maxStreak, streak); }
+  else { wrongCount++; streak = 0; }
+  document.getElementById('streak-num').textContent = streak;
+
+  const fb = document.getElementById('feedback');
+  const fbi = document.getElementById('feedback-inner');
+  fbi.className = 'feedback-inner ' + (isRight ? 'correct' : 'wrong');
+  document.getElementById('feedback-title').textContent = isRight ? '✓ Richtig!' : `✗ Falsch — richtig ist "${q.correct}"`;
+  document.getElementById('feedback-body').textContent = q.rule_de;
+  document.getElementById('feedback-ar').textContent = q.rule_ar;
+  fb.style.display = 'block';
+  document.getElementById('next-btn').style.display = 'block';
+  updateProgress();
+}
+
+function nextQuestion() {
+  current++;
+  if (current >= deck.length) showDone(); else renderQuestion();
+}
+
+function updateProgress() {
+  const pct = Math.round(current/deck.length*100);
+  document.getElementById('prog-fill').style.width = pct + '%';
+  document.getElementById('prog-label').textContent = `${current} / ${deck.length}`;
+}
+
+function showDone() {
+  document.querySelector('.q-card').style.display = 'none';
+  document.getElementById('options').style.display = 'none';
+  document.getElementById('feedback').style.display = 'none';
+  document.getElementById('next-btn').style.display = 'none';
+  document.querySelector('.streak-row').style.display = 'none';
+
+  const pct = Math.round(rightCount/deck.length*100);
+  document.getElementById('done-icon').textContent = pct >= 80 ? '🏆' : pct >= 50 ? '👍' : '💪';
+  document.getElementById('done-sub').textContent = `${rightCount} von ${deck.length} richtig — ${pct}%`;
+  document.getElementById('d-right').textContent = rightCount;
+  document.getElementById('d-wrong').textContent = wrongCount;
+  document.getElementById('d-streak').textContent = maxStreak;
+  document.getElementById('done-screen').style.display = 'flex';
+}
+
+startQuiz();
+</script>
+</body>
+</html>

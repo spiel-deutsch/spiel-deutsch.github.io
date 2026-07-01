@@ -1,0 +1,289 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Nebensätze — Übersicht · Spiel Deutsch</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=DM+Sans:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --bg:#F7F4EF;--surface:#fff;--text:#1C1917;--muted:#78716C;--hint:#A8A29E;
+  --green:#1D9E75;--greenl:#E1F5EE;--greent:#0F6E56;
+  --border:rgba(28,25,23,0.10);--bm:rgba(28,25,23,0.15);
+  --r:16px;--shc:0 4px 24px rgba(28,25,23,0.09);
+  --neb:#9333EA;--nebl:#F3E8FF;--nebt:#6B21A8;--nebb:#D8B4FE;
+}
+html,body{min-height:100%;background:var(--bg);font-family:'DM Sans',sans-serif;color:var(--text);-webkit-font-smoothing:antialiased}
+body{display:flex;flex-direction:column;align-items:center;padding-bottom:60px}
+
+.topbar{width:100%;max-width:680px;padding:20px 24px 0;display:flex;align-items:center;gap:12px}
+.back-btn{display:flex;align-items:center;gap:6px;font-size:13px;font-weight:600;color:var(--muted);text-decoration:none}
+.back-btn:hover{color:var(--text)}
+.topbar-title{font-family:'DM Serif Display',serif;font-size:18px;flex:1;text-align:center}
+.topbar-level{font-size:11px;font-weight:600;letter-spacing:1px;text-transform:uppercase;color:var(--nebt);background:var(--nebl);border:1px solid var(--nebb);border-radius:20px;padding:3px 10px}
+
+.hero{width:100%;max-width:680px;padding:28px 24px 0;text-align:center}
+.hero-title{font-family:'DM Serif Display',serif;font-size:clamp(28px,7vw,40px);line-height:1.1}
+.hero-sub{font-size:14px;color:var(--muted);margin-top:10px;line-height:1.7;max-width:480px;margin-left:auto;margin-right:auto}
+
+/* Nav pills */
+.toc{width:100%;max-width:680px;padding:20px 24px 0;display:flex;gap:8px;overflow-x:auto;scrollbar-width:none}
+.toc::-webkit-scrollbar{display:none}
+.toc a{flex-shrink:0;font-size:12px;font-weight:600;color:var(--muted);background:var(--surface);border:1px solid var(--border);border-radius:20px;padding:7px 14px;text-decoration:none;white-space:nowrap}
+.toc a:hover{border-color:var(--neb);color:var(--nebt)}
+
+/* Section */
+.section{width:100%;max-width:680px;padding:36px 24px 0;scroll-margin-top:20px}
+.section-head{display:flex;align-items:center;gap:10px;margin-bottom:14px}
+.section-icon{font-size:20px}
+.section-title{font-family:'DM Serif Display',serif;font-size:22px}
+
+.card{background:var(--surface);border:1px solid var(--border);border-radius:var(--r);box-shadow:var(--shc);padding:20px 22px;margin-bottom:12px}
+.card p{font-size:14px;line-height:1.7;color:var(--text)}
+.card p+p{margin-top:10px}
+.card b{color:var(--nebt)}
+
+/* Rule box */
+.rule-box{background:var(--nebl);border:1px solid var(--nebb);border-radius:var(--r);padding:16px 20px;margin-bottom:14px}
+.rule-box-title{font-size:11px;font-weight:700;letter-spacing:1px;text-transform:uppercase;color:var(--nebt);margin-bottom:6px}
+.rule-box p{font-size:14px;color:var(--text);line-height:1.6}
+
+/* Example sentence */
+.ex{display:flex;flex-direction:column;gap:2px;padding:12px 0;border-bottom:1px solid var(--border)}
+.ex:last-child{border-bottom:none}
+.ex-de{font-size:14px;color:var(--text);line-height:1.6}
+.ex-de .konj{color:var(--nebt);font-weight:700}
+.ex-de .verb{text-decoration:underline;text-decoration-color:var(--nebb);text-decoration-thickness:2px}
+.ex-ar{font-size:13px;color:var(--muted);direction:rtl;text-align:right;margin-top:2px}
+
+/* Table */
+.table-wrap{overflow-x:auto;margin-bottom:14px}
+table{width:100%;border-collapse:collapse;background:var(--surface);border:1px solid var(--border);border-radius:var(--r);overflow:hidden;box-shadow:var(--shc)}
+th{background:var(--nebl);color:var(--nebt);font-size:11px;font-weight:700;letter-spacing:.5px;text-transform:uppercase;padding:10px 14px;text-align:left;white-space:nowrap}
+td{padding:11px 14px;font-size:13px;border-top:1px solid var(--border);vertical-align:top}
+tr:hover td{background:#FAFAF9}
+.td-ar{direction:rtl;text-align:right;color:var(--muted)}
+
+/* Type cards grid */
+.type-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:10px;margin-bottom:14px}
+.type-card{background:var(--surface);border:1px solid var(--border);border-radius:var(--r);box-shadow:var(--shc);padding:16px 18px;position:relative;overflow:hidden}
+.type-card::before{content:'';position:absolute;top:0;left:0;right:0;height:3px;background:var(--neb)}
+.type-card-title{font-family:'DM Serif Display',serif;font-size:16px;margin-bottom:4px}
+.type-card-konj{font-size:12px;color:var(--nebt);font-weight:600;margin-bottom:8px}
+.type-card-desc{font-size:12px;color:var(--muted);line-height:1.6;margin-bottom:8px}
+.type-card-ex{font-size:12px;color:var(--text);background:var(--bg);border-radius:8px;padding:8px 10px;line-height:1.6}
+
+/* Step list */
+.steps{display:flex;flex-direction:column;gap:10px;margin-bottom:14px}
+.step{display:flex;gap:12px;align-items:flex-start}
+.step-num{width:24px;height:24px;border-radius:50%;background:var(--neb);color:#fff;font-size:12px;font-weight:700;display:flex;align-items:center;justify-content:center;flex-shrink:0}
+.step-text{font-size:14px;line-height:1.6;color:var(--text);padding-top:1px}
+
+/* CTA */
+.cta-row{width:100%;max-width:680px;padding:32px 24px 0;display:flex;gap:10px;flex-wrap:wrap}
+.cta-btn{flex:1;min-width:180px;display:flex;align-items:center;justify-content:center;gap:8px;padding:15px;border-radius:var(--r);text-decoration:none;font-size:14px;font-weight:600;box-shadow:var(--shc);transition:transform .15s}
+.cta-btn:hover{transform:translateY(-2px)}
+.cta-primary{background:var(--neb);color:#fff}
+.cta-secondary{background:var(--surface);color:var(--text);border:1px solid var(--border)}
+</style>
+</head>
+<body>
+
+<div class="topbar">
+  <a class="back-btn" href="../index.html">← Zurück</a>
+  <span class="topbar-title">Nebensätze</span>
+  <span class="topbar-level">B2</span>
+</div>
+
+<div class="hero">
+  <h1 class="hero-title">Nebensätze</h1>
+  <p class="hero-sub">Kausalsätze, Konzessivsätze, Temporalsätze und Relativsätze — alles, was du brauchst, um komplexe Sätze zu bauen. Das Verb steht am Ende!</p>
+</div>
+
+<div class="toc">
+  <a href="#was-ist">Was ist das?</a>
+  <a href="#regel">Die Regel</a>
+  <a href="#kausal">Kausalsätze</a>
+  <a href="#konzessiv">Konzessivsätze</a>
+  <a href="#temporal">Temporalsätze</a>
+  <a href="#relativ">Relativsätze</a>
+  <a href="#uebersicht">Übersichtstabelle</a>
+</div>
+
+<!-- Was ist ein Nebensatz -->
+<div class="section" id="was-ist">
+  <div class="section-head"><span class="section-icon">📘</span><span class="section-title">Was ist ein Nebensatz?</span></div>
+  <div class="card">
+    <p>Ein <b>Nebensatz</b> (auch Gliedsatz) ist ein Satz, der nicht allein stehen kann — er hängt von einem <b>Hauptsatz</b> ab und liefert zusätzliche Information: Grund, Zeit, Gegensatz oder nähere Beschreibung.</p>
+    <p>Ein Komma trennt immer Hauptsatz und Nebensatz.</p>
+  </div>
+  <div class="ex">
+    <div class="ex-de">Ich bleibe zu Hause, <span class="konj">weil</span> ich krank <span class="verb">bin</span>.</div>
+    <div class="ex-ar">أبقى في البيت لأنني مريض.</div>
+  </div>
+</div>
+
+<!-- Regel: Verb am Ende -->
+<div class="section" id="regel">
+  <div class="section-head"><span class="section-icon">⚙️</span><span class="section-title">Die Goldene Regel</span></div>
+  <div class="rule-box">
+    <div class="rule-box-title">Verb-Endstellung</div>
+    <p>Im Nebensatz steht das konjugierte Verb immer <b>ganz am Ende</b> des Satzes. Bei zusammengesetzten Zeiten (Perfekt, Modalverben) steht das konjugierte Verb hinter dem Partizip/Infinitiv.</p>
+  </div>
+  <div class="steps">
+    <div class="step"><div class="step-num">1</div><div class="step-text">Hauptsatz schreiben (normale Wortstellung).</div></div>
+    <div class="step"><div class="step-num">2</div><div class="step-text">Komma setzen.</div></div>
+    <div class="step"><div class="step-num">3</div><div class="step-text">Konjunktion (weil, obwohl, wenn, dass...) einfügen.</div></div>
+    <div class="step"><div class="step-num">4</div><div class="step-text">Subjekt + restliche Wörter, Verb kommt zuletzt.</div></div>
+  </div>
+  <div class="ex">
+    <div class="ex-de">Er hat die Prüfung bestanden, <span class="konj">obwohl</span> er wenig <span class="verb">gelernt hat</span>.</div>
+    <div class="ex-ar">لقد نجح في الامتحان رغم أنه درس قليلاً.</div>
+  </div>
+</div>
+
+<!-- Kausalsätze -->
+<div class="section" id="kausal">
+  <div class="section-head"><span class="section-icon">🎯</span><span class="section-title">Kausalsätze — der Grund</span></div>
+  <div class="card"><p>Kausalsätze geben einen <b>Grund</b> oder eine <b>Ursache</b> an. Sie antworten auf die Frage: <i>Warum?</i></p></div>
+  <div class="type-grid">
+    <div class="type-card">
+      <div class="type-card-title">weil</div>
+      <div class="type-card-konj">Nebensatz · Verb am Ende</div>
+      <div class="type-card-desc">Der häufigste Grund-Konnektor — neutral, in jedem Kontext möglich.</div>
+      <div class="type-card-ex">Ich lerne Deutsch, weil ich in Deutschland arbeiten möchte.</div>
+    </div>
+    <div class="type-card">
+      <div class="type-card-title">da</div>
+      <div class="type-card-konj">Nebensatz · Verb am Ende</div>
+      <div class="type-card-desc">Formeller, oft am Satzanfang — der Grund ist meist schon bekannt.</div>
+      <div class="type-card-ex">Da es regnet, bleiben wir heute zu Hause.</div>
+    </div>
+  </div>
+</div>
+
+<!-- Konzessivsätze -->
+<div class="section" id="konzessiv">
+  <div class="section-head"><span class="section-icon">⚡</span><span class="section-title">Konzessivsätze — der Gegensatz</span></div>
+  <div class="card"><p>Konzessivsätze drücken einen <b>Gegensatz</b> oder eine <b>Einschränkung</b> aus — etwas passiert trotz eines Hindernisses.</p></div>
+  <div class="type-grid">
+    <div class="type-card">
+      <div class="type-card-title">obwohl</div>
+      <div class="type-card-konj">Nebensatz · Verb am Ende</div>
+      <div class="type-card-desc">"Trotz der Tatsache, dass..." — der Standard-Konnektor für Gegensatz.</div>
+      <div class="type-card-ex">Sie geht joggen, obwohl es kalt ist.</div>
+    </div>
+    <div class="type-card">
+      <div class="type-card-title">obgleich / obschon</div>
+      <div class="type-card-konj">Nebensatz · Verb am Ende</div>
+      <div class="type-card-desc">Formelle Varianten von "obwohl" — eher in Schriftsprache.</div>
+      <div class="type-card-ex">Obgleich er müde war, arbeitete er weiter.</div>
+    </div>
+  </div>
+</div>
+
+<!-- Temporalsätze -->
+<div class="section" id="temporal">
+  <div class="section-head"><span class="section-icon">⏱️</span><span class="section-title">Temporalsätze — die Zeit</span></div>
+  <div class="card"><p>Temporalsätze geben den <b>zeitlichen Zusammenhang</b> zwischen zwei Handlungen an.</p></div>
+  <div class="type-grid">
+    <div class="type-card">
+      <div class="type-card-title">als</div>
+      <div class="type-card-konj">Einmaliges Ereignis · Vergangenheit</div>
+      <div class="type-card-desc">Für ein einzelnes, abgeschlossenes Ereignis in der Vergangenheit.</div>
+      <div class="type-card-ex">Als ich klein war, wohnte ich in Berlin.</div>
+    </div>
+    <div class="type-card">
+      <div class="type-card-title">wenn</div>
+      <div class="type-card-konj">Wiederholung · Gegenwart/Zukunft</div>
+      <div class="type-card-desc">Für wiederholte Ereignisse oder Bedingungen — auch in Gegenwart/Zukunft.</div>
+      <div class="type-card-ex">Wenn ich Zeit habe, lese ich gern.</div>
+    </div>
+    <div class="type-card">
+      <div class="type-card-title">während</div>
+      <div class="type-card-konj">Gleichzeitigkeit</div>
+      <div class="type-card-desc">Zwei Handlungen passieren gleichzeitig.</div>
+      <div class="type-card-ex">Während ich kochte, hörte ich Musik.</div>
+    </div>
+    <div class="type-card">
+      <div class="type-card-title">bevor / nachdem</div>
+      <div class="type-card-konj">Reihenfolge</div>
+      <div class="type-card-desc">Bevor = vorher, nachdem = danach. Bei "nachdem" oft Plusquamperfekt nötig.</div>
+      <div class="type-card-ex">Nachdem ich gegessen hatte, ging ich spazieren.</div>
+    </div>
+    <div class="type-card">
+      <div class="type-card-title">seit / seitdem</div>
+      <div class="type-card-konj">Beginn bis jetzt</div>
+      <div class="type-card-desc">Etwas dauert von einem Zeitpunkt bis heute an.</div>
+      <div class="type-card-ex">Seitdem er in Köln wohnt, ist er glücklicher.</div>
+    </div>
+    <div class="type-card">
+      <div class="type-card-title">bis</div>
+      <div class="type-card-konj">Endpunkt</div>
+      <div class="type-card-desc">Etwas dauert bis zu einem bestimmten Zeitpunkt.</div>
+      <div class="type-card-ex">Wir warten, bis der Bus kommt.</div>
+    </div>
+  </div>
+</div>
+
+<!-- Relativsätze -->
+<div class="section" id="relativ">
+  <div class="section-head"><span class="section-icon">🔗</span><span class="section-title">Relativsätze — die Beschreibung</span></div>
+  <div class="card">
+    <p>Relativsätze beschreiben ein <b>Nomen</b> näher. Sie beginnen mit einem <b>Relativpronomen</b> (der, die, das...), das in Genus und Numerus zum Bezugswort passt, aber im Kasus von seiner eigenen Funktion im Nebensatz abhängt.</p>
+  </div>
+  <div class="table-wrap">
+    <table>
+      <tr><th>Kasus</th><th>Maskulin</th><th>Feminin</th><th>Neutrum</th><th>Plural</th></tr>
+      <tr><td>Nominativ</td><td>der</td><td>die</td><td>das</td><td>die</td></tr>
+      <tr><td>Akkusativ</td><td>den</td><td>die</td><td>das</td><td>die</td></tr>
+      <tr><td>Dativ</td><td>dem</td><td>der</td><td>dem</td><td>denen</td></tr>
+      <tr><td>Genitiv</td><td>dessen</td><td>deren</td><td>dessen</td><td>deren</td></tr>
+    </table>
+  </div>
+  <div class="ex">
+    <div class="ex-de">Der Mann, <span class="konj">der</span> dort steht, <span class="verb">ist</span> mein Lehrer. <span style="color:var(--hint)">(Nominativ — er steht)</span></div>
+    <div class="ex-ar">الرجل الذي يقف هناك هو معلمي.</div>
+  </div>
+  <div class="ex">
+    <div class="ex-de">Das Buch, <span class="konj">das</span> ich lese, <span class="verb">ist</span> spannend. <span style="color:var(--hint)">(Akkusativ — ich lese es)</span></div>
+    <div class="ex-ar">الكتاب الذي أقرأه مثير للاهتمام.</div>
+  </div>
+  <div class="ex">
+    <div class="ex-de">Die Frau, <span class="konj">der</span> ich geholfen habe, <span class="verb">heißt</span> Anna. <span style="color:var(--hint)">(Dativ — ich habe ihr geholfen)</span></div>
+    <div class="ex-ar">المرأة التي ساعدتها اسمها آنا.</div>
+  </div>
+</div>
+
+<!-- Übersichtstabelle -->
+<div class="section" id="uebersicht">
+  <div class="section-head"><span class="section-icon">📋</span><span class="section-title">Übersichtstabelle aller Konnektoren</span></div>
+  <div class="table-wrap">
+    <table>
+      <tr><th>Konnektor</th><th>Typ</th><th>Bedeutung</th><th class="td-ar">Arabisch</th></tr>
+      <tr><td><b>weil</b></td><td>Kausal</td><td>Grund (neutral)</td><td class="td-ar">لأن</td></tr>
+      <tr><td><b>da</b></td><td>Kausal</td><td>Grund (formell, bekannt)</td><td class="td-ar">بما أن</td></tr>
+      <tr><td><b>obwohl</b></td><td>Konzessiv</td><td>trotzdem / Gegensatz</td><td class="td-ar">رغم أن</td></tr>
+      <tr><td><b>obgleich</b></td><td>Konzessiv</td><td>trotzdem (formell)</td><td class="td-ar">رغم أن (رسمي)</td></tr>
+      <tr><td><b>als</b></td><td>Temporal</td><td>einmalig, Vergangenheit</td><td class="td-ar">عندما (مرة واحدة)</td></tr>
+      <tr><td><b>wenn</b></td><td>Temporal</td><td>wiederholt / Bedingung</td><td class="td-ar">عندما / إذا</td></tr>
+      <tr><td><b>während</b></td><td>Temporal</td><td>gleichzeitig</td><td class="td-ar">بينما</td></tr>
+      <tr><td><b>bevor</b></td><td>Temporal</td><td>vorher</td><td class="td-ar">قبل أن</td></tr>
+      <tr><td><b>nachdem</b></td><td>Temporal</td><td>danach</td><td class="td-ar">بعد أن</td></tr>
+      <tr><td><b>seit / seitdem</b></td><td>Temporal</td><td>seit einem Zeitpunkt</td><td class="td-ar">منذ</td></tr>
+      <tr><td><b>bis</b></td><td>Temporal</td><td>bis zu einem Zeitpunkt</td><td class="td-ar">حتى</td></tr>
+      <tr><td><b>dass</b></td><td>Objektsatz</td><td>einleitend, neutral</td><td class="td-ar">أن</td></tr>
+      <tr><td><b>der/die/das...</b></td><td>Relativ</td><td>beschreibt ein Nomen</td><td class="td-ar">الذي / التي</td></tr>
+    </table>
+  </div>
+</div>
+
+<div class="cta-row">
+  <a class="cta-btn cta-primary" href="karten.html">🃏 Lernkarten starten</a>
+  <a class="cta-btn cta-secondary" href="quiz.html">🎯 Quiz starten</a>
+</div>
+
+</body>
+</html>
