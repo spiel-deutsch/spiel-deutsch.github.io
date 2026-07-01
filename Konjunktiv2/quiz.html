@@ -1,0 +1,245 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Konjunktiv II — Quiz · Spiel Deutsch</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=DM+Sans:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --bg:#F7F4EF;--surface:#fff;--text:#1C1917;--muted:#78716C;--hint:#A8A29E;
+  --green:#1D9E75;--greenl:#E1F5EE;--greent:#0F6E56;
+  --border:rgba(28,25,23,0.10);--bm:rgba(28,25,23,0.15);
+  --r:16px;--shc:0 4px 24px rgba(28,25,23,0.10);
+  --red:#DC2626;--redl:#FEE2E2;--redt:#991B1B;
+  --k2:#7C3AED;--k2l:#EDE9FE;--k2t:#5B21B6;--k2b:#C4B5FD;
+}
+html,body{min-height:100%;background:var(--bg);font-family:'DM Sans',sans-serif;color:var(--text);-webkit-font-smoothing:antialiased}
+body{display:flex;flex-direction:column;align-items:center;padding-bottom:48px}
+
+.topbar{width:100%;max-width:640px;padding:20px 24px 0;display:flex;align-items:center;gap:12px}
+.back-btn{display:flex;align-items:center;gap:6px;font-size:13px;font-weight:600;color:var(--muted);text-decoration:none}
+.back-btn:hover{color:var(--text)}
+.topbar-title{font-family:'DM Serif Display',serif;font-size:18px;flex:1;text-align:center}
+
+.streak-row{width:100%;max-width:640px;padding:14px 24px 0;display:flex;gap:8px;align-items:center}
+.streak-box{background:var(--surface);border:1px solid var(--border);border-radius:12px;padding:8px 14px;display:flex;align-items:center;gap:6px;font-size:13px;font-weight:600}
+.prog-wrap{flex:1;background:var(--border);border-radius:5px;height:5px;overflow:hidden}
+.prog-fill{height:100%;background:var(--k2);border-radius:5px;transition:width .3s}
+.prog-label{font-size:11px;font-weight:600;color:var(--hint);white-space:nowrap}
+
+.q-card{width:100%;max-width:640px;padding:16px 24px 0}
+.q-inner{background:var(--surface);border:1px solid var(--border);border-radius:var(--r);box-shadow:var(--shc);padding:28px 24px;text-align:center;position:relative;overflow:hidden}
+.q-inner::before{content:'';position:absolute;top:0;left:0;right:0;height:4px;background:var(--k2)}
+.q-num{font-size:11px;font-weight:600;letter-spacing:1.5px;text-transform:uppercase;color:var(--hint);margin-bottom:8px}
+.q-type{font-size:11px;font-weight:600;color:var(--k2t);background:var(--k2l);border:1px solid var(--k2b);border-radius:20px;padding:3px 10px;display:inline-block;margin-bottom:14px}
+.q-sentence{font-size:clamp(15px,4vw,19px);line-height:1.9;color:var(--text)}
+.q-blank{display:inline-block;min-width:100px;border-bottom:2px solid var(--k2b);color:var(--k2t);font-weight:700;padding:0 4px}
+.q-hint{font-size:12px;color:var(--hint);margin-top:12px}
+
+.options{width:100%;max-width:640px;padding:12px 24px 0;display:flex;flex-direction:column;gap:10px}
+.opt-btn{width:100%;padding:15px 18px;border-radius:var(--r);border:1.5px solid var(--border);background:var(--surface);font-size:15px;font-weight:500;color:var(--text);cursor:pointer;text-align:left;display:flex;align-items:center;gap:12px;transition:border-color .15s,background .15s;-webkit-tap-highlight-color:transparent}
+.opt-btn:hover:not(:disabled){border-color:var(--bm);background:#FAFAF9}
+.opt-btn.correct{background:var(--greenl);border-color:var(--green);color:var(--greent)}
+.opt-btn.wrong{background:var(--redl);border-color:#FECACA;color:var(--redt)}
+.opt-btn:disabled{cursor:default}
+.opt-letter{width:28px;height:28px;border-radius:50%;background:var(--bg);border:1px solid var(--border);display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:700;color:var(--hint);flex-shrink:0}
+.opt-btn.correct .opt-letter{background:var(--greent);color:#fff;border-color:var(--greent)}
+.opt-btn.wrong .opt-letter{background:var(--redt);color:#fff;border-color:var(--redt)}
+
+.feedback{width:100%;max-width:640px;padding:12px 24px 0;display:none}
+.feedback-inner{border-radius:var(--r);padding:14px 18px;font-size:13px;line-height:1.7}
+.feedback-inner.correct{background:var(--greenl);color:var(--greent);border:1px solid var(--green)}
+.feedback-inner.wrong{background:var(--redl);color:var(--redt);border:1px solid #FECACA}
+.feedback-title{font-weight:700;margin-bottom:4px}
+.feedback-ar{margin-top:6px;font-size:12px;opacity:.85;direction:rtl;text-align:right}
+
+.next-wrap{width:100%;max-width:640px;padding:12px 24px 0}
+.next-btn{width:100%;padding:15px;border-radius:var(--r);border:none;background:var(--text);color:#fff;font-size:14px;font-weight:600;cursor:pointer;display:none;box-shadow:0 2px 12px rgba(28,25,23,0.2)}
+
+.done-screen{width:100%;max-width:640px;padding:40px 24px;text-align:center;display:none;flex-direction:column;align-items:center;gap:14px}
+.done-icon{font-size:48px}
+.done-title{font-family:'DM Serif Display',serif;font-size:26px}
+.done-sub{font-size:14px;color:var(--muted)}
+.done-stats{display:flex;gap:12px}
+.stat-box{flex:1;background:var(--surface);border:1px solid var(--border);border-radius:12px;padding:12px;text-align:center}
+.stat-n{font-family:'DM Serif Display',serif;font-size:22px}
+.stat-l{font-size:10px;font-weight:600;letter-spacing:1px;text-transform:uppercase;color:var(--hint);margin-top:2px}
+.stat-n.green{color:var(--greent)} .stat-n.red{color:var(--redt)}
+.done-btn{padding:14px 28px;border-radius:var(--r);border:none;font-size:14px;font-weight:600;cursor:pointer;background:var(--k2);color:#fff}
+</style>
+</head>
+<body>
+
+<div class="topbar">
+  <a class="back-btn" href="index.html">← Übersicht</a>
+  <span class="topbar-title">Konjunktiv II — Quiz</span>
+</div>
+
+<div class="streak-row">
+  <div class="streak-box"><span>🔥</span><span id="streak-num">0</span></div>
+  <div class="prog-wrap"><div class="prog-fill" id="prog-fill" style="width:0%"></div></div>
+  <span class="prog-label" id="prog-label">0 / 20</span>
+</div>
+
+<div class="q-card">
+  <div class="q-inner">
+    <div class="q-num" id="q-num">FRAGE 1 VON 20</div>
+    <div class="q-type" id="q-type">Wunsch</div>
+    <div class="q-sentence" id="q-sentence">Laden…</div>
+    <div class="q-hint">Welche Form ist richtig?</div>
+  </div>
+</div>
+
+<div class="options" id="options"></div>
+
+<div class="feedback" id="feedback">
+  <div class="feedback-inner" id="feedback-inner">
+    <div class="feedback-title" id="feedback-title"></div>
+    <div id="feedback-body"></div>
+    <div class="feedback-ar" id="feedback-ar"></div>
+  </div>
+</div>
+
+<div class="next-wrap"><button class="next-btn" id="next-btn" onclick="nextQuestion()">Weiter →</button></div>
+
+<div class="done-screen" id="done-screen">
+  <div class="done-icon" id="done-icon">🎉</div>
+  <div class="done-title">Quiz beendet!</div>
+  <div class="done-sub" id="done-sub"></div>
+  <div class="done-stats">
+    <div class="stat-box"><div class="stat-n green" id="d-right">0</div><div class="stat-l">Richtig</div></div>
+    <div class="stat-box"><div class="stat-n red" id="d-wrong">0</div><div class="stat-l">Falsch</div></div>
+    <div class="stat-box"><div class="stat-n" id="d-streak">0</div><div class="stat-l">Max Streak</div></div>
+  </div>
+  <button class="done-btn" onclick="startQuiz()">🔄 Neues Quiz</button>
+  <button class="done-btn" style="background:var(--surface);color:var(--text);border:1px solid var(--border)" onclick="window.location.href='index.html'">📖 Zur Übersicht</button>
+</div>
+
+<script>
+const QUESTIONS = [
+  { sentence:"Ich ___ gern nach Japan reisen.", correct:"würde", options:["würde","wäre","hätte","könnte"], type:"Wunsch", rule_de:"würde + Infinitiv für Wünsche mit normalen Verben.", rule_ar:"würde + مصدر للتعبير عن الأمنيات مع الأفعال العادية." },
+  { sentence:"Wenn ich reich ___, würde ich die Welt bereisen.", correct:"wäre", options:["wäre","hätte","würde","könnte"], type:"Irreale Bedingung", rule_de:"wäre ist der Konjunktiv II von 'sein' — für Zustände und Identität.", rule_ar:"wäre هو صيغة الكونيونكتيف الثاني للفعل sein — للحالات والهوية." },
+  { sentence:"___ du mir bitte helfen?", correct:"Könntest", options:["Könntest","Wärst","Hättest","Würdest"], type:"Höfliche Bitte", rule_de:"könnte → könntest für eine höfliche Bitte — höflicher als 'Kannst du...?'", rule_ar:"könnte ← könntest للطلب المهذب — أكثر أدباً من 'Kannst du...?'" },
+  { sentence:"Wenn ich mehr Zeit ___, würde ich mehr Sport machen.", correct:"hätte", options:["hätte","wäre","könnte","sollte"], type:"Hypothese", rule_de:"hätte ist der Konjunktiv II von 'haben' — für Besitz und Verfügbarkeit.", rule_ar:"hätte هو صيغة الكونيونكتيف الثاني للفعل haben — للملكية والتوفر." },
+  { sentence:"Du ___ eigentlich mehr schlafen.", correct:"solltest", options:["solltest","könntest","wärst","würdest"], type:"Ratschlag", rule_de:"sollte → solltest für Ratschläge und Empfehlungen.", rule_ar:"sollte ← solltest للنصائح والتوصيات." },
+  { sentence:"An deiner Stelle ___ ich den Arzt anrufen.", correct:"würde", options:["würde","wäre","hätte","sollte"], type:"Ratschlag", rule_de:"'An deiner Stelle würde ich...' ist die Standardformel für Ratschläge.", rule_ar:"'An deiner Stelle würde ich...' هي صيغة قياسية لتقديم النصائح." },
+  { sentence:"Ich ___ gern Pilot.", correct:"wäre", options:["wäre","hätte","würde","könnte"], type:"Wunsch", rule_de:"wäre (nicht 'würde sein') für Zustände und Berufe — eigene Form bevorzugt.", rule_ar:"wäre (ليس 'würde sein') للأحوال والمهن — يُفضَّل الشكل الخاص." },
+  { sentence:"Wenn er früher käme, ___ wir zusammen essen.", correct:"könnten", options:["könnten","wären","hätten","sollten"], type:"Hypothese", rule_de:"könnten = Konjunktiv II von können — für hypothetische Möglichkeiten.", rule_ar:"könnten = الكونيونكتيف الثاني للفعل können — للإمكانيات الافتراضية." },
+  { sentence:"___ Sie bitte etwas langsamer sprechen?", correct:"Könnten", options:["Könnten","Wären","Hätten","Würden"], type:"Höfliche Bitte", rule_de:"Könnten Sie...? ist die höflichste Form für Bitten in formellen Situationen.", rule_ar:"Könnten Sie...? هي الصيغة الأكثر أدباً للطلبات في المواقف الرسمية." },
+  { sentence:"Es ___ keine Probleme geben, wenn wir kommunizieren würden.", correct:"gäbe", options:["gäbe","käme","nähme","führe"], type:"Hypothese", rule_de:"gäbe = Konjunktiv II von geben (gab → gäbe mit Umlaut).", rule_ar:"gäbe = الكونيونكتيف الثاني للفعل geben (gab → gäbe مع تغيير النبرة)." },
+  { sentence:"Ich ___ lieber mit dem Zug fahren.", correct:"würde", options:["würde","wäre","hätte","könnte"], type:"Präferenz", rule_de:"würde + Infinitiv für Präferenzen mit normalen Verben.", rule_ar:"würde + مصدر للتعبير عن التفضيل مع الأفعال العادية." },
+  { sentence:"Du ___ das unbedingt ausprobieren.", correct:"solltest", options:["solltest","wärst","hättest","könntest"], type:"Empfehlung", rule_de:"solltest = starke Empfehlung — 'du solltest' für dringende Ratschläge.", rule_ar:"solltest = توصية قوية — 'du solltest' للنصائح الملحّة." },
+  { sentence:"Wenn ich ein Vogel ___, würde ich fliegen.", correct:"wäre", options:["wäre","hätte","würde","könnte"], type:"Irrealer Wunsch", rule_de:"wäre für irreale Identität/Zustand — 'wenn ich X wäre...'", rule_ar:"wäre للهوية/الحالة غير الحقيقية — 'wenn ich X wäre...'" },
+  { sentence:"Ich ___ gern mehr Deutsch lernen.", correct:"würde", options:["würde","wäre","hätte","müsste"], type:"Wunsch", rule_de:"würde + Infinitiv — Standardform für Wünsche mit regulären Verben.", rule_ar:"würde + مصدر — الصيغة القياسية للأمنيات مع الأفعال العادية." },
+  { sentence:"An seiner Stelle ___ ich das Angebot annehmen.", correct:"würde", options:["würde","wäre","hätte","sollte"], type:"Ratschlag", rule_de:"'An seiner Stelle würde ich...' für Ratschläge in der dritten Person.", rule_ar:"'An seiner Stelle würde ich...' للنصائح بصيغة الغائب." },
+  { sentence:"Ich ___ gern mehr über die Geschichte wissen.", correct:"wüsste", options:["wüsste","wäre","hätte","könnte"], type:"Wunsch", rule_de:"wüsste = Konjunktiv II von wissen (wusste → wüsste mit Umlaut).", rule_ar:"wüsste = الكونيونكتيف الثاني للفعل wissen (wusste → wüsste مع تغيير النبرة)." },
+  { sentence:"Wenn wir früher aufgebrochen ___, hätten wir den Zug erwischt.", correct:"wären", options:["wären","hätten","würden","könnten"], type:"Vergangenheit (irreal)", rule_de:"wären = Konjunktiv II Vergangenheit von sein — für irreale Vergangenheit.", rule_ar:"wären = الكونيونكتيف الثاني الماضي للفعل sein — للماضي غير الحقيقي." },
+  { sentence:"Er ___ gern mehr Urlaub haben.", correct:"würde", options:["würde","wäre","müsste","dürfte"], type:"Wunsch", rule_de:"würde + haben für Wunsch nach mehr von etwas — nicht 'hätte' in dieser Konstruktion.", rule_ar:"würde + haben لتمني المزيد من شيء — ليس 'hätte' في هذا التركيب." },
+  { sentence:"___ du mir einen Gefallen tun?", correct:"Würdest", options:["Würdest","Wärst","Hättest","Solltest"], type:"Bitte", rule_de:"Würdest du...? für direkte, freundliche Bitten.", rule_ar:"Würdest du...? للطلبات المباشرة والودية." },
+  { sentence:"Ich ___ so gern in Paris leben!", correct:"würde", options:["würde","wäre","hätte","könnte"], type:"Wunsch", rule_de:"würde + Infinitiv für lebhafte Wünsche — oft mit 'so gern'.", rule_ar:"würde + مصدر للأمنيات الحيّة — غالباً مع 'so gern'." },
+];
+
+let deck = [], current = 0, rightCount = 0, wrongCount = 0, streak = 0, maxStreak = 0, answered = false;
+
+function shuffle(arr) {
+  const a = [...arr];
+  for (let i = a.length-1; i > 0; i--) { const j = Math.floor(Math.random()*(i+1)); [a[i],a[j]]=[a[j],a[i]]; }
+  return a;
+}
+
+function startQuiz() {
+  deck = shuffle(QUESTIONS);
+  current = 0; rightCount = 0; wrongCount = 0; streak = 0; maxStreak = 0;
+  document.getElementById('done-screen').style.display = 'none';
+  document.querySelector('.q-card').style.display = 'block';
+  document.getElementById('options').style.display = 'flex';
+  document.querySelector('.streak-row').style.display = 'flex';
+  renderQuestion();
+}
+
+function renderQuestion() {
+  answered = false;
+  const q = deck[current];
+  document.getElementById('q-num').textContent = `FRAGE ${current + 1} VON ${deck.length}`;
+  document.getElementById('q-type').textContent = q.type;
+  document.getElementById('q-sentence').innerHTML =
+    q.sentence.replace('___', '<span class="q-blank">______</span>');
+
+  const opts = shuffle(q.options);
+  const letters = ['A','B','C','D'];
+  const container = document.getElementById('options');
+  container.innerHTML = '';
+  opts.forEach((opt, i) => {
+    const btn = document.createElement('button');
+    btn.className = 'opt-btn';
+    btn.innerHTML = `<span class="opt-letter">${letters[i]}</span><span>${opt}</span>`;
+    btn.onclick = () => selectAnswer(btn, opt, q);
+    container.appendChild(btn);
+  });
+
+  document.getElementById('feedback').style.display = 'none';
+  document.getElementById('next-btn').style.display = 'none';
+  updateProgress();
+}
+
+function selectAnswer(btn, chosen, q) {
+  if (answered) return;
+  answered = true;
+  const isRight = chosen === q.correct;
+
+  document.querySelectorAll('.opt-btn').forEach(b => {
+    b.disabled = true;
+    const txt = b.querySelector('span:last-child').textContent;
+    if (txt === q.correct) b.classList.add('correct');
+    else if (b === btn && !isRight) b.classList.add('wrong');
+  });
+
+  if (isRight) { rightCount++; streak++; maxStreak = Math.max(maxStreak, streak); }
+  else { wrongCount++; streak = 0; }
+  document.getElementById('streak-num').textContent = streak;
+
+  const fbi = document.getElementById('feedback-inner');
+  fbi.className = 'feedback-inner ' + (isRight ? 'correct' : 'wrong');
+  document.getElementById('feedback-title').textContent =
+    isRight ? '✓ Richtig!' : `✗ Falsch — richtig ist "${q.correct}"`;
+  document.getElementById('feedback-body').textContent = q.rule_de;
+  document.getElementById('feedback-ar').textContent = q.rule_ar;
+  document.getElementById('feedback').style.display = 'block';
+  document.getElementById('next-btn').style.display = 'block';
+  updateProgress();
+}
+
+function nextQuestion() {
+  current++;
+  if (current >= deck.length) showDone(); else renderQuestion();
+}
+
+function updateProgress() {
+  const pct = Math.round(current / deck.length * 100);
+  document.getElementById('prog-fill').style.width = pct + '%';
+  document.getElementById('prog-label').textContent = `${current} / ${deck.length}`;
+}
+
+function showDone() {
+  document.querySelector('.q-card').style.display = 'none';
+  document.getElementById('options').style.display = 'none';
+  document.getElementById('feedback').style.display = 'none';
+  document.getElementById('next-btn').style.display = 'none';
+  document.querySelector('.streak-row').style.display = 'none';
+
+  const pct = Math.round(rightCount / deck.length * 100);
+  document.getElementById('done-icon').textContent = pct >= 80 ? '🏆' : pct >= 50 ? '👍' : '💪';
+  document.getElementById('done-sub').textContent = `${rightCount} von ${deck.length} richtig — ${pct}%`;
+  document.getElementById('d-right').textContent = rightCount;
+  document.getElementById('d-wrong').textContent = wrongCount;
+  document.getElementById('d-streak').textContent = maxStreak;
+  document.getElementById('done-screen').style.display = 'flex';
+}
+
+startQuiz();
+</script>
+</body>
+</html>

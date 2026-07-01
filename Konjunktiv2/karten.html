@@ -1,0 +1,335 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Konjunktiv II — Lernkarten · Spiel Deutsch</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=DM+Sans:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --bg:#F7F4EF;--surface:#fff;--text:#1C1917;--muted:#78716C;--hint:#A8A29E;
+  --green:#1D9E75;--greenl:#E1F5EE;--greent:#0F6E56;
+  --border:rgba(28,25,23,0.10);--bm:rgba(28,25,23,0.15);
+  --r:16px;--shc:0 4px 24px rgba(28,25,23,0.10);
+  --red:#DC2626;--redl:#FEE2E2;--redt:#991B1B;
+  --k2:#7C3AED;--k2l:#EDE9FE;--k2t:#5B21B6;--k2b:#C4B5FD;
+}
+html,body{min-height:100%;background:var(--bg);font-family:'DM Sans',sans-serif;color:var(--text);-webkit-font-smoothing:antialiased}
+body{display:flex;flex-direction:column;align-items:center;padding-bottom:48px}
+
+.topbar{width:100%;max-width:640px;padding:20px 24px 0;display:flex;align-items:center;gap:12px}
+.back-btn{display:flex;align-items:center;gap:6px;font-size:13px;font-weight:600;color:var(--muted);text-decoration:none}
+.back-btn:hover{color:var(--text)}
+.topbar-title{font-family:'DM Serif Display',serif;font-size:18px;flex:1;text-align:center}
+.topbar-count{font-size:12px;font-weight:600;color:var(--hint);background:var(--bg);border:1px solid var(--border);border-radius:20px;padding:3px 10px}
+
+.progress-wrap{width:100%;max-width:640px;padding:16px 24px 0}
+.prog-row{display:flex;justify-content:space-between;font-size:11px;font-weight:600;color:var(--hint);margin-bottom:6px}
+.prog-track{height:5px;background:var(--border);border-radius:5px;overflow:hidden}
+.prog-fill{height:100%;background:var(--k2);border-radius:5px;transition:width .35s cubic-bezier(.4,0,.2,1)}
+
+.filter-row{width:100%;max-width:640px;padding:14px 24px 0;display:flex;gap:8px;overflow-x:auto;scrollbar-width:none}
+.filter-row::-webkit-scrollbar{display:none}
+.filter-btn{flex-shrink:0;padding:7px 14px;border-radius:20px;border:1px solid var(--border);background:var(--surface);font-size:12px;font-weight:600;color:var(--muted);cursor:pointer;white-space:nowrap;transition:all .15s}
+.filter-btn.active{background:var(--k2);color:#fff;border-color:var(--k2)}
+
+.card-area{width:100%;max-width:640px;padding:20px 24px 0;perspective:1200px}
+
+/* Outer wrapper keeps the flip height stable */
+.flip-card{width:100%;cursor:pointer;position:relative;transform-style:preserve-3d;transition:transform .55s cubic-bezier(.4,0,.2,1)}
+.flip-card.flipped{transform:rotateY(180deg)}
+
+/* Front face: normal flow, centered */
+.card-face{
+  backface-visibility:hidden;-webkit-backface-visibility:hidden;
+  border-radius:var(--r);box-shadow:var(--shc);
+  display:flex;flex-direction:column;align-items:center;justify-content:center;
+  padding:36px 24px 48px;text-align:center;
+  background:var(--surface);border:1px solid var(--border);
+  position:relative;overflow:hidden;
+  min-height:240px;
+}
+
+/* Back face: absolute so it sits behind, same dimensions as front */
+.card-back{
+  position:absolute;top:0;left:0;right:0;
+  transform:rotateY(180deg);
+  padding:24px 20px 20px;
+  align-items:stretch;
+  justify-content:flex-start;
+}
+
+.card-face::before{content:'';position:absolute;top:0;left:0;right:0;height:4px;border-radius:var(--r) var(--r) 0 0;background:var(--k2)}
+.card-tag{font-size:10px;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;color:var(--k2t);background:var(--k2l);border:1px solid var(--k2b);border-radius:20px;padding:3px 10px;margin-bottom:14px;align-self:center}
+.card-word{font-family:'DM Serif Display',serif;font-size:clamp(26px,7vw,38px);line-height:1.2;color:var(--text)}
+.card-sub{font-size:13px;color:var(--muted);margin-top:8px;line-height:1.5}
+
+/* Conjugation table — clean grid layout */
+.card-table{width:100%;margin-top:14px;border-collapse:collapse;font-size:13px;table-layout:fixed}
+.card-table tr{border-top:1px solid var(--border)}
+.card-table tr:first-child{border-top:none}
+.card-table td{padding:8px 10px;text-align:left;vertical-align:middle;word-break:break-word}
+.card-table td:first-child{color:var(--hint);width:72px;font-size:12px;white-space:nowrap}
+.card-table td:last-child{color:var(--k2t);font-weight:700;font-size:14px}
+
+.card-example{font-size:13px;color:var(--text);margin-top:14px;line-height:1.7;text-align:center;padding:10px 12px;background:var(--bg);border-radius:10px}
+.card-example b{color:var(--k2t)}
+.card-example-ar{font-size:12px;color:var(--muted);margin-top:8px;direction:rtl;text-align:right;padding:0 4px}
+.card-hint{position:absolute;bottom:14px;left:0;right:0;text-align:center;font-size:11px;color:var(--hint)}
+
+.actions{width:100%;max-width:640px;padding:16px 24px 0;display:flex;gap:10px}
+.btn{flex:1;padding:14px;border-radius:var(--r);border:none;font-size:14px;font-weight:600;cursor:pointer;display:flex;align-items:center;justify-content:center;gap:7px;transition:transform .15s;-webkit-tap-highlight-color:transparent}
+.btn:active{transform:scale(.96)}
+.btn-wrong{background:var(--redl);color:var(--redt);border:1px solid #FECACA}
+.btn-right{background:var(--greenl);color:var(--greent);border:1px solid var(--green)}
+.btn-next{background:var(--text);color:#fff;box-shadow:0 2px 12px rgba(28,25,23,0.2)}
+.btn-flip{background:var(--surface);color:var(--text);border:1px solid var(--border);box-shadow:var(--shc)}
+
+.stats-row{width:100%;max-width:640px;padding:14px 24px 0;display:flex;gap:8px}
+.stat-box{flex:1;background:var(--surface);border:1px solid var(--border);border-radius:12px;padding:10px;text-align:center}
+.stat-n{font-family:'DM Serif Display',serif;font-size:20px}
+.stat-l{font-size:10px;font-weight:600;letter-spacing:1px;text-transform:uppercase;color:var(--hint);margin-top:2px}
+.stat-n.green{color:var(--greent)} .stat-n.red{color:var(--redt)}
+
+.done-screen{width:100%;max-width:640px;padding:40px 24px;text-align:center;display:none;flex-direction:column;align-items:center;gap:16px}
+.done-icon{font-size:48px}
+.done-title{font-family:'DM Serif Display',serif;font-size:28px}
+.done-sub{font-size:15px;color:var(--muted)}
+.done-stats{display:flex;gap:12px;margin-top:8px}
+.done-btn{padding:14px 28px;border-radius:var(--r);border:none;font-size:14px;font-weight:600;cursor:pointer;background:var(--k2);color:#fff;box-shadow:0 2px 12px rgba(28,25,23,0.2)}
+</style>
+</head>
+<body>
+
+<div class="topbar">
+  <a class="back-btn" href="index.html">← Übersicht</a>
+  <span class="topbar-title">Lernkarten</span>
+  <span class="topbar-count" id="counter">0 / 0</span>
+</div>
+
+<div class="progress-wrap">
+  <div class="prog-row"><span>Fortschritt</span><span id="prog-pct">0%</span></div>
+  <div class="prog-track"><div class="prog-fill" id="prog-fill" style="width:0%"></div></div>
+</div>
+
+<div class="filter-row">
+  <button class="filter-btn active" onclick="setFilter('all')" data-f="all">Alle</button>
+  <button class="filter-btn" onclick="setFilter('wuerde')" data-f="wuerde">würde-Form</button>
+  <button class="filter-btn" onclick="setFilter('sein-haben')" data-f="sein-haben">sein &amp; haben</button>
+  <button class="filter-btn" onclick="setFilter('modal')" data-f="modal">Modalverben</button>
+  <button class="filter-btn" onclick="setFilter('stark')" data-f="stark">Starke Verben</button>
+</div>
+
+<div class="card-area">
+  <div class="flip-card" id="flip-card" onclick="flipCard()">
+    <div class="card-face card-front">
+      <div class="card-tag" id="front-tag">VERB</div>
+      <div class="card-word" id="front-word">—</div>
+      <div class="card-sub" id="front-sub">Konjunktiv II bilden</div>
+      <div class="card-hint">Tippen zum Umdrehen</div>
+    </div>
+    <div class="card-face card-back">
+      <div class="card-tag" id="back-tag">KONJUNKTIV II</div>
+      <div class="card-table" id="back-table"></div>
+      <div class="card-example" id="back-example"></div>
+      <div class="card-example-ar" id="back-example-ar"></div>
+    </div>
+  </div>
+</div>
+
+<div class="actions" id="actions-before">
+  <button class="btn btn-flip" onclick="flipCard()">↩ Umdrehen</button>
+  <button class="btn btn-next" onclick="revealAndRate()">Antwort zeigen →</button>
+</div>
+<div class="actions" id="actions-after" style="display:none">
+  <button class="btn btn-wrong" onclick="rateCard(false)">✗ Nochmal</button>
+  <button class="btn btn-right" onclick="rateCard(true)">✓ Verstanden</button>
+</div>
+
+<div class="stats-row">
+  <div class="stat-box"><div class="stat-n green" id="s-right">0</div><div class="stat-l">Gekonnt</div></div>
+  <div class="stat-box"><div class="stat-n red" id="s-wrong">0</div><div class="stat-l">Üben</div></div>
+  <div class="stat-box"><div class="stat-n" id="s-left">0</div><div class="stat-l">Übrig</div></div>
+</div>
+
+<div class="done-screen" id="done-screen">
+  <div class="done-icon">🎉</div>
+  <div class="done-title">Runde beendet!</div>
+  <div class="done-sub" id="done-sub"></div>
+  <div class="done-stats">
+    <div class="stat-box"><div class="stat-n green" id="d-right">0</div><div class="stat-l">Gekonnt</div></div>
+    <div class="stat-box"><div class="stat-n red" id="d-wrong">0</div><div class="stat-l">Üben</div></div>
+  </div>
+  <button class="done-btn" onclick="restartWrong()">🔄 Nochmal (nur Schwierige)</button>
+  <button class="done-btn" style="background:var(--surface);color:var(--text);border:1px solid var(--border)" onclick="restartAll()">Alle wiederholen</button>
+</div>
+
+<script>
+const KARTEN = [
+  // würde-Form
+  { verb:'gehen', typ:'wuerde', k2:'würde gehen',
+    formen:[['ich','würde gehen'],['du','würdest gehen'],['er/sie','würde gehen'],['wir','würden gehen']],
+    de:'Ich **würde** gern nach Berlin **gehen**.', ar:'كنت أودّ الذهاب إلى برلين.', use:'Wunsch' },
+  { verb:'kaufen', typ:'wuerde', k2:'würde kaufen',
+    formen:[['ich','würde kaufen'],['du','würdest kaufen'],['er/sie','würde kaufen'],['wir','würden kaufen']],
+    de:'Er **würde** das Auto **kaufen**, wenn er Geld hätte.', ar:'كان سيشتري السيارة لو كان لديه مال.', use:'Hypothese' },
+  { verb:'arbeiten', typ:'wuerde', k2:'würde arbeiten',
+    formen:[['ich','würde arbeiten'],['du','würdest arbeiten'],['er/sie','würde arbeiten'],['wir','würden arbeiten']],
+    de:'**Würdest** du gern von zu Hause **arbeiten**?', ar:'هل تودّ العمل من المنزل؟', use:'Frage/Bitte' },
+  { verb:'helfen', typ:'wuerde', k2:'würde helfen',
+    formen:[['ich','würde helfen'],['du','würdest helfen'],['er/sie','würde helfen'],['wir','würden helfen']],
+    de:'An deiner Stelle **würde** ich ihm **helfen**.', ar:'في مكانك كنت سأساعده.', use:'Ratschlag' },
+  { verb:'reisen', typ:'wuerde', k2:'würde reisen',
+    formen:[['ich','würde reisen'],['du','würdest reisen'],['er/sie','würde reisen'],['wir','würden reisen']],
+    de:'Wenn ich Zeit hätte, **würde** ich um die Welt **reisen**.', ar:'لو كان لدي وقت، كنت سأسافر حول العالم.', use:'Irrealer Wunsch' },
+
+  // sein & haben
+  { verb:'sein', typ:'sein-haben', k2:'wäre',
+    formen:[['ich','wäre'],['du','wärst'],['er/sie','wäre'],['wir','wären']],
+    de:'Ich **wäre** gern Pilot.', ar:'كنت أتمنى أن أكون طياراً.', use:'Wunsch' },
+  { verb:'haben', typ:'sein-haben', k2:'hätte',
+    formen:[['ich','hätte'],['du','hättest'],['er/sie','hätte'],['wir','hätten']],
+    de:'Wenn ich mehr Zeit **hätte**, würde ich mehr lesen.', ar:'لو كان لدي وقت أكثر، كنت سأقرأ أكثر.', use:'Irreale Bedingung' },
+
+  // Modalverben
+  { verb:'können', typ:'modal', k2:'könnte',
+    formen:[['ich','könnte'],['du','könntest'],['er/sie','könnte'],['wir','könnten']],
+    de:'**Könnten** Sie mir bitte helfen?', ar:'هل يمكنكم مساعدتي من فضلكم؟', use:'Höfliche Bitte' },
+  { verb:'müssen', typ:'modal', k2:'müsste',
+    formen:[['ich','müsste'],['du','müsstest'],['er/sie','müsste'],['wir','müssten']],
+    de:'Du **müsstest** eigentlich mehr schlafen.', ar:'كان ينبغي لك النوم أكثر.', use:'Ratschlag' },
+  { verb:'dürfen', typ:'modal', k2:'dürfte',
+    formen:[['ich','dürfte'],['du','dürftest'],['er/sie','dürfte'],['wir','dürften']],
+    de:'Hier **dürfte** man eigentlich nicht parken.', ar:'في الأصل لا يُسمح بالوقوف هنا.', use:'Annahme' },
+  { verb:'sollen', typ:'modal', k2:'sollte',
+    formen:[['ich','sollte'],['du','solltest'],['er/sie','sollte'],['wir','sollten']],
+    de:'Du **solltest** mehr Wasser trinken.', ar:'ينبغي لك شرب المزيد من الماء.', use:'Ratschlag' },
+  { verb:'wollen', typ:'modal', k2:'wollte',
+    formen:[['ich','wollte'],['du','wolltest'],['er/sie','wollte'],['wir','wollten']],
+    de:'Ich **wollte** dir eigentlich helfen.', ar:'كنت أريد في الأصل مساعدتك.', use:'Absicht' },
+  { verb:'wissen', typ:'modal', k2:'wüsste',
+    formen:[['ich','wüsste'],['du','wüsstest'],['er/sie','wüsste'],['wir','wüssten']],
+    de:'Ich **wüsste** gern, wie das geht.', ar:'كنت أودّ معرفة كيفية ذلك.', use:'Wunsch' },
+
+  // Starke Verben
+  { verb:'kommen', typ:'stark', k2:'käme',
+    formen:[['ich','käme'],['du','kämest'],['er/sie','käme'],['wir','kämen']],
+    de:'Wenn er früher **käme**, könnten wir zusammen essen.', ar:'لو جاء مبكراً، كنا سنأكل معاً.', use:'Hypothese' },
+  { verb:'geben', typ:'stark', k2:'gäbe',
+    formen:[['ich','gäbe'],['du','gäbest'],['er/sie','gäbe'],['wir','gäben']],
+    de:'Es **gäbe** keine Probleme, wenn wir kommunizieren würden.', ar:'لما كانت هناك مشاكل لو تواصلنا.', use:'Hypothese' },
+  { verb:'fahren', typ:'stark', k2:'führe',
+    formen:[['ich','führe'],['du','führest'],['er/sie','führe'],['wir','führen']],
+    de:'Ich **führe** lieber mit dem Zug.', ar:'كنت أفضّل السفر بالقطار.', use:'Präferenz' },
+  { verb:'nehmen', typ:'stark', k2:'nähme',
+    formen:[['ich','nähme'],['du','nähmest'],['er/sie','nähme'],['wir','nähmen']],
+    de:'An deiner Stelle **nähme** ich das Angebot an.', ar:'في مكانك كنت سأقبل العرض.', use:'Ratschlag' },
+  { verb:'lassen', typ:'stark', k2:'ließe',
+    formen:[['ich','ließe'],['du','ließest'],['er/sie','ließe'],['wir','ließen']],
+    de:'Ich **ließe** das Gepäck im Hotel.', ar:'كنت سأترك الأمتعة في الفندق.', use:'Entscheidung' },
+];
+
+let deck = [], current = 0, rightCount = 0, wrongCount = 0, wrongCards = [];
+let activeFilter = 'all';
+
+function shuffle(arr) {
+  const a = [...arr];
+  for (let i = a.length-1; i > 0; i--) { const j = Math.floor(Math.random()*(i+1)); [a[i],a[j]]=[a[j],a[i]]; }
+  return a;
+}
+
+function setFilter(f) {
+  activeFilter = f;
+  document.querySelectorAll('.filter-btn').forEach(b => b.classList.toggle('active', b.dataset.f === f));
+  restartAll();
+}
+
+function md(s) { return s.replace(/\*\*(.*?)\*\*/g, '<b>$1</b>'); }
+
+function renderCard() {
+  const w = deck[current];
+  document.getElementById('front-tag').textContent = w.use.toUpperCase();
+  document.getElementById('front-word').textContent = w.verb;
+  document.getElementById('front-sub').textContent = 'Konjunktiv II — alle Formen';
+
+  // Back: conjugation table + example
+  const tableHTML = w.formen.map(([p, f]) =>
+    `<tr><td>${p}</td><td><b>${f}</b></td></tr>`
+  ).join('');
+  document.getElementById('back-table').innerHTML = tableHTML;
+  document.getElementById('back-example').innerHTML = md(w.de);
+  document.getElementById('back-example-ar').textContent = w.ar;
+
+  document.getElementById('flip-card').classList.remove('flipped');
+  document.getElementById('actions-before').style.display = 'flex';
+  document.getElementById('actions-after').style.display = 'none';
+  updateUI();
+}
+
+function flipCard() { document.getElementById('flip-card').classList.toggle('flipped'); }
+
+function revealAndRate() {
+  document.getElementById('flip-card').classList.add('flipped');
+  document.getElementById('actions-before').style.display = 'none';
+  document.getElementById('actions-after').style.display = 'flex';
+}
+
+function rateCard(correct) {
+  if (correct) rightCount++;
+  else { wrongCount++; wrongCards.push(deck[current]); }
+  document.getElementById('s-right').textContent = rightCount;
+  document.getElementById('s-wrong').textContent = wrongCount;
+  current++;
+  if (current >= deck.length) showDone(); else renderCard();
+}
+
+function updateUI() {
+  const total = deck.length;
+  const pct = total ? Math.round(current / total * 100) : 0;
+  document.getElementById('counter').textContent = `${current + 1} / ${total}`;
+  document.getElementById('prog-fill').style.width = pct + '%';
+  document.getElementById('prog-pct').textContent = pct + '%';
+  document.getElementById('s-left').textContent = total - current;
+}
+
+function showDone() {
+  document.querySelector('.card-area').style.display = 'none';
+  document.getElementById('actions-before').style.display = 'none';
+  document.getElementById('actions-after').style.display = 'none';
+  document.querySelector('.stats-row').style.display = 'none';
+  document.getElementById('d-right').textContent = rightCount;
+  document.getElementById('d-wrong').textContent = wrongCount;
+  document.getElementById('done-sub').textContent =
+    `${rightCount} von ${deck.length} verstanden — ${Math.round(rightCount / deck.length * 100)}%`;
+  document.getElementById('done-screen').style.display = 'flex';
+}
+
+function restartWrong() {
+  if (!wrongCards.length) { restartAll(); return; }
+  deck = shuffle([...wrongCards]);
+  wrongCards = []; current = 0; rightCount = 0; wrongCount = 0;
+  resetView();
+}
+
+function restartAll() {
+  const pool = activeFilter === 'all' ? KARTEN : KARTEN.filter(k => k.typ === activeFilter);
+  deck = shuffle(pool);
+  wrongCards = []; current = 0; rightCount = 0; wrongCount = 0;
+  resetView();
+}
+
+function resetView() {
+  document.querySelector('.card-area').style.display = 'block';
+  document.querySelector('.stats-row').style.display = 'flex';
+  document.getElementById('done-screen').style.display = 'none';
+  document.getElementById('s-right').textContent = 0;
+  document.getElementById('s-wrong').textContent = 0;
+  renderCard();
+}
+
+restartAll();
+</script>
+</body>
+</html>

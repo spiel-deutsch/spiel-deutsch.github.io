@@ -1,0 +1,283 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Konjunktiv II — Übersicht · Spiel Deutsch</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=DM+Sans:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --bg:#F7F4EF;--surface:#fff;--text:#1C1917;--muted:#78716C;--hint:#A8A29E;
+  --green:#1D9E75;--greenl:#E1F5EE;--greent:#0F6E56;
+  --border:rgba(28,25,23,0.10);--bm:rgba(28,25,23,0.15);
+  --r:16px;--shc:0 4px 24px rgba(28,25,23,0.09);
+  --k2:#7C3AED;--k2l:#EDE9FE;--k2t:#5B21B6;--k2b:#C4B5FD;
+}
+html,body{min-height:100%;background:var(--bg);font-family:'DM Sans',sans-serif;color:var(--text);-webkit-font-smoothing:antialiased}
+body{display:flex;flex-direction:column;align-items:center;padding-bottom:60px}
+
+.topbar{width:100%;max-width:680px;padding:20px 24px 0;display:flex;align-items:center;gap:12px}
+.back-btn{display:flex;align-items:center;gap:6px;font-size:13px;font-weight:600;color:var(--muted);text-decoration:none}
+.back-btn:hover{color:var(--text)}
+.topbar-title{font-family:'DM Serif Display',serif;font-size:18px;flex:1;text-align:center}
+.topbar-level{font-size:11px;font-weight:600;letter-spacing:1px;text-transform:uppercase;color:var(--k2t);background:var(--k2l);border:1px solid var(--k2b);border-radius:20px;padding:3px 10px}
+
+.hero{width:100%;max-width:680px;padding:28px 24px 0;text-align:center}
+.hero-title{font-family:'DM Serif Display',serif;font-size:clamp(28px,7vw,40px);line-height:1.1}
+.hero-sub{font-size:14px;color:var(--muted);margin-top:10px;line-height:1.7;max-width:480px;margin-left:auto;margin-right:auto}
+
+.toc{width:100%;max-width:680px;padding:20px 24px 0;display:flex;gap:8px;overflow-x:auto;scrollbar-width:none}
+.toc::-webkit-scrollbar{display:none}
+.toc a{flex-shrink:0;font-size:12px;font-weight:600;color:var(--muted);background:var(--surface);border:1px solid var(--border);border-radius:20px;padding:7px 14px;text-decoration:none;white-space:nowrap}
+.toc a:hover{border-color:var(--k2);color:var(--k2t)}
+
+.section{width:100%;max-width:680px;padding:36px 24px 0;scroll-margin-top:20px}
+.section-head{display:flex;align-items:center;gap:10px;margin-bottom:14px}
+.section-icon{font-size:20px}
+.section-title{font-family:'DM Serif Display',serif;font-size:22px}
+
+.card{background:var(--surface);border:1px solid var(--border);border-radius:var(--r);box-shadow:var(--shc);padding:20px 22px;margin-bottom:12px}
+.card p{font-size:14px;line-height:1.7;color:var(--text)}
+.card p+p{margin-top:10px}
+.card b{color:var(--k2t)}
+
+.rule-box{background:var(--k2l);border:1px solid var(--k2b);border-radius:var(--r);padding:16px 20px;margin-bottom:14px}
+.rule-box-title{font-size:11px;font-weight:700;letter-spacing:1px;text-transform:uppercase;color:var(--k2t);margin-bottom:6px}
+.rule-box p{font-size:14px;color:var(--text);line-height:1.6}
+
+.ex{display:flex;flex-direction:column;gap:2px;padding:12px 0;border-bottom:1px solid var(--border)}
+.ex:last-child{border-bottom:none}
+.ex-de{font-size:14px;color:var(--text);line-height:1.6}
+.ex-de .kf{color:var(--k2t);font-weight:700}
+.ex-ar{font-size:13px;color:var(--muted);direction:rtl;text-align:right;margin-top:2px}
+
+.table-wrap{overflow-x:auto;margin-bottom:14px}
+table{width:100%;border-collapse:collapse;background:var(--surface);border:1px solid var(--border);border-radius:var(--r);overflow:hidden;box-shadow:var(--shc)}
+th{background:var(--k2l);color:var(--k2t);font-size:11px;font-weight:700;letter-spacing:.5px;text-transform:uppercase;padding:10px 14px;text-align:left;white-space:nowrap}
+td{padding:11px 14px;font-size:13px;border-top:1px solid var(--border);vertical-align:top}
+tr:hover td{background:#FAFAF9}
+td b{color:var(--k2t)}
+.td-ar{direction:rtl;text-align:right;color:var(--muted)}
+
+.type-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:10px;margin-bottom:14px}
+.type-card{background:var(--surface);border:1px solid var(--border);border-radius:var(--r);box-shadow:var(--shc);padding:16px 18px;position:relative;overflow:hidden}
+.type-card::before{content:'';position:absolute;top:0;left:0;right:0;height:3px;background:var(--k2)}
+.type-card-title{font-family:'DM Serif Display',serif;font-size:16px;margin-bottom:4px}
+.type-card-sub{font-size:12px;color:var(--k2t);font-weight:600;margin-bottom:8px}
+.type-card-desc{font-size:12px;color:var(--muted);line-height:1.6;margin-bottom:8px}
+.type-card-ex{font-size:12px;color:var(--text);background:var(--bg);border-radius:8px;padding:8px 10px;line-height:1.6}
+.type-card-ar{font-size:11px;color:var(--muted);direction:rtl;text-align:right;margin-top:6px;padding:0 2px}
+
+.steps{display:flex;flex-direction:column;gap:10px;margin-bottom:14px}
+.step{display:flex;gap:12px;align-items:flex-start}
+.step-num{width:24px;height:24px;border-radius:50%;background:var(--k2);color:#fff;font-size:12px;font-weight:700;display:flex;align-items:center;justify-content:center;flex-shrink:0}
+.step-text{font-size:14px;line-height:1.6;color:var(--text);padding-top:1px}
+
+.cta-row{width:100%;max-width:680px;padding:32px 24px 0;display:flex;gap:10px;flex-wrap:wrap}
+.cta-btn{flex:1;min-width:180px;display:flex;align-items:center;justify-content:center;gap:8px;padding:15px;border-radius:var(--r);text-decoration:none;font-size:14px;font-weight:600;box-shadow:var(--shc);transition:transform .15s}
+.cta-btn:hover{transform:translateY(-2px)}
+.cta-primary{background:var(--k2);color:#fff}
+.cta-secondary{background:var(--surface);color:var(--text);border:1px solid var(--border)}
+</style>
+</head>
+<body>
+
+<div class="topbar">
+  <a class="back-btn" href="../index.html">← Zurück</a>
+  <span class="topbar-title">Konjunktiv II</span>
+  <span class="topbar-level">B2</span>
+</div>
+
+<div class="hero">
+  <h1 class="hero-title">Konjunktiv II</h1>
+  <p class="hero-sub">Wünsche, Möglichkeiten, Hypothesen und höfliche Bitten — würde + Infinitiv, wäre, hätte und alle wichtigen Formen auf einen Blick.</p>
+</div>
+
+<div class="toc">
+  <a href="#was-ist">Was ist das?</a>
+  <a href="#bildung">Bildung</a>
+  <a href="#wuerde">würde-Form</a>
+  <a href="#unregelmaessig">Unregelmäßige</a>
+  <a href="#verwendung">Verwendung</a>
+  <a href="#uebersicht">Tabelle</a>
+</div>
+
+<!-- Was ist Konjunktiv II -->
+<div class="section" id="was-ist">
+  <div class="section-head"><span class="section-icon">💭</span><span class="section-title">Was ist der Konjunktiv II?</span></div>
+  <div class="card">
+    <p>Der <b>Konjunktiv II</b> ist ein Modus im Deutschen — er zeigt, dass etwas nicht real ist, sondern <b>vorgestellt, gewünscht, möglich oder höflich gemeint</b> ist.</p>
+    <p>Er wird vor allem in vier Situationen verwendet: Wünsche, Hypothesen, irreale Bedingungen und höfliche Bitten.</p>
+  </div>
+  <div class="ex">
+    <div class="ex-de">Ich <span class="kf">wäre</span> gern Arzt. <span style="color:var(--hint);font-size:12px">(Wunsch — aber ich bin es nicht)</span></div>
+    <div class="ex-ar">كنت أتمنى أن أكون طبيباً.</div>
+  </div>
+  <div class="ex">
+    <div class="ex-de">Wenn ich Zeit <span class="kf">hätte</span>, <span class="kf">würde</span> ich reisen.</div>
+    <div class="ex-ar">لو كان لدي وقت، كنت سأسافر.</div>
+  </div>
+</div>
+
+<!-- Bildung -->
+<div class="section" id="bildung">
+  <div class="section-head"><span class="section-icon">⚙️</span><span class="section-title">Bildung — zwei Wege</span></div>
+  <div class="type-grid">
+    <div class="type-card">
+      <div class="type-card-title">würde + Infinitiv</div>
+      <div class="type-card-sub">Die häufigste Form · für die meisten Verben</div>
+      <div class="type-card-desc">Für fast alle regelmäßigen Verben und viele unregelmäßige — die sichere Variante.</div>
+      <div class="type-card-ex">Ich <b>würde</b> gern reisen.<br>Er <b>würde</b> das kaufen.<br>Wir <b>würden</b> helfen.</div>
+    </div>
+    <div class="type-card">
+      <div class="type-card-title">Eigene Form</div>
+      <div class="type-card-sub">Für sein, haben, Modalverben</div>
+      <div class="type-card-desc">Einige wichtige Verben haben eigene Konjunktiv-II-Formen, die häufiger als würde benutzt werden.</div>
+      <div class="type-card-ex">ich <b>wäre</b> (sein)<br>ich <b>hätte</b> (haben)<br>ich <b>könnte</b> (können)</div>
+    </div>
+  </div>
+  <div class="rule-box">
+    <div class="rule-box-title">Bildungsregel — würde</div>
+    <p><b>würde</b> wird aus dem Präteritum von "werden" (wurde) gebildet, mit Umlaut: <b>würde</b>. Dann folgt der Infinitiv des Hauptverbs am Satzende.</p>
+  </div>
+  <div class="table-wrap">
+    <table>
+      <tr><th>Person</th><th>würde-Form</th><th>Beispiel</th></tr>
+      <tr><td>ich</td><td><b>würde</b></td><td>ich würde gehen</td></tr>
+      <tr><td>du</td><td><b>würdest</b></td><td>du würdest gehen</td></tr>
+      <tr><td>er/sie/es</td><td><b>würde</b></td><td>er würde gehen</td></tr>
+      <tr><td>wir</td><td><b>würden</b></td><td>wir würden gehen</td></tr>
+      <tr><td>ihr</td><td><b>würdet</b></td><td>ihr würdet gehen</td></tr>
+      <tr><td>sie/Sie</td><td><b>würden</b></td><td>sie würden gehen</td></tr>
+    </table>
+  </div>
+</div>
+
+<!-- würde-Form -->
+<div class="section" id="wuerde">
+  <div class="section-head"><span class="section-icon">✨</span><span class="section-title">Die würde-Form im Satz</span></div>
+  <div class="steps">
+    <div class="step"><div class="step-num">1</div><div class="step-text">Subjekt + konjugiertes <b>würde</b> an Position 2.</div></div>
+    <div class="step"><div class="step-num">2</div><div class="step-text">Mittelteil des Satzes (Objekte, Adverbien).</div></div>
+    <div class="step"><div class="step-num">3</div><div class="step-text">Infinitiv des Hauptverbs <b>am Ende</b>.</div></div>
+  </div>
+  <div class="ex">
+    <div class="ex-de">Ich <span class="kf">würde</span> gern ein Buch <span class="kf">lesen</span>.</div>
+    <div class="ex-ar">كنت أودّ قراءة كتاب.</div>
+  </div>
+  <div class="ex">
+    <div class="ex-de">Sie <span class="kf">würde</span> morgen früh <span class="kf">aufstehen</span>.</div>
+    <div class="ex-ar">كانت ستستيقظ باكراً غداً.</div>
+  </div>
+  <div class="ex">
+    <div class="ex-de"><span class="kf">Würdest</span> du mir bitte helfen?</div>
+    <div class="ex-ar">هل يمكنك مساعدتي من فضلك؟</div>
+  </div>
+</div>
+
+<!-- Unregelmäßige Formen -->
+<div class="section" id="unregelmaessig">
+  <div class="section-head"><span class="section-icon">⭐</span><span class="section-title">Wichtige eigene Formen</span></div>
+  <div class="card">
+    <p>Diese Verben benutzen ihre <b>eigene Konjunktiv-II-Form</b> — nie würde. Sie entstehen aus dem Präteritum + Umlaut (a→ä, o→ö, u→ü) + Konjunktiv-Endungen.</p>
+  </div>
+
+  <div class="table-wrap">
+    <table>
+      <tr><th>Infinitiv</th><th>Präteritum</th><th>Konj. II (ich)</th><th class="td-ar">Arabisch</th></tr>
+      <tr><td>sein</td><td>war</td><td><b>wäre</b></td><td class="td-ar">كنت</td></tr>
+      <tr><td>haben</td><td>hatte</td><td><b>hätte</b></td><td class="td-ar">كان لدي</td></tr>
+      <tr><td>werden</td><td>wurde</td><td><b>würde</b></td><td class="td-ar">كنت سـ</td></tr>
+      <tr><td>können</td><td>konnte</td><td><b>könnte</b></td><td class="td-ar">كان بإمكاني</td></tr>
+      <tr><td>müssen</td><td>musste</td><td><b>müsste</b></td><td class="td-ar">كان يجب عليّ</td></tr>
+      <tr><td>dürfen</td><td>durfte</td><td><b>dürfte</b></td><td class="td-ar">كان مسموحاً لي</td></tr>
+      <tr><td>sollen</td><td>sollte</td><td><b>sollte</b></td><td class="td-ar">كان من المفترض</td></tr>
+      <tr><td>wollen</td><td>wollte</td><td><b>wollte</b></td><td class="td-ar">كنت أريد</td></tr>
+      <tr><td>wissen</td><td>wusste</td><td><b>wüsste</b></td><td class="td-ar">كنت أعلم</td></tr>
+      <tr><td>gehen</td><td>ging</td><td><b>ginge</b></td><td class="td-ar">كنت سأذهب</td></tr>
+      <tr><td>kommen</td><td>kam</td><td><b>käme</b></td><td class="td-ar">كنت سآتي</td></tr>
+      <tr><td>geben</td><td>gab</td><td><b>gäbe</b></td><td class="td-ar">كنت سأعطي</td></tr>
+    </table>
+  </div>
+
+  <div class="rule-box">
+    <div class="rule-box-title">Endungen (wie Präteritum schwacher Verben)</div>
+    <p>ich -e · du -est · er/sie -e · wir -en · ihr -et · sie/Sie -en</p>
+  </div>
+
+  <div class="ex">
+    <div class="ex-de">Ich <span class="kf">wäre</span> gern Pilot.</div>
+    <div class="ex-ar">كنت أتمنى أن أكون طياراً.</div>
+  </div>
+  <div class="ex">
+    <div class="ex-de">Er <span class="kf">hätte</span> mehr Zeit.</div>
+    <div class="ex-ar">كان لديه وقت أكثر.</div>
+  </div>
+  <div class="ex">
+    <div class="ex-de">Sie <span class="kf">könnte</span> das allein machen.</div>
+    <div class="ex-ar">كان بإمكانها فعل ذلك وحدها.</div>
+  </div>
+</div>
+
+<!-- Verwendung -->
+<div class="section" id="verwendung">
+  <div class="section-head"><span class="section-icon">🎯</span><span class="section-title">Wann benutzt man ihn?</span></div>
+  <div class="type-grid">
+    <div class="type-card">
+      <div class="type-card-title">1. Wünsche</div>
+      <div class="type-card-sub">Wenn + Konjunktiv II</div>
+      <div class="type-card-desc">Etwas, das man sich wünscht, aber (noch) nicht Realität ist.</div>
+      <div class="type-card-ex">Wenn ich reich <b>wäre</b>, <b>würde</b> ich die Welt bereisen.</div>
+      <div class="type-card-ar">لو كنت غنياً، كنت سأسافر حول العالم.</div>
+    </div>
+    <div class="type-card">
+      <div class="type-card-title">2. Hypothesen</div>
+      <div class="type-card-sub">Irreale Bedingungen</div>
+      <div class="type-card-desc">Was wäre, wenn...? — eine unwirkliche Situation vorstellen.</div>
+      <div class="type-card-ex">Wenn ich ein Vogel <b>wäre</b>, <b>würde</b> ich fliegen.</div>
+      <div class="type-card-ar">لو كنت طائراً، كنت سأطير.</div>
+    </div>
+    <div class="type-card">
+      <div class="type-card-title">3. Höfliche Bitten</div>
+      <div class="type-card-sub">Höflicher als Imperativ</div>
+      <div class="type-card-desc">Bitten, Fragen und Vorschläge höflicher und indirekter ausdrücken.</div>
+      <div class="type-card-ex"><b>Könnten</b> Sie mir bitte helfen?<br><b>Würden</b> Sie das bitte wiederholen?</div>
+      <div class="type-card-ar">هل يمكنكم مساعدتي من فضلكم؟</div>
+    </div>
+    <div class="type-card">
+      <div class="type-card-title">4. Ratschläge</div>
+      <div class="type-card-sub">An deiner Stelle...</div>
+      <div class="type-card-desc">Einem anderen sagen, was man selbst tun würde.</div>
+      <div class="type-card-ex">An deiner Stelle <b>würde</b> ich den Arzt anrufen.</div>
+      <div class="type-card-ar">في مكانك كنت سأتصل بالطبيب.</div>
+    </div>
+  </div>
+</div>
+
+<!-- Übersichtstabelle -->
+<div class="section" id="uebersicht">
+  <div class="section-head"><span class="section-icon">📋</span><span class="section-title">Konjunktiv II — Schnellübersicht</span></div>
+  <div class="table-wrap">
+    <table>
+      <tr><th>Form</th><th>Verwendung</th><th>Beispiel</th><th class="td-ar">Arabisch</th></tr>
+      <tr><td><b>würde + Inf.</b></td><td>Allgemein, Wunsch</td><td>Ich würde gehen.</td><td class="td-ar">كنت سأذهب.</td></tr>
+      <tr><td><b>wäre</b></td><td>Zustand, Identität</td><td>Ich wäre Arzt.</td><td class="td-ar">كنت طبيباً.</td></tr>
+      <tr><td><b>hätte</b></td><td>Besitz, Verfügbarkeit</td><td>Ich hätte Zeit.</td><td class="td-ar">كان لدي وقت.</td></tr>
+      <tr><td><b>könnte</b></td><td>Möglichkeit, höfliche Bitte</td><td>Könntest du helfen?</td><td class="td-ar">هل يمكنك المساعدة؟</td></tr>
+      <tr><td><b>müsste</b></td><td>Notwendigkeit (hypothetisch)</td><td>Er müsste mehr schlafen.</td><td class="td-ar">كان ينبغي له النوم أكثر.</td></tr>
+      <tr><td><b>sollte</b></td><td>Erwartung / Ratschlag</td><td>Du solltest das lesen.</td><td class="td-ar">كان يجب عليك قراءة ذلك.</td></tr>
+      <tr><td><b>dürfte</b></td><td>Erlaubnis (hypothetisch)</td><td>Hier dürfte man parken.</td><td class="td-ar">كان مسموحاً بالوقوف هنا.</td></tr>
+      <tr><td><b>wollte</b></td><td>Wille / Absicht</td><td>Ich wollte dir helfen.</td><td class="td-ar">كنت أريد مساعدتك.</td></tr>
+    </table>
+  </div>
+</div>
+
+<div class="cta-row">
+  <a class="cta-btn cta-primary" href="karten.html">🃏 Lernkarten starten</a>
+  <a class="cta-btn cta-secondary" href="quiz.html">🎯 Quiz starten</a>
+</div>
+
+</body>
+</html>
